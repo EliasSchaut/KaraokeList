@@ -1,0 +1,88 @@
+{
+  "common": {
+    "and": "und",
+    "sr": {
+      "dismiss": "Schließen",
+      "open_user_menu": "Benutzermenü öffnen",
+      "open_main_menu": "Hauptmenü öffnen"
+    },
+    "modal": {
+      "close": "Schließen",
+      "go_back": "Gehe zurück"
+    },
+    "lang": {
+      "en": "Englisch",
+      "de": "Deutsch"
+    },
+    "theme": {
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "System"
+    }
+  },
+  "banner": {
+    "contact": "Kontakt",
+    "donate": "Spenden",
+    "donate_me": "Spende {name}"
+  },
+  "home": {
+    "bio": {
+      "title": "Bio",
+      "body": "Hallo, ich bin Elias und würde mich als sozialen Optimisten bezeichnen. Meine Mission ist es, positive Stimmung zu verbreiten, wo immer ich auch hinkomme. Genau aus diesem Grund bin ich ein regelmäßiges Gesicht bei verschiedenen sozialen Zusammenkünften. Als leidenschaftlicher Web- und Bot-Entwickler entwickle ich ständig neue Möglichkeiten, um den Spaß und die Produktivität der Gemeinschaften, an denen ich beteiligt bin, zu steigern."
+    },
+    "education": {
+      "title": "Bildungsweg",
+      "today": "heute",
+      "school": {
+        "elementary": "Grundschule",
+        "a_levels": "Abitur",
+        "computer_science": "Informatik"
+      }
+    },
+    "skills": {
+      "title": "Skills",
+      "technical": "Technische Skills",
+      "soft": {
+        "title": "Soft Skills",
+        "skills": {
+          "events": "Kreative Eventplanung",
+          "organisation": "Organisationstalent",
+          "teamwork": "Teamfähig",
+          "communication": "Kommunikativ"
+        }
+      }
+    },
+    "projects": {
+      "title": "Projekte"
+    }
+  },
+  "footer": {
+    "title": "Footer",
+    "home": "Startseite",
+    "source": "Quellcode",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz"
+  },
+  "imprint": {
+    "title": "Impressum",
+    "declaration": "Angaben gemäß § 5 TMG",
+    "contact": "Kontakt",
+    "email": "E-Mail",
+    "phone": "Telefon"
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "data": {
+      "title": "Welche Daten werden von dieser Website erfasst?",
+      "body": "Diese Website erfasst keine Daten von dir. Der im Impressum angegebene Betreiber erfährt nur von dir, wenn du ihm eine E-Mail schreibst. Dadurch erfährt der Betreiber deine E-Mail-Adresse und deinen Namen. Diese Daten werden nur für die Beantwortung deiner Anfrage verwendet und nicht an Dritte weitergegeben."
+    },
+    "cookies": {
+      "title": "Analytics/Cookies/Externe-Ressourcen u.ä.?",
+      "body": "Diese Website verwendet kein analytisches Tracking jeglicher Art. Diese Website verwendet Cookies. Das sind kleine Textdateien, die der Webbrowser auf dem Endgerät speichert. Cookies helfen dabei, das Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Einige Cookies sind “Session-Cookies.” Solche Cookies werden nach Ende der Browser-Sitzung von selbst gelöscht. Hingegen bleiben andere Cookies auf Ihrem Endgerät bestehen, bis diese händisch selbst gelöscht werden. Solche Cookies helfen bei Rückkehr auf die Website gemachte Einstellungen wiederzuverwenden. Mit einem modernen Webbrowser kann das Setzen von Cookies überwacht, einschränkt oder unterbunden werden. Viele Webbrowser lassen sich so konfigurieren, dass Cookies mit dem Schließen des Programms von selbst gelöscht werden. Die Deaktivierung von Cookies kann eine eingeschränkte Funktionalität der Website zur Folge haben."
+    },
+    "rights": {
+      "title": "Was sind meine Rechte?",
+      "body": "Nach DSGVO und BDSG kannst du jederzeit Auskunft, Aktualisierung, Sperrung oder Löschung aller deiner Daten verlangen. Dein Ansprechpartner hierfür ist der oben genannte Betreiber dieser Webseite. Außerdem bin ich verpflichtet, dich an dein Recht zu erinnern, dieser Zustimmung jederzeit zu widersprechen und dich ggf. bei einer Aufsichtsbehörde über mich zu beschweren."
+    }
+  }
+}

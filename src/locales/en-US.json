@@ -1,0 +1,88 @@
+{
+  "common": {
+    "and": "and",
+    "sr": {
+      "dismiss": "Dismiss",
+      "open_user_menu": "Open user menu",
+      "open_main_menu": "Open main menu"
+    },
+    "modal": {
+      "close": "Close",
+      "go_back": "Go back"
+    },
+    "lang": {
+      "en": "English",
+      "de": "German"
+    },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "banner": {
+    "contact": "Contact",
+    "donate": "Donate",
+    "donate_me": "Donate {name}"
+  },
+  "home": {
+    "bio": {
+      "title": "Bio",
+      "body": "Hey, I’m Elias and I would describe myself as a social optimist. It's my mission to spread positivity wherever I go, which is precisely why I'm a regular face at various social gatherings. As a passionate web and bot developer, I'm constantly creating ways to enhance the fun and productivity of the communities I'm involved in."
+    },
+    "education": {
+      "title": "Education",
+      "today": "today",
+      "school": {
+        "elementary": "Elementary School",
+        "a_levels": "A Levels",
+        "computer_science": "Computer Science"
+      }
+    },
+    "skills": {
+      "title": "Skills",
+      "technical": "Technical Skills",
+      "soft": {
+        "title": "Soft Skills",
+        "skills": {
+          "events": "Creative event planning",
+          "organisation": "Organizational talent",
+          "teamwork": "Team player",
+          "communication": "Communicative"
+        }
+      }
+    },
+    "projects": {
+      "title": "Projects"
+    }
+  },
+  "footer": {
+    "title": "Footer",
+    "home": "Home",
+    "source": "Source Code",
+    "imprint": "Imprint",
+    "privacy": "Privacy"
+  },
+  "imprint": {
+    "title": "Imprint",
+    "declaration": "Information according to § 5 TMG",
+    "contact": "Contact",
+    "email": "E-Mail",
+    "phone": "Phone"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "data": {
+      "title": "What data is collected by this website?",
+      "body": "This website does not collect any data from you. The operator specified in the imprint only learns about you if you write him an e-mail. Thereby the operator learns your e-mail address and your name. This data will only be used to answer your request and will not be passed on to third parties."
+    },
+    "cookies": {
+      "title": "Analytics/Cookies/External Resources etc.?",
+      "body": "This website does not use analytical tracking of any kind. This website uses cookies. These are small text files that the web browser stores on the end device. Cookies help to make the website more user-friendly, effective and secure. Some cookies are \"session cookies.\" Such cookies are deleted by themselves at the end of the browser session. In contrast, other cookies remain on your terminal device until they are manually deleted by yourself. Such cookies help to reuse settings made when returning to the website. With a modern web browser, the setting of cookies can be monitored, restricted or prevented. Many web browsers can be configured to automatically delete cookies when the program is closed. Disabling cookies may result in limited functionality of the website."
+    },
+    "rights": {
+      "title": "What are my rights?",
+      "body": "According to DSGVO and BDSG, you can request information, updating, blocking or deletion of all your data at any time. Your contact person for this is the above-mentioned operator of this website. In addition, I am obliged to remind you of your right to object to this consent at any time and, if necessary, to complain to a supervisory authority about me."
+    }
+  }
+}
