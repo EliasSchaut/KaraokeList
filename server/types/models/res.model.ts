@@ -9,19 +9,19 @@ export class ResModel {
     defaultValue: false,
     nullable: true,
   })
-  success: boolean = false;
+  success?: boolean = false;
 
   @Field(() => String, {
     description: 'A response message.',
     nullable: true,
     defaultValue: '',
   })
-  response: string = '';
+  response?: string = '';
 
   @Field(() => String, {
     description: 'A response code.',
     nullable: true,
     defaultValue: 'none',
   })
-  code: 'info' | 'warn' | 'danger' | 'success' | 'none' = 'none';
+  code?: 'info' | 'warn' | 'danger' | 'success' | 'none' = 'none';
 }
