@@ -1,8 +1,8 @@
 <template>
+  <LayoutHeader />
   <div class="bg-white dark:bg-gray-900 dark:text-white">
-    <LayoutHeader />
+    <Alert />
     <slot />
-    <LayoutFooter />
   </div>
+  <LayoutFooter />
 </template>
-<script setup lang="ts"></script>
