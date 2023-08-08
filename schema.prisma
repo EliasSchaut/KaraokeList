@@ -18,6 +18,7 @@ model Server {
   host    String   @unique
   artists Artist[]
   tracks  Track[]
+  reports Report[]
 }
 
 model Artist {
@@ -34,6 +35,7 @@ model Track {
   id            Int            @id @default(autoincrement())
   title         String
   track_artists TrackArtists[]
+  reports       Report[]
 }
 
 model TrackArtists {
@@ -43,4 +45,13 @@ model TrackArtists {
   artist    Artist @relation(fields: [artist_id], references: [id], onDelete: Cascade)
 
   @@id([track_id, artist_id])
+}
+
+model Report {
+  server_id Int
+  server    Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  id        Int    @id @default(autoincrement())
+  track_id  Int
+  track     Track  @relation(fields: [track_id], references: [id], onDelete: Cascade)
+  desc      String
 }

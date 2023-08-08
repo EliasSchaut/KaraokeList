@@ -10,6 +10,7 @@ import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
 import { ServerModule } from '@/graphql/server/server.module';
 import { ArtistModule } from '@/graphql/artist/artist.module';
 import { TrackModule } from '@/graphql/track/track.module';
+import { ReportModule } from '@/graphql/report/report.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { TrackModule } from '@/graphql/track/track.module';
     ServerModule,
     ArtistModule,
     TrackModule,
+    ReportModule,
   ],
   controllers: [],
   providers: [],
