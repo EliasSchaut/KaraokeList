@@ -66,7 +66,15 @@ export default defineComponent({
     hide() {
       this.$refs.modal.hide();
     },
-    report(e: Event, form_data: FormData) {},
+    report(e: Event, form_data: FormData) {
+      const report_input_data = {
+        track_id: this.track.id,
+        desc: form_data.get('desc'),
+      };
+      console.log(report_input_data);
+      this.mutate_report({ report_input_data });
+      this.hide();
+    },
   },
   setup() {
     const track = ref<{ id: number; title: string }>({
@@ -74,8 +82,18 @@ export default defineComponent({
       title: '&nbsp;',
     });
 
+    const query_mutate_report = gql`
+      mutation report($report_input_data: ReportInputModel!) {
+        report_create(report: $report_input_data) {
+          id
+        }
+      }
+    `;
+    const { mutate: mutate_report } = useMutation(query_mutate_report);
+
     return {
       track,
+      mutate_report,
     };
   },
 });

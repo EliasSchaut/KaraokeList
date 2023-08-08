@@ -41,7 +41,7 @@ export class ReportResolver {
   }
 
   @Mutation(() => ReportModel)
-  async create_report(
+  async report_create(
     @Args('report') report: ReportInputModel,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
