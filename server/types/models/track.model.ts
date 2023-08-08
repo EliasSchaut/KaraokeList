@@ -1,10 +1,10 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { ResModel } from '@/types/models/res.model';
+import { ArtistModel } from '@/types/models/artist.model';
 
 @ObjectType({
   description: 'Artist Information',
 })
-export class TrackModel extends ResModel {
+export class TrackModel {
   @Field(() => Int, {
     description: 'Unique id number of track used for comparison',
   })
@@ -14,4 +14,10 @@ export class TrackModel extends ResModel {
     description: 'Visible title of the track',
   })
   title!: string;
+
+  @Field(() => [ArtistModel], {
+    description: 'Artists of the track',
+    defaultValue: [],
+  })
+  track_artists?: ArtistModel[];
 }

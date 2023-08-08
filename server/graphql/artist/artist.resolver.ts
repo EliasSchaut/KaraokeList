@@ -1,5 +1,5 @@
 import { Query, Resolver, ResolveField, Parent } from '@nestjs/graphql';
-import { MediaService } from '@/graphql/media/media.service';
+import { ArtistService } from '@/graphql/artist/artist.service';
 import { ArtistModel } from '@/types/models/artist.model';
 import { TrackModel } from '@/types/models/track.model';
 import { ServerID } from '@/common/decorators/server.decorator';
@@ -7,8 +7,8 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import { I18nTranslations } from '@/types/generated/i18n.generated';
 
 @Resolver(() => ArtistModel)
-export class MediaResolver {
-  constructor(private readonly mediaService: MediaService) {}
+export class ArtistResolver {
+  constructor(private readonly mediaService: ArtistService) {}
 
   @Query(() => [ArtistModel])
   async artists(
@@ -19,22 +19,14 @@ export class MediaResolver {
   }
 
   @ResolveField(() => [TrackModel])
-  async tracks_artist(
+  async artist_tracks(
     @Parent() artist: ArtistModel,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackModel[]> {
-    return await this.mediaService.find_track_from_artist(artist.id, {
+    return await this.mediaService.find_tracks_of_artist(artist.id, {
       server_id,
       i18n,
     });
-  }
-
-  @Query(() => [TrackModel])
-  async tracks(
-    @ServerID() server_id: number,
-    @I18n() i18n: I18nContext<I18nTranslations>,
-  ): Promise<TrackModel[]> {
-    return await this.mediaService.find_track_all({ server_id, i18n });
   }
 }

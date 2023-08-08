@@ -21,18 +21,26 @@ model Server {
 }
 
 model Artist {
-  server_id Int
-  server    Server  @relation(fields: [server_id], references: [id], onDelete: Cascade)
-  id        Int     @id @default(autoincrement())
-  name      String
-  tracks    Track[]
+  server_id     Int
+  server        Server         @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  id            Int            @id @default(autoincrement())
+  name          String
+  artist_tracks TrackArtists[]
 }
 
 model Track {
-  server_id Int
-  server    Server  @relation(fields: [server_id], references: [id], onDelete: Cascade)
-  id        Int     @id @default(autoincrement())
-  title     String
-  artist    Artist? @relation(fields: [artist_id], references: [id], onDelete: NoAction)
-  artist_id Int?
+  server_id     Int
+  server        Server         @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  id            Int            @id @default(autoincrement())
+  title         String
+  track_artists TrackArtists[]
+}
+
+model TrackArtists {
+  track_id  Int
+  artist_id Int
+  track     Track  @relation(fields: [track_id], references: [id], onDelete: Cascade)
+  artist    Artist @relation(fields: [artist_id], references: [id], onDelete: Cascade)
+
+  @@id([track_id, artist_id])
 }

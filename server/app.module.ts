@@ -8,7 +8,8 @@ import { join } from 'path';
 import { EnvValidationSchema } from '@/common/validation/env.validation';
 import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
 import { ServerModule } from '@/graphql/server/server.module';
-import { MediaModule } from '@/graphql/media/media.module';
+import { ArtistModule } from '@/graphql/artist/artist.module';
+import { TrackModule } from '@/graphql/track/track.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { MediaModule } from '@/graphql/media/media.module';
       autoSchemaFile: join(__dirname, 'types', 'generated', 'schema.gql'),
     }),
     ServerModule,
-    MediaModule,
+    ArtistModule,
+    TrackModule,
   ],
   controllers: [],
   providers: [],
