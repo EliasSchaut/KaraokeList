@@ -17,7 +17,7 @@
             class="even:bg-gray-50"
           >
             <TableCell first>
-              <ButtonInfo @click="show_media_info(track.id)" />
+              <ButtonInfo @click="show_media_info_modal(track.id)" />
             </TableCell>
             <TableCell hidden_on_sm>{{ track.track_artists_names }}</TableCell>
             <TableCell main bold>
@@ -30,10 +30,13 @@
               </dl>
             </TableCell>
             <TableCell last right bold>
-              <a href="#" class="text-indigo-600 hover:text-indigo-900">
+              <button
+                class="text-indigo-600 hover:text-indigo-900"
+                @click="show_report_modal(track.id, track.title)"
+              >
                 Report
                 <span class="sr-only">Edit</span>
-              </a>
+              </button>
             </TableCell>
           </tr>
         </tbody>
@@ -43,12 +46,11 @@
   </div>
 
   <Modal ref="modal_media_info" />
+  <ModalReport ref="modal_report_track" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Modal from '~/components/modal.vue';
-import Spinner from '~/components/spinner.vue';
 
 type TrackType = Array<{
   id: number;
@@ -57,11 +59,12 @@ type TrackType = Array<{
 }>;
 
 export default defineComponent({
-  name: 'Index',
-  components: { Spinner, Modal },
   methods: {
-    show_media_info(track_id: number) {
+    show_media_info_modal(track_id: number) {
       this.$refs.modal_media_info.show();
+    },
+    show_report_modal(track_id: number, track_title: string) {
+      this.$refs.modal_report_track.show(track_id, track_title);
     },
   },
   setup() {

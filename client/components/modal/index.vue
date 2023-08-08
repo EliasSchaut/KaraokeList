@@ -29,10 +29,10 @@
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all dark:bg-gray-900 dark:text-white sm:my-8 sm:w-full sm:max-w-sm sm:p-6"
+              class="relative w-full transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all dark:bg-gray-900 dark:text-white sm:my-8 sm:max-w-sm sm:p-6"
             >
               <slot />
-              <div class="mt-5 sm:mt-6">
+              <div v-if="!own_buttons" class="mt-5 sm:mt-6">
                 <button
                   type="button"
                   class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500"
@@ -77,6 +77,12 @@ export default defineComponent({
     },
     hide() {
       this.open = false;
+    },
+  },
+  props: {
+    own_buttons: {
+      type: Boolean,
+      default: false,
     },
   },
 });
