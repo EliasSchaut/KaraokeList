@@ -3,7 +3,8 @@
     :class="[
       'px-3 py-4 text-sm text-gray-900 sm:w-auto sm:max-w-none',
       first ? 'pl-4 pr-3 sm:pl-3' : '',
-      last ? 'pl-3 pr-4 text-right sm:pr-3' : '',
+      last ? 'pl-3 pr-4 sm:pr-3' : '',
+      right ? 'text-right' : '',
       bold ? 'font-medium' : '',
       main ? 'w-full' : '',
       hidden_on_sm ? 'hidden sm:table-cell' : '',
@@ -24,6 +25,10 @@ export default defineComponent({
       default: false,
     },
     last: {
+      type: Boolean,
+      default: false,
+    },
+    right: {
       type: Boolean,
       default: false,
     },

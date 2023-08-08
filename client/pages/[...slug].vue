@@ -29,7 +29,7 @@
                 </dd>
               </dl>
             </TableCell>
-            <TableCell last bold>
+            <TableCell last right bold>
               <a href="#" class="text-indigo-600 hover:text-indigo-900">
                 Report
                 <span class="sr-only">Edit</span>
