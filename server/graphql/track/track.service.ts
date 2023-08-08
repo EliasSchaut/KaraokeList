@@ -10,7 +10,10 @@ export class TrackService {
 
   async find_track_all(ctx: CtxType): Promise<TrackModel[]> {
     return (await this.prisma.track.findMany({
-      select: { id: true, title: true },
+      select: {
+        id: true,
+        title: true,
+      },
       where: { server_id: ctx.server_id },
       orderBy: { title: 'asc' },
     })) as TrackModel[];
@@ -24,10 +27,20 @@ export class TrackService {
       await this.prisma.trackArtists.findMany({
         where: { track_id: track_id },
         select: { artist: { select: { id: true, name: true } } },
-        orderBy: { artist: { name: 'asc' } },
       })
     ).map((track_artist) => {
       return track_artist.artist;
     }) as ArtistModel[];
+  }
+
+  async find_artists_names_of_track(
+    track_id: number,
+    ctx: CtxType,
+  ): Promise<String> {
+    return (await this.find_artists_of_track(track_id, ctx))
+      .map((artist) => {
+        return artist.name;
+      })
+      .join(' x ');
   }
 }

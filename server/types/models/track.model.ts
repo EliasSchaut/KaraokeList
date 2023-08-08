@@ -20,4 +20,10 @@ export class TrackModel {
     defaultValue: [],
   })
   track_artists?: ArtistModel[];
+
+  @Field(() => String, {
+    description: 'Artists name in single string',
+    defaultValue: 'Unknown',
+  })
+  track_artists_names?: string;
 }

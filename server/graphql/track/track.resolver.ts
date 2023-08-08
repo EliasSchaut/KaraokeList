@@ -29,4 +29,16 @@ export class TrackResolver {
       i18n,
     });
   }
+
+  @ResolveField(() => String)
+  async track_artists_names(
+    @Parent() track: TrackModel,
+    @ServerID() server_id: number,
+    @I18n() i18n: I18nContext<I18nTranslations>,
+  ): Promise<String> {
+    return await this.trackService.find_artists_names_of_track(track.id, {
+      server_id,
+      i18n,
+    });
+  }
 }

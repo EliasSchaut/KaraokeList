@@ -8,6 +8,7 @@ const backend_url = is_dev_mode
       Number(process.env.PORT) + 1
     }/`
   : `${frontend_url}`;
+console.log(`[Nuxt] Dev Mode: ${is_dev_mode}`);
 
 export default async () => {
   return defineNuxtConfig({
