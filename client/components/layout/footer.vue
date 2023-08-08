@@ -13,6 +13,11 @@
               intern: true,
             },
             {
+              name: 'Reports',
+              href: '/reports',
+              intern: true,
+            },
+            {
               name: $t('footer.source'),
               href: 'https://github.com/EliasSchaut/KaraokeList',
             },

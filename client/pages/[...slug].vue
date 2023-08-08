@@ -1,30 +1,13 @@
 <template>
   <div class="px-8">
     <div class="-mx-4 mt-8 sm:px-6 lg:px-8">
-      <table v-if="tracks.length" class="min-w-full divide-y divide-gray-300">
+      <TableStriped v-if="tracks.length">
         <thead>
           <tr>
-            <th
-              scope="col"
-              class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3"
-            >
-              Info
-            </th>
-            <th
-              scope="col"
-              class="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
-            >
-              Artist
-            </th>
-            <th
-              scope="col"
-              class="table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-            >
-              Title
-            </th>
-            <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-3">
-              <span class="sr-only">Edit</span>
-            </th>
+            <TableHead first>Info</TableHead>
+            <TableHead hidden_on_sm>Artist</TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead hidden last><span class="sr-only">Edit</span></TableHead>
           </tr>
         </thead>
         <tbody class="bg-white">
@@ -33,17 +16,11 @@
             :key="track.title"
             class="even:bg-gray-50"
           >
-            <td
-              class="max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-3"
-            >
+            <TableCell first>
               <ButtonInfo @click="show_media_info(track.id)" />
-            </td>
-            <td class="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-              {{ track.track_artists_names }}
-            </td>
-            <td
-              class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none"
-            >
+            </TableCell>
+            <TableCell hidden_on_sm>{{ track.track_artists_names }}</TableCell>
+            <TableCell main bold>
               {{ track.title }}
               <dl class="font-normal sm:hidden">
                 <dt class="sr-only">Artist</dt>
@@ -51,16 +28,16 @@
                   {{ track.track_artists_names }}
                 </dd>
               </dl>
-            </td>
-            <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-3">
+            </TableCell>
+            <TableCell last bold>
               <a href="#" class="text-indigo-600 hover:text-indigo-900">
                 Report
                 <span class="sr-only">Edit</span>
               </a>
-            </td>
+            </TableCell>
           </tr>
         </tbody>
-      </table>
+      </TableStriped>
       <Spinner v-else class="mx-auto" />
     </div>
   </div>
@@ -73,7 +50,7 @@ import { defineComponent } from 'vue';
 import Modal from '~/components/modal.vue';
 import Spinner from '~/components/spinner.vue';
 
-type track_type = Array<{
+type TrackType = Array<{
   id: number;
   title: string;
   track_artists_names: string;
@@ -88,7 +65,7 @@ export default defineComponent({
     },
   },
   setup() {
-    const tracks = ref<track_type>([]);
+    const tracks = ref<TrackType>([]);
     const query = gql`
       query get_tracks {
         tracks {
@@ -99,7 +76,7 @@ export default defineComponent({
       }
     `;
 
-    const { result } = useQuery<Array<track_type>>(query);
+    const { result } = useQuery<Array<TrackType>>(query);
     tracks.value = result.value?.tracks || [];
     return { tracks };
   },
