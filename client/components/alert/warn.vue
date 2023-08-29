@@ -1,7 +1,7 @@
 success.vue
 <template>
   <div
-    class="bg-yellow-50 p-4 ring-2 ring-yellow-100 dark:bg-yellow-950 dark:ring-yellow-900 sm:relative sm:top-3 sm:m-auto sm:w-2/3 sm:rounded-md"
+    class="bg-yellow-50 p-4 ring-2 ring-yellow-100 dark:bg-yellow-950 dark:ring-yellow-900 sm:relative sm:top-5 sm:m-auto sm:w-2/3 sm:rounded-md"
   >
     <div class="flex">
       <div class="flex-shrink-0">

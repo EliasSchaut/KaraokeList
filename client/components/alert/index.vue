@@ -9,6 +9,5 @@
 
 <script setup lang="ts">
 import { alertStore } from '~/store/alert';
-
 const alert = alertStore();
 </script>

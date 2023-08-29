@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-green-50 p-4 ring-2 ring-green-100 dark:bg-green-950 dark:ring-green-900 sm:relative sm:top-3 sm:m-auto sm:w-2/3 sm:rounded-md"
+    class="bg-green-50 p-4 ring-2 ring-green-100 dark:bg-green-950 dark:ring-green-900 sm:relative sm:top-5 sm:m-auto sm:w-2/3 sm:rounded-md"
   >
     <div class="flex">
       <div class="flex-shrink-0">

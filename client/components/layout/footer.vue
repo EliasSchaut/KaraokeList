@@ -8,16 +8,6 @@
         <div
           v-for="item in [
             {
-              name: $t('footer.home'),
-              href: '/',
-              intern: true,
-            },
-            {
-              name: 'Reports',
-              href: '/reports',
-              intern: true,
-            },
-            {
               name: $t('footer.source'),
               href: 'https://github.com/EliasSchaut/KaraokeList',
             },
@@ -27,13 +17,13 @@
           :key="item.name"
           class="pb-6"
         >
-          <nuxt-link
+          <NuxtLink
             v-if="item?.intern"
             :to="item.href"
             class="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-400"
           >
             {{ item.name }}
-          </nuxt-link>
+          </NuxtLink>
           <a
             v-else
             :href="item.href"

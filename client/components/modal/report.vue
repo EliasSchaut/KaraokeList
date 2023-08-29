@@ -17,7 +17,7 @@
         <FormInputArea
           id="desc"
           label="Reason of report"
-          minlength="10"
+          :minlength="10"
           placeholder="This track has issues because..."
           required
         />
@@ -48,6 +48,7 @@
 import { defineComponent, ref } from 'vue';
 import { DialogTitle } from '@headlessui/vue';
 import { FlagIcon } from '@heroicons/vue/24/outline';
+import { alertStore } from '~/store/alert';
 
 export default defineComponent({
   name: 'Index',
@@ -71,8 +72,16 @@ export default defineComponent({
         track_id: this.track.id,
         desc: form_data.get('desc'),
       };
-      console.log(report_input_data);
-      this.mutate_report({ report_input_data });
+      this.mutate_report({ report_input_data })
+        .then(() => {
+          this.alert.show(
+            `Successfully reported ${this.track.title}`,
+            'success',
+          );
+        })
+        .catch(() => {
+          this.alert.show(`Failed to report ${this.track.title}`, 'danger');
+        });
       this.hide();
     },
   },
@@ -94,6 +103,7 @@ export default defineComponent({
     return {
       track,
       mutate_report,
+      alert: alertStore(),
     };
   },
 });

@@ -1,70 +1,54 @@
 <template>
   <div class="px-8">
-    <div class="-mx-4 mt-8 sm:px-6 lg:px-8">
-      <div class="pb-5">
-        <h3 class="text-xl font-semibold leading-6 text-gray-900">Reports</h3>
-      </div>
-      <TableStriped v-if="reports.length">
+    <div class="-mx-4 pt-8 sm:px-6 lg:px-8">
+      <TableStriped v-if="report_data.reports.length">
         <thead>
-          <tr>
-            <TableHead first>Info</TableHead>
-            <TableHead>Title</TableHead>
+          <TableRow>
+            <TableHead>Artist - Title</TableHead>
             <TableHead last>Description</TableHead>
-          </tr>
+          </TableRow>
         </thead>
         <tbody>
-          <tr
-            v-for="report of reports"
-            :key="report.id"
-            class="even:bg-gray-50"
-          >
-            <TableCell first>
-              <ButtonInfo />
-            </TableCell>
-            <TableCell bold>
+          <TableRow v-for="report of report_data.reports" :key="report.id">
+            <TableCell first bold>
+              {{ report.report_track.track_artists_names }} -
               {{ report.report_track.title }}
             </TableCell>
             <TableCell main last>
               {{ report.desc }}
             </TableCell>
-          </tr>
+          </TableRow>
         </tbody>
       </TableStriped>
-      <Spinner v-else class="mx-auto" />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import Spinner from '~/components/spinner.vue';
+<script setup lang="ts">
+import { alertStore } from '~/store/alert';
+const alert = alertStore();
 
 type ReportType = Array<{
   id: number;
   desc: string;
-  report_track: { id: number; title: string };
+  report_track: { id: number; title: string; track_artists_names: string };
 }>;
 
-export default defineComponent({
-  components: { Spinner },
-  setup() {
-    const reports = ref<ReportType>([]);
-    const query = gql`
-      query {
-        reports {
-          id
-          desc
-          report_track {
-            id
-            title
-          }
-        }
+const query = gql`
+  query {
+    reports {
+      id
+      desc
+      report_track {
+        id
+        title
+        track_artists_names
       }
-    `;
-
-    const { result } = useQuery<ReportType>(query);
-    reports.value = result.value?.reports || [];
-    return { reports };
-  },
-});
+    }
+  }
+`;
+const { data: report_data } = await useAsyncQuery<ReportType>(query);
+if (report_data.value.reports.length === 0) {
+  alert.show('No reports submitted!', 'info');
+}
 </script>
