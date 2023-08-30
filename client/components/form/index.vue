@@ -22,7 +22,7 @@ export default defineComponent({
   },
   props: {
     submit: {
-      type: Object as () => (e: Event, form_data: FormData) => any,
+      type: Function,
       required: true,
     },
   },

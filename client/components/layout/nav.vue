@@ -11,7 +11,7 @@
           <div
             class="flex flex-shrink-0 items-center text-xl font-semibold leading-6 text-gray-900"
           >
-            Karaoke List
+            KaraokeList
           </div>
           <div
             class="hidden border-t dark:border-t-gray-800 sm:ml-6 sm:flex sm:space-x-8"

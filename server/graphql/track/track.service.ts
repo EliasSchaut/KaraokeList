@@ -43,4 +43,12 @@ export class TrackService {
       })
       .join(' x ');
   }
+
+  async is_reported(track_id: number, ctx: CtxType): Promise<Boolean> {
+    return (
+      (await this.prisma.report.findFirst({
+        where: { track_id: track_id },
+      })) !== null
+    );
+  }
 }

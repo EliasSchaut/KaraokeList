@@ -9,7 +9,7 @@
         <thead>
           <tr>
             <TableHead>Artist - Title</TableHead>
-            <TableHead last>Description</TableHead>
+            <TableHead last>Reason</TableHead>
           </tr>
         </thead>
         <tbody>

@@ -78,6 +78,7 @@ export default defineComponent({
             `Successfully reported ${this.track.title}`,
             'success',
           );
+          this.$emit('report', this.track.id);
         })
         .catch(() => {
           this.alert.show(`Failed to report ${this.track.title}`, 'danger');
@@ -106,5 +107,6 @@ export default defineComponent({
       alert: alertStore(),
     };
   },
+  emits: ['report'],
 });
 </script>

@@ -28,11 +28,19 @@
               <TableCell first>
                 <ButtonInfo @click="show_media_info_modal(track.id)" />
               </TableCell>
-              <TableCell hidden_on_sm>{{
-                track.track_artists_names
-              }}</TableCell>
+              <TableCell hidden_on_sm
+                >{{ track.track_artists_names }}
+              </TableCell>
               <TableCell main bold>
-                {{ track.title }}
+                <span
+                  class="space-y-1 sm:flex sm:flex-row sm:items-center sm:justify-between"
+                  ><span class="mr-1">{{ track.title }}</span>
+                  <NuxtLink
+                    :to="`/reports/${track.title}`"
+                    v-if="track.reported"
+                    ><BadgeYellow>Reported</BadgeYellow></NuxtLink
+                  ></span
+                >
                 <dl class="font-normal sm:hidden">
                   <dt class="sr-only">Artist</dt>
                   <dd class="mt-1 text-gray-700">
@@ -57,12 +65,20 @@
   </div>
 
   <Modal ref="modal_media_info" />
-  <ModalReport ref="modal_report_track" />
+  <ModalReport
+    ref="modal_report_track"
+    @report="
+      (track_id: number) =>
+        (track_data.tracks[
+          track_data.tracks.findIndex((t) => t.id === track_id)
+        ].reported = true)
+    "
+  />
 </template>
 
 <script setup lang="ts">
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
 import { alertStore } from '~/store/alert';
+
 const alert = alertStore();
 const route = useRoute();
 const search = ref<string>(route.params.query ?? '');
@@ -80,6 +96,7 @@ const query = gql`
       id
       title
       track_artists_names
+      reported
     }
   }
 `;

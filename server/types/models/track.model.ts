@@ -26,4 +26,10 @@ export class TrackModel {
     defaultValue: 'Unknown',
   })
   track_artists_names?: string;
+
+  @Field(() => Boolean, {
+    description: 'Track was reported by someone',
+    defaultValue: false,
+  })
+  reported?: boolean;
 }

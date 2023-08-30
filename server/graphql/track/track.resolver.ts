@@ -41,4 +41,16 @@ export class TrackResolver {
       i18n,
     });
   }
+
+  @ResolveField(() => Boolean)
+  async reported(
+    @Parent() track: TrackModel,
+    @ServerID() server_id: number,
+    @I18n() i18n: I18nContext<I18nTranslations>,
+  ): Promise<Boolean> {
+    return await this.trackService.is_reported(track.id, {
+      server_id,
+      i18n,
+    });
+  }
 }
