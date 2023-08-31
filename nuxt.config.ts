@@ -32,6 +32,7 @@ export default async () => {
       '@nuxtjs/tailwindcss',
       '@nuxtjs/color-mode',
       '@nuxt/image',
+      'dayjs-nuxt',
       '@pinia/nuxt',
       '@pinia-plugin-persistedstate/nuxt',
     ],
@@ -95,6 +96,13 @@ export default async () => {
         tailwindcss: {},
         autoprefixer: {},
       },
+    },
+
+    dayjs: {
+      locales: ['en', 'de'],
+      plugins: ['duration'],
+      defaultLocale: 'de',
+      defaultTimeZone: 'Europe/Berlin',
     },
 
     pinia: {

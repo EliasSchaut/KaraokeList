@@ -64,7 +64,6 @@
     </div>
   </div>
 
-  <Modal ref="modal_media_info" />
   <ModalReport
     ref="modal_report_track"
     @report="
@@ -74,6 +73,7 @@
         ].reported = true)
     "
   />
+  <ModalMediaInfo ref="modal_media_info" />
 </template>
 
 <script setup lang="ts">
@@ -112,7 +112,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   methods: {
     show_media_info_modal(track_id: number) {
-      this.$refs.modal_media_info.show();
+      this.$refs.modal_media_info.show(track_id);
     },
     show_report_modal(track_id: number, track_title: string) {
       this.$refs.modal_report_track.show(track_id, track_title);

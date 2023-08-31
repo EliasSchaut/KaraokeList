@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot as="template" :show="open">
-    <Dialog as="div" class="relative z-10 break-words" @close="open = false">
+    <Dialog as="div" class="relative z-10" @close="open = false">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -29,8 +29,19 @@
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative w-full transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all dark:bg-gray-900 dark:text-white sm:my-8 sm:max-w-sm sm:p-6"
+              class="relative w-full transform overflow-hidden break-words rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all dark:bg-gray-900 dark:text-white sm:my-8 sm:max-w-sm sm:p-6"
+              v-bind="$attrs"
             >
+              <div v-if="close_x" class="absolute right-0 top-0 pr-4 pt-4">
+                <button
+                  type="button"
+                  class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  @click="open = false"
+                >
+                  <span class="sr-only">Close</span>
+                  <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
               <slot />
               <div v-if="!own_buttons" class="mt-5 sm:mt-6">
                 <button
@@ -50,6 +61,7 @@
 </template>
 
 <script lang="ts">
+import { XMarkIcon } from '@heroicons/vue/24/outline';
 import {
   Dialog,
   DialogPanel,
@@ -65,6 +77,7 @@ export default defineComponent({
     DialogPanel,
     TransitionChild,
     TransitionRoot,
+    XMarkIcon,
   },
   setup() {
     return {
@@ -81,6 +94,14 @@ export default defineComponent({
   },
   props: {
     own_buttons: {
+      type: Boolean,
+      default: false,
+    },
+    close_x: {
+      type: Boolean,
+      default: false,
+    },
+    big: {
       type: Boolean,
       default: false,
     },

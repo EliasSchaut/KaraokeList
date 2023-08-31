@@ -1,4 +1,11 @@
-import { Query, Resolver, ResolveField, Parent, Args } from '@nestjs/graphql';
+import {
+  Query,
+  Resolver,
+  ResolveField,
+  Parent,
+  Args,
+  Int,
+} from '@nestjs/graphql';
 import { ArtistModel } from '@/types/models/artist.model';
 import { TrackModel } from '@/types/models/track.model';
 import { I18n, I18nContext } from 'nestjs-i18n';
@@ -21,7 +28,7 @@ export class TrackResolver {
 
   @Query(() => TrackModel)
   async track(
-    @Args('track_id') id: number,
+    @Args('track_id', { type: () => Int }) id: number,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackModel> {
