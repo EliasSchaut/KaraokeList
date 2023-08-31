@@ -41,7 +41,8 @@
     "nestjs-i18n": "^10.3.1",
     "pinia": "^2.1.6",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "spotify-api.js": "^9.2.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.1.16",

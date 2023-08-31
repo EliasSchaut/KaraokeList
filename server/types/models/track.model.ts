@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ArtistModel } from '@/types/models/artist.model';
+import { TrackMetadataModel } from '@/types/models/track_metadata.model';
 
 @ObjectType({
   description: 'Artist Information',
@@ -32,4 +33,9 @@ export class TrackModel {
     defaultValue: false,
   })
   reported?: boolean;
+
+  @Field(() => TrackMetadataModel, {
+    nullable: true,
+  })
+  metadata?: TrackMetadataModel;
 }
