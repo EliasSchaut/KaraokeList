@@ -11,6 +11,7 @@ import { ServerModule } from '@/graphql/server/server.module';
 import { ArtistModule } from '@/graphql/artist/artist.module';
 import { TrackModule } from '@/graphql/track/track.module';
 import { ReportModule } from '@/graphql/report/report.module';
+import { AuthModule } from '@/graphql/auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ReportModule } from '@/graphql/report/report.module';
       context: (ctx: ContextType) => ctx,
       autoSchemaFile: join(__dirname, 'types', 'generated', 'schema.gql'),
     }),
+    AuthModule,
     ServerModule,
     ArtistModule,
     TrackModule,
