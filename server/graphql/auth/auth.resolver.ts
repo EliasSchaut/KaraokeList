@@ -11,7 +11,7 @@ export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @Query(() => AuthModel, { name: 'auth_sign_in' })
-  async sign_in(
+  async auth_sign_in(
     @Args('auth_input_data') auth_input_data: AuthInputModel,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,

@@ -8,6 +8,11 @@
         <div
           v-for="item in [
             {
+              name: 'Admin',
+              href: '/admin',
+              intern: true,
+            },
+            {
               name: $t('footer.source'),
               href: 'https://github.com/EliasSchaut/KaraokeList',
             },
