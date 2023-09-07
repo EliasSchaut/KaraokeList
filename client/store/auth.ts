@@ -14,6 +14,10 @@ export const authStore = defineStore('auth', {
       this.logged_in = false;
       this.token = '';
     },
+    // debug
+    toggle_login() {
+      this.logged_in = !this.logged_in;
+    },
   },
   persist: true,
 });

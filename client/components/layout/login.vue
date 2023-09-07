@@ -1,6 +1,7 @@
 <template>
+  <Body class="bg-gray-100" />
   <div
-    class="flex min-h-full flex-1 flex-col justify-center bg-gray-100 py-12 sm:px-6 lg:px-8"
+    class="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8"
   >
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <h2
@@ -43,7 +44,7 @@ export default defineComponent({
     };
   },
   methods: {
-    submit_login(e: Event) {
+    async submit_login(e: Event) {
       const form = e.target as HTMLFormElement;
       const formData = new FormData(form);
 
@@ -55,17 +56,20 @@ export default defineComponent({
         }
       `;
 
-      const { result } = useQuery(query, {
+      const { data } = await useAsyncQuery(query, {
         auth_input_data: {
           username: formData.get('username'),
           password: formData.get('password'),
         },
       });
 
-      if (result.value) {
-        this.auth.login(result.value.auth_sign_in.barrier_token);
+      console.log(data.value.auth_sign_in);
+
+      if ((data.value as any).auth_sign_in) {
+        this.auth.login((data.value as any).auth_sign_in.barrier_token);
+        this.alert.show('Login successful', 'success');
       } else {
-        this.alert.show('Invalid credentials', 'warning');
+        this.alert.show('Invalid credentials', 'warn');
       }
     },
   },
