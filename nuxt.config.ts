@@ -35,6 +35,7 @@ export default async () => {
       'dayjs-nuxt',
       '@pinia/nuxt',
       '@pinia-plugin-persistedstate/nuxt',
+      '@vueuse/nuxt',
     ],
 
     apollo: {
