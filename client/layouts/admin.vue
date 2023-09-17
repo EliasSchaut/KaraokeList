@@ -30,7 +30,7 @@ export default defineComponent({
       tabs: [
         { name: 'General', href: '/admin' },
         { name: 'Admins', href: '/admin/admins' },
-        { name: 'Songs', href: '/admin/songs' },
+        { name: 'Tracks', href: '/admin/tracks' },
       ],
     };
   },
