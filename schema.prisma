@@ -11,15 +11,16 @@ datasource db {
 }
 
 model Server {
-  id      Int      @id @default(autoincrement())
-  name    String   @unique
-  title   String
-  desc    String?
-  host    String   @unique
-  admins  Admin[]
-  artists Artist[]
-  tracks  Track[]
-  reports Report[]
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  title    String
+  desc     String?
+  host     String    @unique
+  admins   Admin[]
+  artists  Artist[]
+  tracks   Track[]
+  reports  Report[]
+  requests Request[]
 }
 
 model Admin {
@@ -65,4 +66,12 @@ model Report {
   track_id  Int
   track     Track  @relation(fields: [track_id], references: [id], onDelete: Cascade)
   desc      String
+}
+
+model Request {
+  server_id   Int
+  server      Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
+  id          Int    @id @default(autoincrement())
+  track_title String
+  artist_name String
 }

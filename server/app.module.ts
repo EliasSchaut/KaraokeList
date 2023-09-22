@@ -12,6 +12,7 @@ import { ArtistModule } from '@/graphql/artist/artist.module';
 import { TrackModule } from '@/graphql/track/track.module';
 import { ReportModule } from '@/graphql/report/report.module';
 import { AuthModule } from '@/graphql/auth/auth.module';
+import { RequestModule } from '@/graphql/request/request.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { AuthModule } from '@/graphql/auth/auth.module';
     ArtistModule,
     TrackModule,
     ReportModule,
+    RequestModule,
   ],
   controllers: [],
   providers: [],
