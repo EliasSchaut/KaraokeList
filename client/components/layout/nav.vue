@@ -1,7 +1,7 @@
 <template>
   <Disclosure
     as="nav"
-    class="bg-white drop-shadow dark:bg-gray-800"
+    class="bg-white shadow dark:bg-gray-800"
     v-slot="{ open }"
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -108,6 +108,10 @@ export default defineComponent({
         {
           name: 'Reports',
           href: '/reports',
+        },
+        {
+          name: 'Requests',
+          href: '/requests',
         },
         {
           name: 'Admin',

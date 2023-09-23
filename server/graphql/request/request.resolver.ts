@@ -13,7 +13,7 @@ export class RequestResolver {
   constructor(private readonly requestService: RequestService) {}
 
   @Query(() => [RequestModel])
-  async reports(
+  async requests(
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<RequestModel[]> {
@@ -21,7 +21,7 @@ export class RequestResolver {
   }
 
   @Mutation(() => RequestModel)
-  async report_create(
+  async request_create(
     @Args('request') report: RequestInputModel,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
@@ -31,7 +31,7 @@ export class RequestResolver {
 
   @UseGuards(AuthGuard)
   @Resolver(() => RequestModel)
-  async report_delete(
+  async request_delete(
     @Args('id') id: number,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
