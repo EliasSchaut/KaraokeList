@@ -28,8 +28,8 @@ export default defineComponent({
   data() {
     return {
       tabs: [
-        { name: 'General', href: '/admin' },
-        { name: 'Admins', href: '/admin/admins' },
+        { name: 'Settings', href: '/admin' },
+        { name: 'Users', href: '/admin/users' },
         { name: 'Tracks', href: '/admin/tracks' },
       ],
     };

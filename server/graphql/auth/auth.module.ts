@@ -20,7 +20,6 @@ import { JwtService } from '@nestjs/jwt';
     AuthResolver,
     PrismaService,
     PasswordService,
-    JwtService,
   ],
 })
 export class AuthModule {}

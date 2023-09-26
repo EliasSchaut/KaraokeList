@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="admin"> admins </NuxtLayout>
+  <NuxtLayout name="admin"> users </NuxtLayout>
 </template>
 
 <script lang="ts"></script>
