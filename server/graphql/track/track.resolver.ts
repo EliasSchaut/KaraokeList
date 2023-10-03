@@ -1,5 +1,6 @@
 import {
   Query,
+  Mutation,
   Resolver,
   ResolveField,
   Parent,
@@ -13,6 +14,7 @@ import { I18nTranslations } from '@/types/generated/i18n.generated';
 import { ServerID } from '@/common/decorators/server.decorator';
 import { TrackService } from '@/graphql/track/track.service';
 import { TrackMetadataModel } from '@/types/models/track_metadata.model';
+import { TrackInputModel } from '@/types/models/inputs/track.input';
 
 @Resolver(() => TrackModel)
 export class TrackResolver {
@@ -23,7 +25,7 @@ export class TrackResolver {
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackModel[]> {
-    return await this.trackService.find_track_all({ server_id, i18n });
+    return await this.trackService.find_all({ server_id, i18n });
   }
 
   @Query(() => TrackModel)
@@ -32,28 +34,25 @@ export class TrackResolver {
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackModel> {
-    return await this.trackService.find_track(id, { server_id, i18n });
+    return await this.trackService.find(id, { server_id, i18n });
   }
 
-  @ResolveField(() => [ArtistModel])
-  async track_artists(
+  @Mutation(() => TrackModel)
+  async track_create(
+    @Args('track') track: TrackInputModel,
+    @ServerID() server_id: number,
+    @I18n() i18n: I18nContext<I18nTranslations>,
+  ): Promise<TrackModel> {
+    return await this.trackService.create(track, { server_id, i18n });
+  }
+
+  @ResolveField(() => ArtistModel)
+  async track_artist(
     @Parent() track: TrackModel,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
-  ): Promise<ArtistModel[]> {
-    return await this.trackService.find_artists_of_track(track.id, {
-      server_id,
-      i18n,
-    });
-  }
-
-  @ResolveField(() => String)
-  async track_artists_names(
-    @Parent() track: TrackModel,
-    @ServerID() server_id: number,
-    @I18n() i18n: I18nContext<I18nTranslations>,
-  ): Promise<String> {
-    return await this.trackService.find_artists_names_of_track(track.id, {
+  ): Promise<ArtistModel> {
+    return await this.trackService.find_artist(track.id, {
       server_id,
       i18n,
     });

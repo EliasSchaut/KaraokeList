@@ -19,5 +19,5 @@ export class ReportModel {
     description: 'Track to report',
     nullable: true,
   })
-  report_track?: TrackModel;
+  track?: TrackModel;
 }

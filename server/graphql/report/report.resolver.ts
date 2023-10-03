@@ -34,7 +34,7 @@ export class ReportResolver {
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackModel> {
-    return this.reportService.find_track_of_report(report.id, {
+    return this.reportService.find_track(report.id, {
       server_id,
       i18n,
     });

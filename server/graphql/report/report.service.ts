@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@/common/db/prisma.service';
+import { PrismaService } from '@/common/services/prisma.service';
 import { CtxType } from '@/types/ctx.type';
 import { ReportModel } from '@/types/models/report.model';
 import { ReportInputModel } from '@/types/models/inputs/report.input';
 import { TrackModel } from '@/types/models/track.model';
+import { NotFoundException } from '@nestjs/common/exceptions';
 
 @Injectable()
 export class ReportService {
@@ -27,17 +28,18 @@ export class ReportService {
     })) as ReportModel[];
   }
 
-  async find_track_of_report(
-    report_id: number,
-    ctx: CtxType,
-  ): Promise<TrackModel> {
-    return (await this.prisma.report.findUnique({
-      where: {
-        id: report_id,
-      },
-      select: {
-        track: true,
-      },
-    }))!.track as TrackModel;
+  async find_track(report_id: number, ctx: CtxType): Promise<TrackModel> {
+    try {
+      return (await this.prisma.report.findUnique({
+        where: {
+          id: report_id,
+        },
+        select: {
+          track: true,
+        },
+      }))!.track as TrackModel;
+    } catch (e) {
+      throw new NotFoundException(`Report not found`, { cause: e });
+    }
   }
 }

@@ -16,17 +16,10 @@ export class TrackModel {
   })
   title!: string;
 
-  @Field(() => [ArtistModel], {
-    description: 'Artists of the track',
-    defaultValue: [],
+  @Field(() => ArtistModel, {
+    description: 'Artist of the track',
   })
-  track_artists?: ArtistModel[];
-
-  @Field(() => String, {
-    description: 'Artists name in single string',
-    defaultValue: 'Unknown',
-  })
-  track_artists_names?: string;
+  artist?: ArtistModel;
 
   @Field(() => Boolean, {
     description: 'Track was reported by someone',

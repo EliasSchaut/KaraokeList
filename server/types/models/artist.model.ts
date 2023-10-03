@@ -19,5 +19,5 @@ export class ArtistModel {
     description: 'Tracks of the artist',
     defaultValue: [],
   })
-  artist_tracks?: TrackModel[];
+  tracks?: TrackModel[];
 }

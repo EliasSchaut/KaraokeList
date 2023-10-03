@@ -5,8 +5,8 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import { I18nTranslations } from '@/types/generated/i18n.generated';
 import { RequestService } from '@/graphql/request/request.service';
 import { RequestModel } from '@/types/models/request.model';
-import { RequestInputModel } from '@/types/models/inputs/request.input';
 import { AuthGuard } from '@/graphql/auth/auth.guard';
+import { TrackInputModel } from '@/types/models/inputs/track.input';
 
 @Resolver(() => RequestModel)
 export class RequestResolver {
@@ -22,11 +22,11 @@ export class RequestResolver {
 
   @Mutation(() => RequestModel)
   async request_create(
-    @Args('request') report: RequestInputModel,
+    @Args('request') request: TrackInputModel,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<RequestModel> {
-    return this.requestService.create(report, { server_id, i18n });
+    return this.requestService.create(request, { server_id, i18n });
   }
 
   @UseGuards(AuthGuard)

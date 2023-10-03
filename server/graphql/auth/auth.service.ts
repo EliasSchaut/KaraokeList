@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { PasswordService } from '@/common/util/password.service';
-import { PrismaService } from '@/common/db/prisma.service';
+import { PasswordService } from '@/common/services/password.service';
+import { PrismaService } from '@/common/services/prisma.service';
 import { AuthInputModel } from '@/types/models/inputs/auth.input';
 import { CtxType } from '@/types/ctx.type';
 import { AuthModel } from '@/types/models/auth.model';

@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class RequestInputModel {
+export class TrackInputModel {
   @Field(() => String, {
     description: 'Name of artist to request',
   })

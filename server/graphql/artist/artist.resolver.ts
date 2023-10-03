@@ -15,7 +15,7 @@ export class ArtistResolver {
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<ArtistModel[]> {
-    return await this.mediaService.find_artist_all({ server_id, i18n });
+    return await this.mediaService.find_all({ server_id, i18n });
   }
 
   @ResolveField(() => [TrackModel])
@@ -24,7 +24,7 @@ export class ArtistResolver {
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackModel[]> {
-    return await this.mediaService.find_tracks_of_artist(artist.id, {
+    return await this.mediaService.find_tracks(artist.id, {
       server_id,
       i18n,
     });
