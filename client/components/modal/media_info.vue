@@ -93,10 +93,10 @@ export default defineComponent({
       this.loading = true;
       this.$refs.modal.show();
       useAsyncQuery(query, { track_id }).then(({ data }) => {
-        this.media_info = data.value.track.metadata;
-        this.media_info.duration = this.dayjs
-          .duration(this.media_info.duration)
+        const duration = this.dayjs
+          .duration(data.value.track.metadata.duration)
           .format('m:ss');
+        this.media_info = { ...data.value.track.metadata, duration };
         this.loading = false;
       });
     },

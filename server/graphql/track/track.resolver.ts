@@ -74,7 +74,7 @@ export class TrackResolver {
   }
 
   @ResolveField(() => ArtistModel)
-  async track_artist(
+  async artist(
     @Parent() track: TrackModel,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,

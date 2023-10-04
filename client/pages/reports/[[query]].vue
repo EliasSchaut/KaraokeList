@@ -20,13 +20,13 @@
                 report.report_track.title
                   .toLowerCase()
                   .includes(search.toLowerCase()) ||
-                report.report_track.track_artists_names
+                report.report_track.artist.name
                   .toLowerCase()
                   .includes(search.toLowerCase())
               "
             >
               <TableCell first bold>
-                {{ report.report_track.track_artists_names }} -
+                {{ report.report_track.artist.name }} -
                 {{ report.report_track.title }}
               </TableCell>
               <TableCell main last>
@@ -49,7 +49,7 @@ const search = ref<string>(route.params.query ?? '');
 type ReportType = Array<{
   id: number;
   desc: string;
-  report_track: { id: number; title: string; track_artists_names: string };
+  report_track: { id: number; title: string; artist: { name: string } };
 }>;
 
 const query = gql`
@@ -60,7 +60,9 @@ const query = gql`
       report_track {
         id
         title
-        track_artists_names
+        artist {
+          name
+        }
       }
     }
   }

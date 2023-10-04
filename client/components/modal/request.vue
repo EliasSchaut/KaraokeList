@@ -79,14 +79,14 @@ export default defineComponent({
       this.$refs.modal.hide();
     },
     request(e: Event, form_data: FormData) {
-      const request_input_data = {
+      const track_input_data = {
         artist_name: form_data.get('artist_name'),
         track_title: form_data.get('track_title'),
       };
-      this.mutate_request({ request_input_data })
+      this.mutate_request({ track_input_data })
         .then(() => {
           this.alert.show(
-            `Successfully requested ${request_input_data.track_title}!`,
+            `Successfully requested ${track_input_data.track_title}!`,
             'success',
           );
           this.$emit('request');
@@ -99,8 +99,8 @@ export default defineComponent({
   },
   setup() {
     const query_mutate_request = gql`
-      mutation request($request_input_data: RequestInputModel!) {
-        request_create(request: $request_input_data) {
+      mutation request_create($track_input_data: TrackInputModel!) {
+        request_create(track_input_data: $track_input_data) {
           id
         }
       }

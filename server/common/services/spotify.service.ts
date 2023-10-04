@@ -23,7 +23,7 @@ export class SpotifyService {
     let tracks: Track[] | undefined;
     const fetch_timeout = setTimeout(() => {
       throw new InternalServerErrorException('Spotify API timeout');
-    }, Number(process.env.SPOTIFY_API_TIMEOUT));
+    }, Number(process.env.SPOTIFY_TIMEOUT_IN_MS));
 
     try {
       tracks = (

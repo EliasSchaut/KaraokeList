@@ -22,7 +22,7 @@ export class RequestResolver {
 
   @Mutation(() => RequestModel)
   async request_create(
-    @Args('request') request: TrackInputModel,
+    @Args('track_input_data') request: TrackInputModel,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<RequestModel> {

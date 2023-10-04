@@ -20,17 +20,13 @@
               v-if="
                 search === '' ||
                 track.title.toLowerCase().includes(search.toLowerCase()) ||
-                track.track_artists_names
-                  .toLowerCase()
-                  .includes(search.toLowerCase())
+                track.artist.name.toLowerCase().includes(search.toLowerCase())
               "
             >
               <TableCell first>
                 <ButtonInfo @click="show_media_info_modal(track.id)" />
               </TableCell>
-              <TableCell hidden_on_sm
-                >{{ track.track_artists_names }}
-              </TableCell>
+              <TableCell hidden_on_sm>{{ track.artist.name }} </TableCell>
               <TableCell main bold>
                 <span
                   class="space-y-1 sm:flex sm:flex-row sm:items-center sm:justify-between"
@@ -44,7 +40,7 @@
                 <dl class="font-normal sm:hidden">
                   <dt class="sr-only">Artist</dt>
                   <dd class="mt-1 text-gray-700">
-                    {{ track.track_artists_names }}
+                    {{ track.artist.name }}
                   </dd>
                 </dl>
               </TableCell>
@@ -87,7 +83,7 @@ type TrackType = [
   {
     id: number;
     title: string;
-    track_artists_names: string;
+    artist: { name: string };
   },
 ];
 const query = gql`
@@ -95,7 +91,9 @@ const query = gql`
     tracks {
       id
       title
-      track_artists_names
+      artist {
+        name
+      }
       reported
     }
   }
