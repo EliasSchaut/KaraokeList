@@ -5,7 +5,7 @@ import { I18n, I18nContext } from 'nestjs-i18n';
 import { I18nTranslations } from '@/types/generated/i18n.generated';
 import { RequestService } from '@/graphql/request/request.service';
 import { RequestModel } from '@/types/models/request.model';
-import { AuthGuard } from '@/graphql/auth/auth.guard';
+import { AdminGuard } from '@/graphql/auth/auth.admin.guard';
 import { TrackInputModel } from '@/types/models/inputs/track.input';
 
 @Resolver(() => RequestModel)
@@ -29,7 +29,7 @@ export class RequestResolver {
     return this.requestService.create(request, { server_id, i18n });
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AdminGuard)
   @Resolver(() => RequestModel)
   async request_delete(
     @Args('id') id: number,

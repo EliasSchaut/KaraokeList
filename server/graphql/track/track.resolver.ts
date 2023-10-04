@@ -7,6 +7,7 @@ import {
   Args,
   Int,
 } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { ArtistModel } from '@/types/models/artist.model';
 import { TrackModel } from '@/types/models/track.model';
 import { I18n, I18nContext } from 'nestjs-i18n';
@@ -15,6 +16,7 @@ import { ServerID } from '@/common/decorators/server.decorator';
 import { TrackService } from '@/graphql/track/track.service';
 import { TrackMetadataModel } from '@/types/models/track_metadata.model';
 import { TrackInputModel } from '@/types/models/inputs/track.input';
+import { AdminGuard } from '@/graphql/auth/auth.admin.guard';
 
 @Resolver(() => TrackModel)
 export class TrackResolver {
@@ -37,13 +39,38 @@ export class TrackResolver {
     return await this.trackService.find(id, { server_id, i18n });
   }
 
+  @UseGuards(AdminGuard)
   @Mutation(() => TrackModel)
   async track_create(
-    @Args('track') track: TrackInputModel,
+    @Args('track_input_data') track: TrackInputModel,
     @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackModel> {
     return await this.trackService.create(track, { server_id, i18n });
+  }
+
+  @UseGuards(AdminGuard)
+  @Mutation(() => [TrackModel])
+  async tracks_create(
+    @Args('tracks_input_data', { type: () => [TrackInputModel] })
+    tracks: TrackInputModel[],
+    @ServerID() server_id: number,
+    @I18n() i18n: I18nContext<I18nTranslations>,
+  ): Promise<TrackModel[]> {
+    return await this.trackService.create_many(tracks, {
+      server_id,
+      i18n,
+    });
+  }
+
+  @UseGuards(AdminGuard)
+  @Mutation(() => TrackModel)
+  async track_delete(
+    @Args('track_id', { type: () => Int }) id: number,
+    @ServerID() server_id: number,
+    @I18n() i18n: I18nContext<I18nTranslations>,
+  ): Promise<TrackModel> {
+    return await this.trackService.delete(id, { server_id, i18n });
   }
 
   @ResolveField(() => ArtistModel)

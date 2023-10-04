@@ -7,7 +7,7 @@ import { GraphQLError } from 'graphql/error';
 import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
   async canActivate(ctx: ExecutionContext): Promise<boolean> {

@@ -20,27 +20,31 @@ export class TrackService {
     private readonly spotify: SpotifyService,
   ) {}
 
+  private generate_track_create_data(track: TrackInputModel, ctx: CtxType) {
+    return {
+      server: { connect: { id: ctx.server_id } },
+      title: track.track_title,
+      artist: {
+        connectOrCreate: {
+          where: {
+            server_id_name: {
+              server_id: ctx.server_id,
+              name: track.artist_name,
+            },
+          },
+          create: {
+            name: track.artist_name,
+            server: { connect: { id: ctx.server_id } },
+          },
+        },
+      },
+    };
+  }
+
   async create(track: TrackInputModel, ctx: CtxType): Promise<TrackModel> {
     try {
       return (await this.prisma.track.create({
-        data: {
-          server: { connect: { id: ctx.server_id } },
-          title: track.track_title,
-          artist: {
-            connectOrCreate: {
-              where: {
-                server_id_name: {
-                  server_id: ctx.server_id,
-                  name: track.artist_name,
-                },
-              },
-              create: {
-                name: track.artist_name,
-                server: { connect: { id: ctx.server_id } },
-              },
-            },
-          },
-        },
+        data: this.generate_track_create_data(track, ctx),
         include: { artist: true },
       })) as TrackModel;
     } catch (e) {
@@ -54,6 +58,17 @@ export class TrackService {
       }
       throw new InternalServerErrorException('Database error', { cause: e });
     }
+  }
+
+  async create_many(
+    tracks: TrackInputModel[],
+    ctx: CtxType,
+  ): Promise<TrackModel[]> {
+    const track_output: TrackModel[] = [];
+    for (const track of tracks) {
+      track_output.push(await this.create(track, ctx));
+    }
+    return track_output;
   }
 
   async find_all(ctx: CtxType): Promise<TrackModel[]> {
@@ -124,5 +139,15 @@ export class TrackService {
       spotify_preview: metadata.previewURL,
       spotify_link: metadata.externalURL.spotify,
     };
+  }
+
+  async delete(track_id: number, ctx: CtxType): Promise<TrackModel> {
+    try {
+      return (await this.prisma.track.delete({
+        where: { id: track_id },
+      })) as TrackModel;
+    } catch (e) {
+      throw new NotFoundException('Track not found', { cause: e });
+    }
   }
 }

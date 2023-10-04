@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from '@/graphql/auth/auth.service';
 import { PrismaService } from '@/common/services/prisma.service';
 import { AuthResolver } from '@/graphql/auth/auth.resolver';
-import { AuthGuard } from '@/graphql/auth/auth.guard';
+import { AdminGuard } from '@/graphql/auth/auth.admin.guard';
 import { PasswordService } from '@/common/services/password.service';
 
 @Module({
@@ -15,7 +15,7 @@ import { PasswordService } from '@/common/services/password.service';
   ],
   providers: [
     AuthService,
-    AuthGuard,
+    AdminGuard,
     AuthResolver,
     PrismaService,
     PasswordService,
