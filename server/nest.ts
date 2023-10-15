@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/app.module';
 import helmet from 'helmet';
+import * as bodyParser from 'body-parser';
 import { INestApplication } from '@nestjs/common';
 
 export async function createApp(): Promise<INestApplication> {
@@ -20,6 +21,8 @@ export async function createApp(): Promise<INestApplication> {
       crossOriginEmbedderPolicy: true,
     }),
   );
+  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
   return app;
 }
 

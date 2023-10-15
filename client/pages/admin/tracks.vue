@@ -37,7 +37,7 @@
           placeholder="Artist1 - Title1;Artist2 - Title2;..."
           label="Tracks"
           type="text"
-          :maxlength="10000"
+          :maxlength="1000000"
           required
         />
       </FormBlock>
