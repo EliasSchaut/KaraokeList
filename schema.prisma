@@ -6,70 +6,43 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-model Server {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  title    String
-  desc     String?
-  host     String    @unique
-  admins   Admin[]
-  artists  Artist[]
-  tracks   Track[]
-  reports  Report[]
-  requests Request[]
-}
-
 model Admin {
-  server_id Int
-  server    Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
-  id        Int    @id @default(autoincrement())
-  username  String
-  password  String
-
-  @@unique([server_id, username])
+  id       String @id @default(uuid())
+  username String @unique
+  password String
 }
 
 model Artist {
-  server_id Int
-  server    Server  @relation(fields: [server_id], references: [id], onDelete: Cascade)
-  id        Int     @id @default(autoincrement())
-  name      String
-  tracks    Track[]
-
-  @@unique([server_id, name])
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  tracks Track[]
 }
 
 model Track {
-  server_id Int
-  server    Server   @relation(fields: [server_id], references: [id], onDelete: Cascade)
   id        Int      @id @default(autoincrement())
   title     String
   artist_id Int
   artist    Artist   @relation(fields: [artist_id], references: [id], onDelete: Cascade)
   reports   Report[]
 
-  @@unique([server_id, title, artist_id])
+  @@unique([title, artist_id])
 }
 
 model Report {
-  server_id Int
-  server    Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
-  id        Int    @id @default(autoincrement())
-  track_id  Int
-  track     Track  @relation(fields: [track_id], references: [id], onDelete: Cascade)
-  desc      String
+  id       Int    @id @default(autoincrement())
+  track_id Int
+  track    Track  @relation(fields: [track_id], references: [id], onDelete: Cascade)
+  desc     String
 }
 
 model Request {
-  server_id   Int
-  server      Server @relation(fields: [server_id], references: [id], onDelete: Cascade)
   id          Int    @id @default(autoincrement())
   track_title String
   artist_name String
 
-  @@unique([server_id, track_title, artist_name])
+  @@unique([track_title, artist_name])
 }

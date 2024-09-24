@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from '@/common/services/prisma.service';
 import { RequestResolver } from '@/graphql/request/request.resolver';
 import { RequestService } from '@/graphql/request/request.service';
-import { JwtService } from '@nestjs/jwt';
+import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
 
 @Module({
-  providers: [RequestResolver, RequestService, PrismaService, JwtService],
+  providers: [RequestResolver, RequestService, I18nLangResolver],
 })
 export class RequestModule {}

@@ -1,17 +1,15 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from '@/common/services/prisma.service';
 import { TrackResolver } from '@/graphql/track/track.resolver';
 import { TrackService } from '@/graphql/track/track.service';
-import { SpotifyService } from '@/common/services/spotify.service';
-import { JwtService } from '@nestjs/jwt';
+import { MusicApiServiceProvider } from '@/common/services/music_api/music_api.provider';
+import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
 
 @Module({
   providers: [
     TrackResolver,
     TrackService,
-    SpotifyService,
-    PrismaService,
-    JwtService,
+    I18nLangResolver,
+    MusicApiServiceProvider,
   ],
 })
 export class TrackModule {}

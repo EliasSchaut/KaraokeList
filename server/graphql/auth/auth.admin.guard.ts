@@ -3,33 +3,40 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import * as process from 'process';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { GraphQLError } from 'graphql/error';
-import { I18nContext } from 'nestjs-i18n';
+import { Reflector } from '@nestjs/core';
+import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
+import { ForbiddenException } from '@/common/exceptions/forbidden.exception';
 
 @Injectable()
-export class AdminGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+export class AuthGuard implements CanActivate {
+  constructor(
+    private readonly reflector: Reflector,
+    private readonly jwt_service: JwtService,
+    private readonly i18n_resolver: I18nLangResolver,
+  ) {}
 
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
-    const i18n = I18nContext.current();
     const gql_ctx = GqlExecutionContext.create(ctx);
     const req = gql_ctx.getContext().req;
     const token = this.extractTokenFromHeader(req);
     if (!token) {
-      throw new GraphQLError(i18n!.t('auth.invalid.no_token'), {
-        extensions: { code: 'UNAUTHORIZED' },
-      });
+      throw new ForbiddenException(
+        this.i18n_resolver.t('exceptions.forbidden.no_token', ctx),
+      );
     }
+
+    let payload;
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      payload = await this.jwt_service.verifyAsync(token, {
         secret: process.env.JWT_SECRET as string,
       });
-      req['user'] = Number(payload.username);
     } catch {
-      throw new GraphQLError(i18n!.t('auth.invalid.token'), {
-        extensions: { code: 'UNAUTHORIZED' },
-      });
+      throw new ForbiddenException(
+        this.i18n_resolver.t('exceptions.forbidden.invalid_token', ctx),
+      );
     }
+
+    req['user'] = payload.username;
     return true;
   }
 

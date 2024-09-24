@@ -1,15 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import get_http_adapter_instance from './.nest/nest.js';
-const proj_name = process.env.PROJECT_NAME;
-const is_dev_mode = process.env.NODE_ENV !== 'production';
-const frontend_url = `${process.env.PROTOCOL}://${process.env.HOST}:${process.env.PORT}/`;
-const backend_url = is_dev_mode
-  ? `${process.env.PROTOCOL}://${process.env.HOST}:${
-      Number(process.env.PORT) + 1
-    }/`
-  : `${frontend_url}`;
-console.log(`[Nuxt] Dev Mode: ${is_dev_mode}`);
-
 export default async () => {
   return defineNuxtConfig({
     alias: {
@@ -17,12 +6,17 @@ export default async () => {
     },
     app: {
       head: {
-        title: proj_name,
+        title: process.env.PROJECT_NAME,
       },
     },
-    serverHandlers: is_dev_mode
-      ? []
-      : [{ route: '/', handler: await get_http_adapter_instance() }],
+    runtimeConfig: {
+      public: {
+        proj_name: process.env.PROJECT_NAME,
+      },
+    },
+    devServer: {
+      port: process.env.PORT_FRONTEND,
+    },
     devtools: { enabled: true },
     workspaceDir: '.',
     srcDir: 'client/',
@@ -47,7 +41,7 @@ export default async () => {
           tokenStorage: 'cookie',
           authType: 'Bearer',
           authHeader: 'Authorization',
-          httpEndpoint: `${backend_url}graphql`,
+          httpEndpoint: process.env.URL_BACKEND_ENDPOINT as string,
         },
       },
     },
@@ -77,7 +71,7 @@ export default async () => {
         redirectOn: 'root',
         fallbackLocale: 'en',
       },
-      baseUrl: frontend_url,
+      baseUrl: process.env.URL_FRONTEND,
       lazy: true,
     },
 

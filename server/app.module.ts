@@ -1,4 +1,4 @@
-import { ContextType, Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { I18nJsonLoader, I18nModule } from 'nestjs-i18n';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -7,12 +7,14 @@ import { join } from 'path';
 
 import { EnvValidationSchema } from '@/common/validation/env.validation';
 import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
-import { ServerModule } from '@/graphql/server/server.module';
 import { ArtistModule } from '@/graphql/artist/artist.module';
 import { TrackModule } from '@/graphql/track/track.module';
 import { ReportModule } from '@/graphql/report/report.module';
 import { AuthModule } from '@/graphql/auth/auth.module';
 import { RequestModule } from '@/graphql/request/request.module';
+import { loggingMiddleware, PrismaModule } from 'nestjs-prisma';
+import { JwtModule } from '@nestjs/jwt';
+import process from 'node:process';
 
 @Module({
   imports: [
@@ -20,11 +22,22 @@ import { RequestModule } from '@/graphql/request/request.module';
       isGlobal: true,
       validationSchema: EnvValidationSchema,
     }),
+    PrismaModule.forRoot({
+      isGlobal: true,
+      prismaServiceOptions: {
+        middlewares: [
+          loggingMiddleware({
+            logger: new Logger('PrismaMiddleware'),
+            logLevel: 'debug',
+          }),
+        ],
+      },
+    }),
     I18nModule.forRoot({
-      fallbackLanguage: 'en',
+      fallbackLanguage: process.env.DEFAULT_LANGUAGE as string,
       loaderOptions: {
-        path: join(__dirname, 'locales'),
-        watch: true,
+        path: join(__dirname, '/locales/'),
+        watch: process.env.NODE_ENV !== 'production',
       },
       loader: I18nJsonLoader,
       resolvers: [I18nLangResolver],
@@ -40,11 +53,14 @@ import { RequestModule } from '@/graphql/request/request.module';
       subscriptions: {
         'graphql-ws': true,
       },
-      context: (ctx: ContextType) => ctx,
       autoSchemaFile: join(__dirname, 'types', 'generated', 'schema.gql'),
     }),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET as string,
+      signOptions: { expiresIn: process.env.JWT_EXPIRATION as string },
+    }),
     AuthModule,
-    ServerModule,
     ArtistModule,
     TrackModule,
     ReportModule,

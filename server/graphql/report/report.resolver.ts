@@ -6,7 +6,6 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { ServerID } from '@/common/decorators/server.decorator';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { I18nTranslations } from '@/types/generated/i18n.generated';
 import { ReportModel } from '@/types/models/report.model';
@@ -18,34 +17,35 @@ import { TrackModel } from '@/types/models/track.model';
 export class ReportResolver {
   constructor(private readonly reportService: ReportService) {}
 
-  @Query(() => [ReportModel])
-  async reports(
-    @ServerID() server_id: number,
+  @Query(() => [ReportModel], {
+    name: 'reports',
+  })
+  async find_many(
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<ReportModel[]> {
-    return this.reportService.find_all({ server_id, i18n });
+    return this.reportService.find_many({ i18n });
   }
 
   @ResolveField(() => TrackModel, {
+    name: 'report_track',
     description: 'Track to report',
   })
-  async report_track(
+  async resolve_track(
     @Parent() report: ReportModel,
-    @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackModel> {
     return this.reportService.find_track(report.id, {
-      server_id,
       i18n,
     });
   }
 
-  @Mutation(() => ReportModel)
-  async report_create(
+  @Mutation(() => ReportModel, {
+    name: 'report_create',
+  })
+  async create(
     @Args('report') report: ReportInputModel,
-    @ServerID() server_id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<ReportModel> {
-    return this.reportService.create(report, { server_id, i18n });
+    return this.reportService.create(report, { i18n });
   }
 }

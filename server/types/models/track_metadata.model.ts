@@ -1,32 +1,38 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ObjectType } from '@nestjs/graphql';
+import { MusicApiType } from '@/types/music/music.type';
+import { OmitToMusic } from '@/types/music/music.utils';
 
 @ObjectType({
   description: 'Metadata of the track',
 })
 export class TrackMetadataModel {
-  @Field(() => String, {
-    description: '',
-    nullable: true,
-  })
-  name?: string;
+  constructor(metadata: OmitToMusic<MusicApiType>) {
+    Object.assign(metadata);
+  }
 
   @Field(() => String, {
     description: '',
     nullable: true,
   })
-  artists?: string;
+  track_title?: string;
+
+  @Field(() => [String], {
+    description: '',
+    nullable: true,
+  })
+  artists_names?: string[];
 
   @Field(() => String, {
     description: '',
     nullable: true,
   })
-  cover?: string;
+  cover_url?: string;
 
   @Field(() => String, {
     description: '',
     nullable: true,
   })
-  album?: string;
+  album_title?: string;
 
   @Field(() => String, {
     description: '',
@@ -34,11 +40,11 @@ export class TrackMetadataModel {
   })
   release_date?: string;
 
-  @Field(() => Int, {
+  @Field(() => Float, {
     description: '',
     nullable: true,
   })
-  duration?: number;
+  duration_ms?: number;
 
   @Field(() => Boolean, {
     description: '',
@@ -50,17 +56,11 @@ export class TrackMetadataModel {
     description: '',
     nullable: true,
   })
-  spotify_id?: string;
+  preview_url?: string;
 
   @Field(() => String, {
     description: '',
     nullable: true,
   })
-  spotify_preview?: string;
-
-  @Field(() => String, {
-    description: '',
-    nullable: true,
-  })
-  spotify_link?: string;
+  external_link?: string;
 }

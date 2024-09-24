@@ -1,63 +1,54 @@
 import { Injectable } from '@nestjs/common';
-import { CtxType } from '@/types/ctx.type';
-import { PrismaService } from '@/common/services/prisma.service';
+import { CtxType } from '@/types/common/ctx.type';
 import { ArtistModel } from '@/types/models/artist.model';
 import { TrackModel } from '@/types/models/track.model';
 import { TrackMetadataModel } from '@/types/models/track_metadata.model';
-import { SpotifyService } from '@/common/services/spotify.service';
 import { TrackInputModel } from '@/types/models/inputs/track.input';
-import {
-  NotFoundException,
-  ConflictException,
-  InternalServerErrorException,
-} from '@nestjs/common/exceptions';
-import { Prisma } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
+import { PrismaException } from '@/common/exceptions/prisma.exception';
+import { MusicApiService } from '@/common/services/music_api/music_api.service';
+import { WarningException } from '@/common/exceptions/warning.exception';
 
 @Injectable()
 export class TrackService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly spotify: SpotifyService,
+    private readonly music_api: MusicApiService,
   ) {}
 
   private generate_track_create_data(track: TrackInputModel, ctx: CtxType) {
     return {
-      server: { connect: { id: ctx.server_id } },
       title: track.track_title,
       artist: {
         connectOrCreate: {
           where: {
-            server_id_name: {
-              server_id: ctx.server_id,
-              name: track.artist_name,
-            },
+            name: track.artist_name,
           },
           create: {
             name: track.artist_name,
-            server: { connect: { id: ctx.server_id } },
           },
         },
       },
     };
   }
 
-  async create(track: TrackInputModel, ctx: CtxType): Promise<TrackModel> {
-    try {
-      return (await this.prisma.track.create({
-        data: this.generate_track_create_data(track, ctx),
+  async create(
+    track_input: TrackInputModel,
+    ctx: CtxType,
+  ): Promise<TrackModel> {
+    const track = await this.prisma.track
+      .create({
+        data: this.generate_track_create_data(track_input, ctx),
         include: { artist: true },
-      })) as TrackModel;
-    } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        if (e.code === 'P2002') {
-          throw new ConflictException(
-            `Track '${track.artist_name} - ${track.track_title}' already exists`,
-            { cause: e },
-          );
-        }
-      }
-      throw new InternalServerErrorException('Database error', { cause: e });
-    }
+      })
+      .catch((e) => {
+        throw new PrismaException(e, {
+          unique_constraint_violation: ctx.i18n.t(
+            'exceptions.already_exists.track',
+          ),
+        });
+      });
+    return new TrackModel(track);
   }
 
   async create_many(
@@ -71,83 +62,65 @@ export class TrackService {
     return track_output;
   }
 
-  async find_all(ctx: CtxType): Promise<TrackModel[]> {
-    return (await this.prisma.track.findMany({
+  async find_many(ctx: CtxType): Promise<TrackModel[]> {
+    return this.prisma.track.findMany({
       select: {
         id: true,
         title: true,
       },
-      where: { server_id: ctx.server_id },
       orderBy: { title: 'asc' },
-    })) as TrackModel[];
+    });
   }
 
-  async find(track_id: number, ctx: CtxType): Promise<TrackModel> {
-    try {
-      return (await this.prisma.track.findUnique({
-        select: {
-          id: true,
-          title: true,
-        },
-        where: { id: track_id },
-      })) as TrackModel;
-    } catch (e) {
-      throw new NotFoundException('Track not found', { cause: e });
+  async find_by_id(track_id: number, ctx: CtxType): Promise<TrackModel> {
+    const track = await this.prisma.track.findUnique({
+      where: { id: track_id },
+    });
+    if (!track) {
+      throw new WarningException(ctx.i18n.t('exceptions.not_found.track'));
     }
+    return new TrackModel(track);
   }
 
-  async find_artist(track_id: number, ctx: CtxType): Promise<ArtistModel> {
-    try {
-      return (await this.prisma.track.findUnique({
-        where: { id: track_id },
-        select: { artist: { select: { id: true, name: true } } },
-      }))!.artist as ArtistModel;
-    } catch (e) {
-      throw new NotFoundException('Artist not found', { cause: e });
+  async resolve_artist(track_id: number, ctx: CtxType): Promise<ArtistModel> {
+    const track = await this.prisma.track.findUnique({
+      where: { id: track_id },
+      select: { artist: { select: { id: true, name: true } } },
+    });
+    if (!track) {
+      throw new WarningException(ctx.i18n.t('exceptions.not_found.artist'));
     }
+    return new ArtistModel(track.artist);
   }
 
   async is_reported(track_id: number, ctx: CtxType): Promise<Boolean> {
-    return (
-      (await this.prisma.report.findFirst({
-        where: { track_id: track_id },
-      })) !== null
-    );
+    const first_report = await this.prisma.report.findFirst({
+      where: { track_id: track_id },
+    });
+    return !!first_report;
   }
 
   async find_metadata(
     track_id: number,
     ctx: CtxType,
   ): Promise<TrackMetadataModel> {
-    const track = await this.prisma.track.findUnique({
-      select: { title: true },
-      where: { id: track_id },
-    });
-    const artist = await this.find_artist(track_id, ctx);
-    const metadata = await this.spotify.find_track(track!.title, artist.name);
+    const track = await this.find_by_id(track_id, ctx);
+    const artist = await this.resolve_artist(track_id, ctx);
+    const metadata = await this.music_api.find_track(track!.title, artist.name);
     if (!metadata) return {};
-
-    return {
-      name: metadata.name,
-      artists: metadata.artists?.map((artist) => artist.name).join(' x '),
-      cover: metadata.album!.images![0].url,
-      album: metadata.album!.name,
-      duration: metadata.duration,
-      explicit: metadata.explicit,
-      release_date: metadata.album?.releaseDate,
-      spotify_id: metadata.id,
-      spotify_preview: metadata.previewURL,
-      spotify_link: metadata.externalURL.spotify,
-    };
+    else return new TrackMetadataModel(metadata);
   }
 
   async delete(track_id: number, ctx: CtxType): Promise<TrackModel> {
-    try {
-      return (await this.prisma.track.delete({
+    const track = await this.prisma.track
+      .delete({
         where: { id: track_id },
-      })) as TrackModel;
-    } catch (e) {
-      throw new NotFoundException('Track not found', { cause: e });
-    }
+      })
+      .catch((e) => {
+        throw new PrismaException(e, {
+          record_does_not_exist: ctx.i18n.t('exceptions.not_found.track'),
+        });
+      });
+    return new TrackModel(track);
   }
 }

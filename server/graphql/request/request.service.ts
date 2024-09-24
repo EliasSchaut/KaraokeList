@@ -1,59 +1,51 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@/common/services/prisma.service';
-import { CtxType } from '@/types/ctx.type';
+import { CtxType } from '@/types/common/ctx.type';
 import { RequestModel } from '@/types/models/request.model';
 import { TrackInputModel } from '@/types/models/inputs/track.input';
-import {
-  NotFoundException,
-  ConflictException,
-  InternalServerErrorException,
-} from '@nestjs/common/exceptions';
-import { Prisma } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
+import { PrismaException } from '@/common/exceptions/prisma.exception';
 
 @Injectable()
 export class RequestService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(request: TrackInputModel, ctx: CtxType): Promise<RequestModel> {
-    try {
-      return (await this.prisma.request.create({
+  async create(
+    request_input: TrackInputModel,
+    ctx: CtxType,
+  ): Promise<RequestModel> {
+    const request = await this.prisma.request
+      .create({
         data: {
-          server_id: ctx.server_id,
-          track_title: request.track_title,
-          artist_name: request.artist_name,
+          track_title: request_input.track_title,
+          artist_name: request_input.artist_name,
         },
-      })) as RequestModel;
-    } catch (e) {
-      if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        if (e.code === 'P2002') {
-          throw new ConflictException(
-            `Request '${request.artist_name} - ${request.track_title}' already exists`,
-            { cause: e },
-          );
-        }
-      }
-      throw new InternalServerErrorException('Database error', { cause: e });
-    }
+      })
+      .catch((e) => {
+        throw new PrismaException(e, {
+          unique_constraint_violation: ctx.i18n.t(
+            'exceptions.already_exists.request',
+          ),
+        });
+      });
+    return new RequestModel(request);
   }
 
-  async find_all(ctx: CtxType): Promise<RequestModel[]> {
-    return (await this.prisma.request.findMany({
-      where: {
-        server_id: ctx.server_id,
-      },
-    })) as RequestModel[];
+  async find_many(ctx: CtxType): Promise<RequestModel[]> {
+    return this.prisma.request.findMany();
   }
 
   async delete(report_id: number, ctx: CtxType): Promise<RequestModel> {
-    try {
-      return (await this.prisma.request.delete({
+    const request = await this.prisma.request
+      .delete({
         where: {
           id: report_id,
-          server_id: ctx.server_id,
         },
-      })) as RequestModel;
-    } catch (e) {
-      throw new NotFoundException(`Request not found`, { cause: e });
-    }
+      })
+      .catch((e) => {
+        throw new PrismaException(e, {
+          record_does_not_exist: ctx.i18n.t('exceptions.not_found.request'),
+        });
+      });
+    return new RequestModel(request);
   }
 }

@@ -1,24 +1,21 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from '@/graphql/auth/auth.service';
-import { PrismaService } from '@/common/services/prisma.service';
 import { AuthResolver } from '@/graphql/auth/auth.resolver';
-import { AdminGuard } from '@/graphql/auth/auth.admin.guard';
 import { PasswordService } from '@/common/services/password.service';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from '@/graphql/auth/auth.admin.guard';
+import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
 
 @Module({
-  imports: [
-    JwtModule.register({
-      secret: process.env.JWT_SECRET as string,
-      signOptions: { expiresIn: process.env.JWT_EXPIRATION as string },
-    }),
-  ],
   providers: [
     AuthService,
-    AdminGuard,
     AuthResolver,
-    PrismaService,
     PasswordService,
+    I18nLangResolver,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
 })
 export class AuthModule {}

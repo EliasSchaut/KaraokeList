@@ -1,45 +1,44 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@/common/services/prisma.service';
-import { CtxType } from '@/types/ctx.type';
+import { CtxType } from '@/types/common/ctx.type';
 import { ReportModel } from '@/types/models/report.model';
 import { ReportInputModel } from '@/types/models/inputs/report.input';
 import { TrackModel } from '@/types/models/track.model';
-import { NotFoundException } from '@nestjs/common/exceptions';
+import { PrismaService } from 'nestjs-prisma';
+import { WarningException } from '@/common/exceptions/warning.exception';
 
 @Injectable()
 export class ReportService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(report: ReportInputModel, ctx: CtxType): Promise<ReportModel> {
-    return (await this.prisma.report.create({
-      data: {
-        server_id: ctx.server_id,
-        track_id: report.track_id,
-        desc: report.desc,
-      },
-    })) as ReportModel;
+  async find_many(ctx: CtxType): Promise<ReportModel[]> {
+    return this.prisma.report.findMany();
   }
 
-  async find_all(ctx: CtxType): Promise<ReportModel[]> {
-    return (await this.prisma.report.findMany({
-      where: {
-        server_id: ctx.server_id,
+  async create(
+    report_input: ReportInputModel,
+    ctx: CtxType,
+  ): Promise<ReportModel> {
+    const report = await this.prisma.report.create({
+      data: {
+        track_id: report_input.track_id,
+        desc: report_input.desc,
       },
-    })) as ReportModel[];
+    });
+    return new ReportModel(report);
   }
 
   async find_track(report_id: number, ctx: CtxType): Promise<TrackModel> {
-    try {
-      return (await this.prisma.report.findUnique({
-        where: {
-          id: report_id,
-        },
-        select: {
-          track: true,
-        },
-      }))!.track as TrackModel;
-    } catch (e) {
-      throw new NotFoundException(`Report not found`, { cause: e });
+    const report = await this.prisma.report.findUnique({
+      where: {
+        id: report_id,
+      },
+      select: {
+        track: true,
+      },
+    });
+    if (!report) {
+      throw new WarningException(ctx.i18n.t('exceptions.not_found.report'));
     }
+    return new TrackModel(report.track);
   }
 }

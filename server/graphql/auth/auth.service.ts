@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from '@/common/services/password.service';
-import { PrismaService } from '@/common/services/prisma.service';
+import { PrismaService } from 'nestjs-prisma';
 import { AuthInputModel } from '@/types/models/inputs/auth.input';
-import { CtxType } from '@/types/ctx.type';
+import { CtxType } from '@/types/common/ctx.type';
 import { AuthModel } from '@/types/models/auth.model';
-import { GraphQLError } from 'graphql/error';
+import { ForbiddenException } from '@/common/exceptions/forbidden.exception';
 
 @Injectable()
 export class AuthService {
@@ -19,26 +19,23 @@ export class AuthService {
     auth_input_data: AuthInputModel,
     ctx: CtxType,
   ): Promise<AuthModel> {
-    const admin = await this.prisma.admin.findUnique({
+    const user = await this.prisma.admin.findUnique({
       where: {
-        server_id_username: {
-          username: auth_input_data.username,
-          server_id: ctx.server_id,
-        },
+        username: auth_input_data.username,
       },
     });
 
     if (
-      admin === null ||
+      user === null ||
       !(await this.passwordService.compare(
         auth_input_data.password,
-        admin.password,
+        user.password,
       ))
     ) {
-      throw new GraphQLError(ctx.i18n.t('auth.exception.forbidden_login'));
+      throw new ForbiddenException(ctx.i18n.t('exceptions.forbidden.login'));
     }
 
-    const payload = { username: admin.id, sub: null };
+    const payload = { username: user.id, sub: null };
     return {
       barrier_token: await this.jwtService.signAsync(payload),
     } as AuthModel;
