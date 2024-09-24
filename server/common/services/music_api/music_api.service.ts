@@ -17,8 +17,8 @@ export abstract class MusicApiService implements MusicApi {
     track_artist: string,
   ): Promise<MusicApiType | null> {
     const external_music = await Promise.race([
-      this.fetch_track(track_title, track_artist),
-      this.create_fetch_timeout().catch((e) => {
+      await this.fetch_track(track_title, track_artist),
+      await this.create_fetch_timeout().catch((e) => {
         throw e;
       }),
     ]);

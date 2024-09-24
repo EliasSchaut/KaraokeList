@@ -8,8 +8,8 @@ import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
   providers: [
     TrackResolver,
     TrackService,
-    I18nLangResolver,
     MusicApiServiceProvider,
+    I18nLangResolver,
   ],
 })
 export class TrackModule {}

@@ -3,14 +3,12 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import * as process from 'process';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { Reflector } from '@nestjs/core';
 import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
 import { ForbiddenException } from '@/common/exceptions/forbidden.exception';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private readonly reflector: Reflector,
     private readonly jwt_service: JwtService,
     private readonly i18n_resolver: I18nLangResolver,
   ) {}

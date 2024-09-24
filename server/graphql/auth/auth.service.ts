@@ -12,7 +12,6 @@ export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
-    private readonly passwordService: PasswordService,
   ) {}
 
   async sign_in(
@@ -27,10 +26,7 @@ export class AuthService {
 
     if (
       user === null ||
-      !(await this.passwordService.compare(
-        auth_input_data.password,
-        user.password,
-      ))
+      !(await PasswordService.compare(auth_input_data.password, user.password))
     ) {
       throw new ForbiddenException(ctx.i18n.t('exceptions.forbidden.login'));
     }

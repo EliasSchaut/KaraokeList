@@ -27,7 +27,7 @@ export class ReportService {
     return new ReportModel(report);
   }
 
-  async find_track(report_id: number, ctx: CtxType): Promise<TrackModel> {
+  async resolve_track(report_id: number, ctx: CtxType): Promise<TrackModel> {
     const report = await this.prisma.report.findUnique({
       where: {
         id: report_id,

@@ -1,0 +1,20 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "./",
+  "testEnvironment": "node",
+  "preset": "ts-jest",
+  "testMatch": ["<rootDir>/server/**/*spec.ts"],
+  "moduleNameMapper": {
+    "^@/(.*)$": "<rootDir>/server/$1"
+  },
+  "transform": {
+    "^.+\\.(t|j)s$": [
+      "ts-jest",
+      {
+        "tsconfig": "<rootDir>/server/tsconfig.json",
+        "ignoreCodes": ["TS151001"]
+      }
+    ]
+  },
+  "collectCoverage": true
+}

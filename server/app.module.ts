@@ -50,6 +50,7 @@ import process from 'node:process';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      playground: true,
       subscriptions: {
         'graphql-ws': true,
       },
@@ -66,7 +67,5 @@ import process from 'node:process';
     ReportModule,
     RequestModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

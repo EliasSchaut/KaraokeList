@@ -26,19 +26,6 @@ export class ReportResolver {
     return this.reportService.find_many({ i18n });
   }
 
-  @ResolveField(() => TrackModel, {
-    name: 'report_track',
-    description: 'Track to report',
-  })
-  async resolve_track(
-    @Parent() report: ReportModel,
-    @I18n() i18n: I18nContext<I18nTranslations>,
-  ): Promise<TrackModel> {
-    return this.reportService.find_track(report.id, {
-      i18n,
-    });
-  }
-
   @Mutation(() => ReportModel, {
     name: 'report_create',
   })
@@ -47,5 +34,18 @@ export class ReportResolver {
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<ReportModel> {
     return this.reportService.create(report, { i18n });
+  }
+
+  @ResolveField(() => TrackModel, {
+    name: 'report_track',
+    description: 'Track to report',
+  })
+  async resolve_track(
+    @Parent() report: ReportModel,
+    @I18n() i18n: I18nContext<I18nTranslations>,
+  ): Promise<TrackModel> {
+    return this.reportService.resolve_track(report.id, {
+      i18n,
+    });
   }
 }

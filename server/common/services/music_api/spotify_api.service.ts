@@ -22,7 +22,7 @@ export class SpotifyApiService extends MusicApiService implements MusicApi {
     });
   }
 
-  async fetch_track(
+  protected async fetch_track(
     track_title: string,
     track_artist: string,
   ): Promise<SpotifyApiType | null> {

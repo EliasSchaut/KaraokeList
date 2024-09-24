@@ -25,7 +25,7 @@ export class ArtistResolver {
     @Parent() artist: ArtistModel,
     @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackModel[]> {
-    return await this.mediaService.find_tracks(artist.id, {
+    return await this.mediaService.resolve_tracks(artist.id, {
       i18n,
     });
   }

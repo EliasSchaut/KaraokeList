@@ -14,14 +14,14 @@ export async function createApp(): Promise<INestApplication> {
     helmet({
       contentSecurityPolicy: {
         directives: {
-          imgSrc: ["'self'"],
-          styleSrc: [`'self'`],
-          scriptSrc: ["'self'"],
+          imgSrc: ["'self'", 'data:', 'https://cdn.jsdelivr.net'],
+          styleSrc: [`'self'`, `'unsafe-inline'`, 'https://cdn.jsdelivr.net'],
+          scriptSrc: ["'self'", "https: 'unsafe-inline'", "'unsafe-eval'"],
           objectSrc: ["'self'"],
           defaultSrc: [`'self'`],
         },
       },
-      crossOriginEmbedderPolicy: false,
+      crossOriginEmbedderPolicy: true,
     }),
   );
   const { httpAdapter } = app.get(HttpAdapterHost);
