@@ -1,7 +1,7 @@
 <template>
   <td
     :class="[
-      'px-3 py-4 text-sm text-gray-900',
+      'px-3 py-4 text-sm text-secondary-900 dark:text-white',
       small ? '' : 'sm:w-auto sm:max-w-none',
       first ? 'pl-4 pr-3 sm:pl-3' : '',
       last ? 'pl-3 pr-4 sm:pr-3' : '',
@@ -16,39 +16,35 @@
   </td>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  props: {
-    first: {
-      type: Boolean,
-      default: false,
-    },
-    last: {
-      type: Boolean,
-      default: false,
-    },
-    right: {
-      type: Boolean,
-      default: false,
-    },
-    bold: {
-      type: Boolean,
-      default: false,
-    },
-    main: {
-      type: Boolean,
-      default: false,
-    },
-    hidden_on_sm: {
-      type: Boolean,
-      default: false,
-    },
-    small: {
-      type: Boolean,
-      default: false,
-    },
+<script setup lang="ts">
+defineProps({
+  first: {
+    type: Boolean,
+    default: false,
+  },
+  last: {
+    type: Boolean,
+    default: false,
+  },
+  right: {
+    type: Boolean,
+    default: false,
+  },
+  bold: {
+    type: Boolean,
+    default: false,
+  },
+  main: {
+    type: Boolean,
+    default: false,
+  },
+  hidden_on_sm: {
+    type: Boolean,
+    default: false,
+  },
+  small: {
+    type: Boolean,
+    default: false,
   },
 });
 </script>

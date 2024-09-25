@@ -9,8 +9,11 @@
       <TableStriped v-if="reports.length">
         <thead>
           <tr>
-            <TableHead>Artist - Title</TableHead>
-            <TableHead last>Reason</TableHead>
+            <TableHead
+              >{{ $t('tracks.table.head.artist') }} -
+              {{ $t('tracks.table.head.title') }}</TableHead
+            >
+            <TableHead last>{{ $t('report.reason') }}</TableHead>
           </tr>
         </thead>
         <tbody>
@@ -41,7 +44,7 @@
         v-else
         class="w-full rounded-md bg-secondary-100 p-10 text-center text-xl italic"
       >
-        No reports submitted! Submit reports via the tracks page!
+        {{ $t('report.table.empty') }}
       </p>
     </div>
   </div>

@@ -2,11 +2,11 @@
   <Menu as="div" class="relative inline-block text-left">
     <div>
       <MenuButton
-        class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-white/10 dark:ring-gray-600 dark:hover:bg-white/20"
+        class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-secondary-900 shadow-sm ring-1 ring-inset ring-secondary-300 hover:bg-secondary-50 dark:bg-white/10 dark:ring-secondary-600 dark:hover:bg-white/20"
       >
         <slot />
         <ChevronDownIcon
-          class="-mr-1 h-5 w-5 text-gray-400"
+          class="-mr-1 h-5 w-5 text-secondary-400"
           aria-hidden="true"
         />
       </MenuButton>
@@ -21,25 +21,25 @@
       leave-to-class="transform opacity-0 scale-95"
     >
       <MenuItems
-        class="absolute right-0 z-10 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800 dark:text-white dark:ring-gray-600"
+        class="absolute right-0 z-10 mt-2 w-32 origin-top-right divide-y divide-secondary-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-secondary-800 dark:text-white dark:ring-secondary-600"
       >
         <div class="py-1">
           <MenuItem v-slot="{ active }" v-for="item in items">
-            <a
+            <button
               @click="item.callback"
               :class="[
                 active
-                  ? 'bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100'
-                  : 'text-gray-700 dark:text-gray-300',
-                'group flex items-center px-4 py-2 text-sm',
+                  ? 'bg-secondary-100 text-secondary-900 dark:bg-secondary-900 dark:text-secondary-100'
+                  : 'text-secondary-700 dark:text-secondary-300',
+                'group flex w-full items-center px-4 py-2 text-sm',
               ]"
             >
               <component
                 :is="item.icon()"
-                class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                class="mr-3 h-5 w-5 text-secondary-400 group-hover:text-secondary-500"
               />
               {{ item.label }}
-            </a>
+            </button>
           </MenuItem>
         </div>
       </MenuItems>

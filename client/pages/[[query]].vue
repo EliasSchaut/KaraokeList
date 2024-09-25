@@ -8,10 +8,16 @@
       <TableStriped v-if="tracks.length">
         <thead>
           <tr>
-            <TableHead first>Info</TableHead>
-            <TableHead hidden_on_sm>Artist</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead hidden last><span class="sr-only">Edit</span></TableHead>
+            <TableHead first>{{ $t('tracks.table.head.info') }}</TableHead>
+            <TableHead hidden_on_sm
+              >{{ $t('tracks.table.head.artist') }}
+            </TableHead>
+            <TableHead>{{ $t('tracks.table.head.title') }}</TableHead>
+            <TableHead hidden last
+              ><span class="sr-only">{{
+                $t('tracks.table.head.report')
+              }}</span></TableHead
+            >
           </tr>
         </thead>
         <tbody class="bg-white">
@@ -35,23 +41,25 @@
                 </span>
                 <dl class="font-normal sm:hidden">
                   <dt class="sr-only">Artist</dt>
-                  <dd class="mt-1 text-gray-700">
+                  <dd class="mt-1 text-secondary-700">
                     {{ track.artist.name }}
                   </dd>
                 </dl>
               </TableCell>
               <TableCell small class="w-8">
                 <NuxtLink :to="`/reports/${track.title}`" v-if="track.reported">
-                  <BadgeYellow>Reported</BadgeYellow>
+                  <BadgeYellow>{{ $t('tracks.table.reported') }}</BadgeYellow>
                 </NuxtLink>
               </TableCell>
               <TableCell last right bold small class="w-8">
                 <button
-                  class="text-indigo-600 hover:text-indigo-900"
+                  class="text-primary-600 hover:text-primary-900 dark:text-primary-500 dark:hover:text-primary-400"
                   @click="show_report_modal(track.id, track.title)"
                 >
-                  Report
-                  <span class="sr-only">Edit</span>
+                  {{ $t('tracks.table.head.report') }}
+                  <span class="sr-only">{{
+                    $t('tracks.table.head.report')
+                  }}</span>
                 </button>
               </TableCell>
             </TableRow>

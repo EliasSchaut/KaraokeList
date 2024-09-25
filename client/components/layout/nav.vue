@@ -1,7 +1,7 @@
 <template>
   <Disclosure
     as="nav"
-    class="bg-white shadow dark:bg-secondary-800"
+    class="bg-secondary-50 shadow dark:bg-secondary-800"
     v-slot="{ open }"
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -9,13 +9,13 @@
         <div class="flex">
           <!-- NavBar left side -->
           <nuxt-link
-            class="flex flex-shrink-0 items-center text-xl font-semibold leading-6 text-secondary-900 hover:underline"
+            class="flex flex-shrink-0 items-center text-xl font-semibold leading-6 text-secondary-900 hover:underline dark:text-white"
             href="/"
           >
-            KaraokeList
+            {{ proj_name }}
           </nuxt-link>
           <div
-            class="hidden border-t dark:border-t-secondary-800 sm:ml-6 sm:flex sm:space-x-8"
+            class="hidden border-t dark:border-t-secondary-800 md:ml-6 md:flex md:space-x-8"
           >
             <template v-for="link in navigation">
               <NuxtLink
@@ -36,9 +36,9 @@
         <!-- NavBar right side -->
         <div class="flex flex-1 items-center justify-end gap-x-6">
           <!-- Settings -->
-          <SettingLang class="hidden sm:block" />
-          <SettingTheme class="hidden sm:block" />
-          <div class="-mr-2 flex items-center sm:hidden">
+          <SettingLang class="hidden md:block" />
+          <SettingTheme class="hidden md:block" />
+          <div class="-mr-2 flex items-center md:hidden">
             <!-- Mobile menu button -->
             <DisclosureButton
               class="-ml-2.5 mr-2.5 inline-flex items-center justify-center rounded-md p-2 text-secondary-400 hover:bg-secondary-100 hover:text-secondary-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 dark:hover:bg-secondary-700 dark:hover:text-white dark:focus:ring-white"
@@ -57,7 +57,7 @@
     </div>
 
     <!-- NavBar Panel mobile -->
-    <DisclosurePanel class="sm:hidden">
+    <DisclosurePanel class="md:hidden">
       <div class="space-y-1 pb-3 pt-2">
         <template v-for="link in navigation">
           <NuxtLink
@@ -97,35 +97,40 @@ import {
 } from '@headlessui/vue';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 
+type NavigationType = Array<{
+  name: string;
+  href: string;
+  hidden?: () => boolean;
+}>;
+
 export default defineComponent({
-  data() {
+  setup() {
+    const auth = reactive(authStore());
+    const proj_name = useRuntimeConfig();
+    const { t } = useI18n();
+
     return {
-      navigation: [
+      auth,
+      navigation: computed(() => [
         {
-          name: 'Tracks',
+          name: t('nav.pages.tracks'),
           href: '/',
         },
         {
-          name: 'Reports',
+          name: t('nav.pages.reports'),
           href: '/reports',
         },
         {
-          name: 'Requests',
+          name: t('nav.pages.reports'),
           href: '/requests',
         },
         {
           name: 'Admin',
           href: '/admin',
-          hidden: () => !this.auth.logged_in,
+          hidden: () => !auth.logged_in,
         },
-      ] as Array<{ name: string; href: string; hidden?: () => boolean }>,
-    };
-  },
-  setup() {
-    const auth = authStore();
-
-    return {
-      auth,
+      ]),
+      proj_name: proj_name.public.proj_name,
     };
   },
   props: {

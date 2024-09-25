@@ -9,16 +9,16 @@
       <div class="my-3 text-center sm:mt-5">
         <DialogTitle
           as="h3"
-          class="text-base font-semibold leading-6 text-gray-900"
-          >Report {{ track.title }}
+          class="text-base font-semibold leading-6 text-secondary-900 dark:text-white"
+          >{{ $t('report.modal.title') }} {{ track.title }}
         </DialogTitle>
       </div>
       <Form :submit="report">
         <FormInputArea
           id="desc"
-          label="Reason of report"
+          :label="$t('report.modal.reason')"
           :minlength="10"
-          placeholder="This track has issues because..."
+          :placeholder="$t('report.modal.placeholder')"
           required
         />
 
@@ -27,16 +27,16 @@
         >
           <button
             type="submit"
-            class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
+            class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 sm:col-start-2"
           >
-            Report
+            {{ $t('report.modal.submit') }}
           </button>
           <button
             type="button"
-            class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
+            class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-secondary-900 shadow-sm ring-1 ring-inset ring-secondary-300 hover:bg-secondary-50 sm:col-start-1 sm:mt-0"
             @click="hide()"
           >
-            Cancel
+            {{ $t('common.modal.close') }}
           </button>
         </div>
       </Form>

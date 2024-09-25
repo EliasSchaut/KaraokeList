@@ -7,20 +7,26 @@
       >
         <div>
           <img
+            class="rounded-md"
             v-if="metadata.cover_url"
             :src="metadata.cover_url"
             height="200"
             width="200"
             alt="cover img"
           />
-          <img v-else src="/img/no_cover.svg" alt="no cover" />
+          <img
+            v-else
+            class="rounded-md"
+            src="/img/no_cover.svg"
+            alt="no cover"
+          />
         </div>
         <div>
           <h1 class="inline-flex text-lg font-bold">
             {{ metadata.track_title }}
             <IconExplicit
               v-if="metadata.explicit"
-              class="ml-2 h-5 w-5 min-w-max self-center text-gray-400"
+              class="ml-2 h-5 w-5 min-w-max self-center text-secondary-400 dark:text-secondary-600"
             />
           </h1>
           <h4 class="text-sm italic">
@@ -31,12 +37,19 @@
             {{ metadata.release_date }} •
             {{ metadata.duration }}
           </h4>
-          <audio class="mt-2 max-w-full" controls volume="0.5">
+          <audio
+            class="mt-2 max-w-full fill-secondary-600"
+            controls
+            volume="0.5"
+          >
             <source :src="metadata.preview_url" type="audio/mpeg" />
           </audio>
         </div>
       </div>
-      <Divider v-if="metadata.external_link" content="Listen on:" />
+      <Divider
+        v-if="metadata.external_link"
+        :content="$t('tracks.metadata.listen_on')"
+      />
       <ButtonSpotify
         v-if="metadata.external_link"
         :href="metadata.external_link"
