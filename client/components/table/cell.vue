@@ -1,7 +1,8 @@
 <template>
   <td
     :class="[
-      'px-3 py-4 text-sm text-gray-900 sm:w-auto sm:max-w-none',
+      'px-3 py-4 text-sm text-gray-900',
+      small ? '' : 'sm:w-auto sm:max-w-none',
       first ? 'pl-4 pr-3 sm:pl-3' : '',
       last ? 'pl-3 pr-4 sm:pr-3' : '',
       right ? 'text-right' : '',
@@ -41,6 +42,10 @@ export default defineComponent({
       default: false,
     },
     hidden_on_sm: {
+      type: Boolean,
+      default: false,
+    },
+    small: {
       type: Boolean,
       default: false,
     },

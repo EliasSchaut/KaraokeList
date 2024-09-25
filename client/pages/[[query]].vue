@@ -30,13 +30,9 @@
               <TableCell main bold>
                 <span
                   class="space-y-1 sm:flex sm:flex-row sm:items-center sm:justify-between"
-                  ><span class="mr-1">{{ track.title }}</span>
-                  <NuxtLink
-                    :to="`/reports/${track.title}`"
-                    v-if="track.reported"
-                    ><BadgeYellow>Reported</BadgeYellow></NuxtLink
-                  ></span
                 >
+                  <span class="mr-1">{{ track.title }}</span>
+                </span>
                 <dl class="font-normal sm:hidden">
                   <dt class="sr-only">Artist</dt>
                   <dd class="mt-1 text-gray-700">
@@ -44,7 +40,12 @@
                   </dd>
                 </dl>
               </TableCell>
-              <TableCell last right bold>
+              <TableCell small class="w-8">
+                <NuxtLink :to="`/reports/${track.title}`" v-if="track.reported">
+                  <BadgeYellow>Reported</BadgeYellow>
+                </NuxtLink>
+              </TableCell>
+              <TableCell last right bold small class="w-8">
                 <button
                   class="text-indigo-600 hover:text-indigo-900"
                   @click="show_report_modal(track.id, track.title)"

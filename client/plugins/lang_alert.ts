@@ -1,8 +1,8 @@
 import { alertStore } from '@/store/alert';
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(({ hook }) => {
   const alert = alertStore();
-  nuxtApp.hook('i18n:beforeLocaleSwitch', () => {
+  hook('i18n:beforeLocaleSwitch', () => {
     alert.hide();
   });
 });

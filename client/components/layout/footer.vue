@@ -1,24 +1,5 @@
 <template>
   <footer class="bg-white dark:bg-secondary-800">
-    <div v-if="debug">
-      <button class="border" @click="auth.toggle_login()">
-        {{ 'Logged In: ' + auth.logged_in }}
-      </button>
-      <span class="ms-1 border">
-        {{
-          'Token: ' +
-          auth.token.substring(0, 10) +
-          (auth.token.length ? '...' : '')
-        }}
-      </span>
-      <span class="ms-1 border">
-        {{ 'Route: ' + $route.path }}
-      </span>
-      <button class="ms-1 border" @click="session.loading = !session.loading">
-        {{ 'Loading: ' + session.loading }}
-      </button>
-    </div>
-
     <div class="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
       <nav
         class="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12"
@@ -65,12 +46,3 @@
     </div>
   </footer>
 </template>
-
-<script setup lang="ts">
-import { authStore } from '~/store/auth';
-import { sessionStore } from '~/store/session';
-
-const debug = process.env.NODE_ENV !== 'production';
-const auth = authStore();
-const session = sessionStore();
-</script>

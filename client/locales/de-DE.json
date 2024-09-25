@@ -18,43 +18,23 @@
       "light": "Hell",
       "dark": "Dunkel",
       "system": "System"
+    },
+    "err": {
+      "404": {
+        "title": "Seite nicht gefunden",
+        "desc": "Die von Ihnen gesuchte Seite ist nicht vorhanden."
+      },
+      "501": {
+        "title": "Nicht implementiert",
+        "desc": "Entschuldigung, diese Funktion ist noch nicht implementiert."
+      }
     }
   },
-  "banner": {
-    "contact": "Kontakt",
-    "donate": "Spenden",
-    "donate_me": "Spende {name}"
-  },
-  "home": {
-    "bio": {
-      "title": "Bio",
-      "body": "Hallo, ich bin Elias und würde mich als sozialen Optimisten bezeichnen. Meine Mission ist es, positive Stimmung zu verbreiten, wo immer ich auch hinkomme. Genau aus diesem Grund bin ich ein regelmäßiges Gesicht bei verschiedenen sozialen Zusammenkünften. Als leidenschaftlicher Web- und Bot-Entwickler entwickle ich ständig neue Möglichkeiten, um den Spaß und die Produktivität der Gemeinschaften, an denen ich beteiligt bin, zu steigern."
-    },
-    "education": {
-      "title": "Bildungsweg",
-      "today": "heute",
-      "school": {
-        "elementary": "Grundschule",
-        "a_levels": "Abitur",
-        "computer_science": "Informatik"
-      }
-    },
-    "skills": {
-      "title": "Skills",
-      "technical": "Technische Skills",
-      "soft": {
-        "title": "Soft Skills",
-        "skills": {
-          "events": "Kreative Eventplanung",
-          "organisation": "Organisationstalent",
-          "teamwork": "Teamfähig",
-          "communication": "Kommunikativ"
-        }
-      }
-    },
-    "projects": {
-      "title": "Projekte"
-    }
+  "nav": {
+    "go_home": "Zurück zur Startseite",
+    "settings": "Einstellungen",
+    "sign_out": "Abmelden",
+    "login": "Anmelden"
   },
   "footer": {
     "title": "Footer",

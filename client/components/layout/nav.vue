@@ -8,11 +8,12 @@
       <div class="flex h-16 justify-between">
         <div class="flex">
           <!-- NavBar left side -->
-          <div
-            class="flex flex-shrink-0 items-center text-xl font-semibold leading-6 text-secondary-900"
+          <nuxt-link
+            class="flex flex-shrink-0 items-center text-xl font-semibold leading-6 text-secondary-900 hover:underline"
+            href="/"
           >
             KaraokeList
-          </div>
+          </nuxt-link>
           <div
             class="hidden border-t dark:border-t-secondary-800 sm:ml-6 sm:flex sm:space-x-8"
           >
