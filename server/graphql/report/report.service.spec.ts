@@ -7,6 +7,7 @@ import { ReportInputModel } from '@/types/models/inputs/report.input';
 import { TrackModel } from '@/types/models/track.model';
 import { CtxType } from '@/types/common/ctx.type';
 import { I18nContext } from 'nestjs-i18n';
+import { PrismaException } from '@/common/exceptions/prisma.exception';
 
 describe('ReportService', () => {
   let reportService: ReportService;
@@ -31,6 +32,7 @@ describe('ReportService', () => {
               findMany: jest.fn(),
               findUnique: jest.fn(),
               create: jest.fn(),
+              delete: jest.fn(),
             },
           },
         },
@@ -66,7 +68,12 @@ describe('ReportService', () => {
 
   it('resolves track successfully', async () => {
     const report = {
-      track: { id: 1, title: 'Test Track', artist_id: 1 },
+      track: {
+        id: 1,
+        title: 'Test Track',
+        artist_id: 1,
+        artist: { name: 'Test Artist', id: 1 },
+      },
       id: 1,
       track_id: 1,
       desc: '',
@@ -84,5 +91,22 @@ describe('ReportService', () => {
     await expect(reportService.resolve_track(1, ctx)).rejects.toThrow(
       WarningException,
     );
+  });
+
+  it('deletes a report successfully', async () => {
+    const report = { id: 1, track_id: 1, desc: 'Test Report' };
+    jest.spyOn(prismaService.report, 'delete').mockResolvedValue(report);
+
+    const result = await reportService.delete(1, ctx);
+
+    expect(result).toEqual(new ReportModel(report));
+  });
+
+  it('throws WarningException if report not found when deleting', async () => {
+    jest
+      .spyOn(prismaService.report, 'delete')
+      .mockRejectedValue(new Error('Report does not exist'));
+
+    await expect(reportService.delete(1, ctx)).rejects.toThrow(PrismaException);
   });
 });

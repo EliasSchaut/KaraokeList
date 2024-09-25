@@ -4,7 +4,6 @@ import { PrismaService } from 'nestjs-prisma';
 import { PrismaException } from '@/common/exceptions/prisma.exception';
 import { WarningException } from '@/common/exceptions/warning.exception';
 import { TrackModel } from '@/types/models/track.model';
-import { ArtistModel } from '@/types/models/artist.model';
 import { TrackMetadataModel } from '@/types/models/track_metadata.model';
 import { TrackInputModel } from '@/types/models/inputs/track.input';
 import { MusicApiService } from '@/common/services/music_api/music_api.service';
@@ -89,16 +88,28 @@ describe('TrackService', () => {
   });
 
   it('finds many tracks successfully', async () => {
-    const foundTracks = [{ id: 1, title: 'Test Track', artist_id: 1 }];
+    const foundTracks = [
+      {
+        id: 1,
+        title: 'Test Track',
+        artist_id: 1,
+        artist: { name: 'Test Artist', id: 1 },
+      },
+    ];
     jest.spyOn(prismaService.track, 'findMany').mockResolvedValue(foundTracks);
 
-    const result = await trackService.find_many(ctx);
+    const result = await trackService.find_many();
 
     expect(result).toEqual(foundTracks as TrackModel[]);
   });
 
   it('finds track by id successfully', async () => {
-    const track = { id: 1, title: 'Test Track', artist_id: 1 };
+    const track = {
+      id: 1,
+      title: 'Test Track',
+      artist_id: 1,
+      artist: { name: 'Test Artist', id: 1 },
+    };
     jest.spyOn(prismaService.track, 'findUnique').mockResolvedValue(track);
 
     const result = await trackService.find_by_id(1, ctx);
@@ -110,28 +121,6 @@ describe('TrackService', () => {
     jest.spyOn(prismaService.track, 'findUnique').mockResolvedValue(null);
 
     await expect(trackService.find_by_id(1, ctx)).rejects.toThrow(
-      WarningException,
-    );
-  });
-
-  it('resolves artist by track id successfully', async () => {
-    const track = {
-      artist: { id: 1, name: 'Test Artist' },
-      id: 1,
-      title: 'Test Track',
-      artist_id: 1,
-    };
-    jest.spyOn(prismaService.track, 'findUnique').mockResolvedValue(track);
-
-    const result = await trackService.resolve_artist(1, ctx);
-
-    expect(result).toEqual(new ArtistModel(track.artist));
-  });
-
-  it('throws WarningException if artist not found when resolving by track id', async () => {
-    jest.spyOn(prismaService.track, 'findUnique').mockResolvedValue(null);
-
-    await expect(trackService.resolve_artist(1, ctx)).rejects.toThrow(
       WarningException,
     );
   });
@@ -155,32 +144,35 @@ describe('TrackService', () => {
   });
 
   it('finds track metadata successfully', async () => {
-    const track = { id: 1, title: 'Test Track' };
     const artist = { id: 1, name: 'Test Artist' };
+    const track = { id: 1, title: 'Test Track', artist };
     const metadata = new MusicApiType({ track_title: 'Test Track' });
     jest.spyOn(trackService, 'find_by_id').mockResolvedValue(track);
-    jest.spyOn(trackService, 'resolve_artist').mockResolvedValue(artist);
     jest.spyOn(musicApiService, 'find_track').mockResolvedValue(metadata);
 
-    const result = await trackService.find_metadata(1, ctx);
+    const result = await trackService.resolve_metadata(1, ctx);
 
     expect(result).toEqual(new TrackMetadataModel(metadata));
   });
 
   it('returns empty object if metadata not found', async () => {
-    const track = { id: 1, title: 'Test Track' };
     const artist = { id: 1, name: 'Test Artist' };
+    const track = { id: 1, title: 'Test Track', artist };
     jest.spyOn(trackService, 'find_by_id').mockResolvedValue(track);
-    jest.spyOn(trackService, 'resolve_artist').mockResolvedValue(artist);
     jest.spyOn(musicApiService, 'find_track').mockResolvedValue(null);
 
-    const result = await trackService.find_metadata(1, ctx);
+    const result = await trackService.resolve_metadata(1, ctx);
 
     expect(result).toEqual({});
   });
 
   it('deletes a track successfully', async () => {
-    const deletedTrack = { id: 1, title: 'Test Track', artist_id: 1 };
+    const deletedTrack = {
+      id: 1,
+      title: 'Test Track',
+      artist_id: 1,
+      artist: { id: 1, name: 'Test Artist' },
+    };
     jest.spyOn(prismaService.track, 'delete').mockResolvedValue(deletedTrack);
 
     const result = await trackService.delete(1, ctx);

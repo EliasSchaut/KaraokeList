@@ -29,8 +29,8 @@ export class ArtistService {
 
   async resolve_tracks(artist_id: number, ctx: CtxType): Promise<TrackModel[]> {
     return this.prisma.track.findMany({
-      select: { id: true, title: true },
       where: { artist_id: artist_id },
+      include: { artist: true },
       orderBy: { title: 'asc' },
     });
   }

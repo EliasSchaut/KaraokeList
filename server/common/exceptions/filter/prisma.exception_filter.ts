@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch } from '@nestjs/common';
+import { Catch } from '@nestjs/common';
 import { GqlExceptionFilter } from '@nestjs/graphql';
 import { Prisma } from '@prisma/client';
 import { I18nContext } from 'nestjs-i18n';
@@ -7,10 +7,7 @@ import { PrismaError } from 'prisma-error-enum';
 
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaExceptionFilter implements GqlExceptionFilter {
-  catch(
-    exception: Prisma.PrismaClientKnownRequestError,
-    host: ArgumentsHost,
-  ): DangerException {
+  catch(exception: Prisma.PrismaClientKnownRequestError): DangerException {
     const exceptionMessage = this.get_exception_msg(exception.code);
     return new DangerException(exceptionMessage, exception.message);
   }

@@ -6,7 +6,6 @@ import { ArtistModel } from '@/types/models/artist.model';
 import { TrackModel } from '@/types/models/track.model';
 import { CtxType } from '@/types/common/ctx.type';
 import { I18nContext } from 'nestjs-i18n';
-import { Track } from '@prisma/client';
 
 describe('ArtistService', () => {
   let artistService: ArtistService;
@@ -72,7 +71,14 @@ describe('ArtistService', () => {
   });
 
   it('resolve tracks by artist id successfully', async () => {
-    const tracks = [{ id: 1, title: 'Test Track' }] as Track[];
+    const tracks = [
+      {
+        id: 1,
+        title: 'Test Track',
+        artist_id: 1,
+        artist: { name: 'Test Artist', id: 1 },
+      },
+    ];
     jest.spyOn(prismaService.track, 'findMany').mockResolvedValue(tracks);
 
     const result = await artistService.resolve_tracks(1, ctx);

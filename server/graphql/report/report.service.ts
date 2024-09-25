@@ -5,6 +5,7 @@ import { ReportInputModel } from '@/types/models/inputs/report.input';
 import { TrackModel } from '@/types/models/track.model';
 import { PrismaService } from 'nestjs-prisma';
 import { WarningException } from '@/common/exceptions/warning.exception';
+import { PrismaException } from '@/common/exceptions/prisma.exception';
 
 @Injectable()
 export class ReportService {
@@ -27,13 +28,32 @@ export class ReportService {
     return new ReportModel(report);
   }
 
+  async delete(report_id: number, ctx: CtxType): Promise<ReportModel> {
+    const report = await this.prisma.report
+      .delete({
+        where: {
+          id: report_id,
+        },
+      })
+      .catch((e) => {
+        throw new PrismaException(e, {
+          record_does_not_exist: ctx.i18n.t('exceptions.not_found.report'),
+        });
+      });
+    return new ReportModel(report);
+  }
+
   async resolve_track(report_id: number, ctx: CtxType): Promise<TrackModel> {
     const report = await this.prisma.report.findUnique({
       where: {
         id: report_id,
       },
-      select: {
-        track: true,
+      include: {
+        track: {
+          include: {
+            artist: true,
+          },
+        },
       },
     });
     if (!report) {

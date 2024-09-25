@@ -22,21 +22,10 @@ import process from 'node:process';
       isGlobal: true,
       validationSchema: EnvValidationSchema,
     }),
-    PrismaModule.forRoot({
-      isGlobal: true,
-      prismaServiceOptions: {
-        middlewares: [
-          loggingMiddleware({
-            logger: new Logger('PrismaMiddleware'),
-            logLevel: 'debug',
-          }),
-        ],
-      },
-    }),
     I18nModule.forRoot({
       fallbackLanguage: process.env.DEFAULT_LANGUAGE as string,
       loaderOptions: {
-        path: join(__dirname, '/locales/'),
+        path: join(__dirname, 'locales'),
         watch: process.env.NODE_ENV !== 'production',
       },
       loader: I18nJsonLoader,
@@ -47,6 +36,17 @@ import process from 'node:process';
         'generated',
         'i18n.generated.ts',
       ),
+    }),
+    PrismaModule.forRoot({
+      isGlobal: true,
+      prismaServiceOptions: {
+        middlewares: [
+          loggingMiddleware({
+            logger: new Logger('PrismaMiddleware'),
+            logLevel: 'debug',
+          }),
+        ],
+      },
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
