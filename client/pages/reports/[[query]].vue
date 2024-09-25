@@ -18,17 +18,17 @@
             <TableRow
               v-if="
                 search === '' ||
-                report.report_track.title
+                report.track.title
                   .toLowerCase()
                   .includes(search.toLowerCase()) ||
-                report.report_track.artist.name
+                report.track.artist.name
                   .toLowerCase()
                   .includes(search.toLowerCase())
               "
             >
               <TableCell first bold>
-                {{ report.report_track.artist.name }} -
-                {{ report.report_track.title }}
+                {{ report.track.artist.name }} -
+                {{ report.track.title }}
               </TableCell>
               <TableCell main last>
                 {{ report.desc }}
@@ -51,7 +51,7 @@
 type ReportType = Array<{
   id: number;
   desc: string;
-  report_track: { id: number; title: string; artist: { name: string } };
+  track: { id: number; title: string; artist: { name: string } };
 }>;
 
 const report_query = gql`
@@ -77,7 +77,6 @@ export default defineComponent({
     const reports = ref<ReportType>([]);
 
     useAsyncQuery<ReportType>(report_query).then(({ data }) => {
-      console.log(data.value);
       reports.value = data?.value?.reports ?? [];
     });
 

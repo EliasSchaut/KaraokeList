@@ -7,8 +7,8 @@
       >
         <div>
           <img
-            v-if="media_info.cover"
-            :src="media_info.cover"
+            v-if="metadata.cover_url"
+            :src="metadata.cover_url"
             height="200"
             width="200"
             alt="cover img"
@@ -17,74 +17,72 @@
         </div>
         <div>
           <h1 class="inline-flex text-lg font-bold">
-            {{ media_info.name }}
+            {{ metadata.track_title }}
             <IconExplicit
-              v-if="media_info.explicit"
+              v-if="metadata.explicit"
               class="ml-2 h-5 w-5 min-w-max self-center text-gray-400"
             />
           </h1>
           <h4 class="text-sm italic">
-            {{ media_info.artists ?? '??' }} • {{ media_info.album ?? '??' }}
+            {{ metadata.artists_names?.join(' x ') ?? '??' }} •
+            {{ metadata.album_title ?? '??' }}
           </h4>
           <h4 class="text-sm">
-            {{ media_info.release_date }} •
-            {{ media_info.duration }}
+            {{ metadata.release_date }} •
+            {{ metadata.duration }}
           </h4>
           <audio class="mt-2 max-w-full" controls volume="0.5">
-            <source :src="media_info.spotify_preview" type="audio/mpeg" />
+            <source :src="metadata.preview_url" type="audio/mpeg" />
           </audio>
         </div>
       </div>
-      <Divider v-if="media_info.spotify_link" content="Listen on:" />
+      <Divider v-if="metadata.external_link" content="Listen on:" />
       <ButtonSpotify
-        v-if="media_info.spotify_link"
-        :href="media_info.spotify_link"
+        v-if="metadata.external_link"
+        :href="metadata.external_link"
       />
     </div>
   </Modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import Divider from '~/components/divider.vue';
-
 type MediaInfoType = {
-  name?: string;
-  artists?: string;
-  cover?: string;
-  album?: string;
-  release_date?: string;
-  duration?: string;
-  explicit?: boolean;
-  spotify_preview?: string;
-  spotify_link?: string;
+  track_title: string;
+  duration: string | null;
+  album_title: string | null;
+  artists_names: string[] | null;
+  cover_url: string | null;
+  explicit: boolean | null;
+  release_date: string | null;
+  preview_url: string | null;
+  external_link: string | null;
 };
 
 const query = gql`
   query get_media_info($track_id: Int!) {
     track(track_id: $track_id) {
       metadata {
-        name
-        artists
-        cover
-        album
-        duration
+        track_title
+        album_title
+        artists_names
+        cover_url
+        duration_ms
         explicit
         release_date
-        spotify_preview
-        spotify_link
+        preview_url
+        external_link
       }
     }
   }
 `;
 
 export default defineComponent({
-  name: 'Index',
-  components: { Divider },
   setup() {
+    const metadata = ref<MediaInfoType>({});
+
     return {
       loading: ref<boolean>(false),
-      media_info: ref<MediaInfoType>({}),
+      metadata,
       dayjs: useDayjs(),
     };
   },
@@ -94,9 +92,9 @@ export default defineComponent({
       this.$refs.modal.show();
       useAsyncQuery(query, { track_id }).then(({ data }) => {
         const duration = this.dayjs
-          .duration(data.value.track.metadata.duration)
+          .duration(data.value.track.metadata.duration_ms)
           .format('m:ss');
-        this.media_info = { ...data.value.track.metadata, duration };
+        this.metadata = { ...data.value.track.metadata, duration };
         this.loading = false;
       });
     },

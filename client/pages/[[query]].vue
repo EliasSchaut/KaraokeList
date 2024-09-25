@@ -5,7 +5,7 @@
         @input="search = $event.target.value"
         :value="route.params.query ?? ''"
       />
-      <TableStriped v-if="track_data.tracks.length">
+      <TableStriped v-if="tracks.length">
         <thead>
           <tr>
             <TableHead first>Info</TableHead>
@@ -15,7 +15,7 @@
           </tr>
         </thead>
         <tbody class="bg-white">
-          <template v-for="track in track_data.tracks" :key="track.title">
+          <template v-for="track in tracks" :key="track.title">
             <TableRow
               v-if="
                 search === '' ||
@@ -26,7 +26,7 @@
               <TableCell first>
                 <ButtonInfo @click="show_media_info_modal(track.id)" />
               </TableCell>
-              <TableCell hidden_on_sm>{{ track.artist.name }} </TableCell>
+              <TableCell hidden_on_sm>{{ track.artist.name }}</TableCell>
               <TableCell main bold>
                 <span
                   class="space-y-1 sm:flex sm:flex-row sm:items-center sm:justify-between"
@@ -60,33 +60,21 @@
     </div>
   </div>
 
-  <ModalReport
-    ref="modal_report_track"
-    @report="
-      (track_id: number) =>
-        (track_data.tracks[
-          track_data.tracks.findIndex((t) => t.id === track_id)
-        ].reported = true)
-    "
-  />
+  <ModalReport ref="modal_report_track" @report="report_track" />
   <ModalMediaInfo ref="modal_media_info" />
 </template>
 
-<script setup lang="ts">
-import { alertStore } from '~/store/alert';
-
-const alert = alertStore();
-const route = useRoute();
-const search = ref<string>(route.params.query ?? '');
-
+<script lang="ts">
 type TrackType = [
   {
     id: number;
     title: string;
     artist: { name: string };
+    reported: boolean;
   },
 ];
-const query = gql`
+
+const track_query = gql`
   query get_tracks {
     tracks {
       id
@@ -98,17 +86,28 @@ const query = gql`
     }
   }
 `;
-const { data: track_data } = await useAsyncQuery<[TrackType]>(query);
-if (track_data.value.tracks.length === 0) {
-  alert.show('No tracks found!', 'danger');
-}
-</script>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
 
 export default defineComponent({
+  setup() {
+    const route = useRoute();
+    const search = ref<string>(route.params.query ?? '');
+    const tracks = ref<TrackType>([]);
+
+    useAsyncQuery<[TrackType]>(track_query).then(({ data }) => {
+      tracks.value = data?.value?.tracks ?? [];
+    });
+
+    return {
+      route,
+      search,
+      tracks,
+    };
+  },
   methods: {
+    report_track(track_id: number) {
+      this.tracks[this.tracks.findIndex((t) => t.id === track_id)].reported =
+        true;
+    },
     show_media_info_modal(track_id: number) {
       this.$refs.modal_media_info.show(track_id);
     },
