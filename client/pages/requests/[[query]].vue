@@ -43,6 +43,12 @@
           </template>
         </tbody>
       </TableStriped>
+      <p
+        v-else
+        class="mt-4 w-full rounded-md bg-secondary-100 p-10 text-center text-xl italic"
+      >
+        No requests submitted!
+      </p>
     </div>
   </div>
 

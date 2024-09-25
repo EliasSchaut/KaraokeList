@@ -2,10 +2,11 @@
   <div class="px-8">
     <div class="-mx-4 pt-8 sm:px-6 lg:px-8">
       <Search
+        v-if="reports.length"
         @input="search = $event.target.value"
         :value="route.params.query ?? ''"
       />
-      <TableStriped v-if="report_data.reports.length">
+      <TableStriped v-if="reports.length">
         <thead>
           <tr>
             <TableHead>Artist - Title</TableHead>
@@ -13,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <template v-for="report of report_data.reports" :key="report.id">
+          <template v-for="report of reports" :key="report.id">
             <TableRow
               v-if="
                 search === '' ||
@@ -36,24 +37,24 @@
           </template>
         </tbody>
       </TableStriped>
+      <p
+        v-else
+        class="w-full rounded-md bg-secondary-100 p-10 text-center text-xl italic"
+      >
+        No reports submitted! Submit reports via the tracks page!
+      </p>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { alertStore } from '~/store/alert';
-
-const alert = alertStore();
-const route = useRoute();
-const search = ref<string>(route.params.query ?? '');
-
+<script lang="ts">
 type ReportType = Array<{
   id: number;
   desc: string;
   report_track: { id: number; title: string; artist: { name: string } };
 }>;
 
-const query = gql`
+const report_query = gql`
   query {
     reports {
       id
@@ -68,8 +69,23 @@ const query = gql`
     }
   }
 `;
-const { data: report_data } = await useAsyncQuery<ReportType>(query);
-if (report_data.value.reports.length === 0) {
-  alert.show('No reports submitted!', 'info');
-}
+
+export default defineComponent({
+  setup() {
+    const route = useRoute();
+    const search = ref<string>(route.params.query ?? '');
+    const reports = ref<ReportType>([]);
+
+    useAsyncQuery<ReportType>(report_query).then(({ data }) => {
+      console.log(data.value);
+      reports.value = data?.value?.reports ?? [];
+    });
+
+    return {
+      route,
+      search,
+      reports,
+    };
+  },
+});
 </script>
