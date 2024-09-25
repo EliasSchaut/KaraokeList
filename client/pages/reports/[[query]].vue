@@ -42,6 +42,7 @@
 
 <script setup lang="ts">
 import { alertStore } from '~/store/alert';
+
 const alert = alertStore();
 const route = useRoute();
 const search = ref<string>(route.params.query ?? '');
@@ -57,7 +58,7 @@ const query = gql`
     reports {
       id
       desc
-      report_track {
+      track {
         id
         title
         artist {

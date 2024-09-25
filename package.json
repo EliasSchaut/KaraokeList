@@ -37,6 +37,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.4.4",
     "@prisma/client": "^5.20.0",
+    "@tanstack/vue-table": "^8.20.5",
     "bcrypt": "^5.1.1",
     "class-validator": "^0.14.1",
     "graphql": "^16.9.0",

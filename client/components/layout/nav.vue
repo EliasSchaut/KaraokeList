@@ -1,7 +1,7 @@
 <template>
   <Disclosure
     as="nav"
-    class="bg-white shadow dark:bg-gray-800"
+    class="bg-white shadow dark:bg-secondary-800"
     v-slot="{ open }"
   >
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -9,12 +9,12 @@
         <div class="flex">
           <!-- NavBar left side -->
           <div
-            class="flex flex-shrink-0 items-center text-xl font-semibold leading-6 text-gray-900"
+            class="flex flex-shrink-0 items-center text-xl font-semibold leading-6 text-secondary-900"
           >
             KaraokeList
           </div>
           <div
-            class="hidden border-t dark:border-t-gray-800 sm:ml-6 sm:flex sm:space-x-8"
+            class="hidden border-t dark:border-t-secondary-800 sm:ml-6 sm:flex sm:space-x-8"
           >
             <template v-for="link in navigation">
               <NuxtLink
@@ -22,8 +22,8 @@
                 v-if="!(link.hidden && link.hidden())"
                 :class="[
                   $route.path.split('/')[1] === link.href.split('/')[1]
-                    ? 'border-indigo-500 text-gray-900 dark:text-white'
-                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white',
+                    ? 'border-primary-500 text-secondary-900 dark:text-white'
+                    : 'border-transparent text-secondary-500 hover:border-secondary-300 hover:text-secondary-700 dark:hover:text-white',
                   'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium',
                 ]"
                 >{{ link.name }}
@@ -40,7 +40,7 @@
           <div class="-mr-2 flex items-center sm:hidden">
             <!-- Mobile menu button -->
             <DisclosureButton
-              class="-ml-2.5 mr-2.5 inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-white"
+              class="-ml-2.5 mr-2.5 inline-flex items-center justify-center rounded-md p-2 text-secondary-400 hover:bg-secondary-100 hover:text-secondary-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 dark:hover:bg-secondary-700 dark:hover:text-white dark:focus:ring-white"
             >
               <span class="sr-only">{{ $t('common.sr.open_main_menu') }}</span>
               <Bars3Icon
@@ -64,8 +64,8 @@
             v-if="!(link.hidden && link.hidden())"
             :class="[
               $route.path.split('/')[1] === link.href.split('/')[1]
-                ? 'border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-gray-900 dark:text-white'
-                : 'border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white',
+                ? 'border-primary-500 bg-primary-50 text-primary-700 dark:bg-secondary-900 dark:text-white'
+                : 'border-transparent text-secondary-500 hover:border-secondary-300 hover:bg-secondary-50 hover:text-secondary-700 dark:text-secondary-300 dark:hover:bg-secondary-700 dark:hover:text-white',
               'block border-l-4 py-2 pl-3 pr-4 text-base font-medium',
             ]"
             >{{ link.name }}
@@ -73,7 +73,7 @@
         </template>
       </div>
       <div
-        class="flex gap-x-4 border-t border-gray-200 pb-3 pt-4 dark:border-gray-700"
+        class="flex gap-x-4 border-t border-secondary-200 pb-3 pt-4 dark:border-secondary-700"
       >
         <SettingLang class="pl-4" />
         <SettingTheme />
@@ -97,7 +97,6 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 
 export default defineComponent({
-  name: 'LayoutNav',
   data() {
     return {
       navigation: [

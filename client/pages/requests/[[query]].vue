@@ -11,11 +11,11 @@
       </button>
       <Search
         class="mt-4"
-        v-if="requests_data.requests.length"
+        v-if="requests.length"
         @input="search = $event.target.value"
         :value="route.params.query ?? ''"
       />
-      <TableStriped v-if="requests_data.requests.length">
+      <TableStriped v-if="requests.length">
         <thead>
           <tr>
             <TableHead>Artist</TableHead>
@@ -23,7 +23,7 @@
           </tr>
         </thead>
         <tbody>
-          <template v-for="report of requests_data.requests" :key="report.id">
+          <template v-for="report of requests" :key="report.id">
             <TableRow
               v-if="
                 search === '' ||
@@ -46,20 +46,11 @@
     </div>
   </div>
 
-  <ModalRequest
-    @request="
-      useAsyncQuery<RequestType>(query).then((data) => (requests_data = data))
-    "
-    ref="modal_request"
-  />
+  <ModalRequest @request="refetch_query" ref="modal_request" />
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { PlusCircleIcon } from '@heroicons/vue/20/solid';
-import { alertStore } from '~/store/alert';
-const alert = alertStore();
-const route = useRoute();
-const search = ref<string>(route.params.query ?? '');
 
 type RequestType = Array<{
   id: number;
@@ -67,7 +58,7 @@ type RequestType = Array<{
   track_title: string;
 }>;
 
-const query = gql`
+const requests_query = gql`
   query {
     requests {
       id
@@ -76,8 +67,32 @@ const query = gql`
     }
   }
 `;
-const { data: requests_data } = await useAsyncQuery<RequestType>(query);
-if (requests_data.value.requests.length === 0) {
-  alert.show('No requests submitted!', 'info');
-}
+
+export default defineComponent({
+  components: {
+    PlusCircleIcon,
+  },
+  setup() {
+    const route = useRoute();
+    const search = ref<string>(route.params.query ?? '');
+    const requests = ref<RequestType>([]);
+
+    useAsyncQuery<RequestType>(requests_query).then(({ data }) => {
+      requests.value = data?.value?.requests ?? [];
+    });
+
+    return {
+      route,
+      search,
+      requests,
+    };
+  },
+  methods: {
+    refetch_query() {
+      useAsyncQuery<RequestType>(requests_query).then(({ data }) => {
+        this.requests = data?.value?.requests ?? [];
+      });
+    },
+  },
+});
 </script>

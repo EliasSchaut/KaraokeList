@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-white dark:bg-gray-800">
+  <footer class="bg-white dark:bg-secondary-800">
     <div v-if="debug">
       <button class="border" @click="auth.toggle_login()">
         {{ 'Logged In: ' + auth.logged_in }}
@@ -44,7 +44,7 @@
           <NuxtLink
             v-if="item?.intern"
             :to="item.href"
-            class="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-400"
+            class="text-sm leading-6 text-secondary-600 hover:text-secondary-900 dark:text-secondary-300 dark:hover:text-secondary-400"
           >
             {{ item.name }}
           </NuxtLink>
@@ -52,15 +52,15 @@
             v-else
             :href="item.href"
             target="_blank"
-            class="text-sm leading-6 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-400"
+            class="text-sm leading-6 text-secondary-600 hover:text-secondary-900 dark:text-secondary-300 dark:hover:text-secondary-400"
             >{{ item.name }}</a
           >
         </div>
       </nav>
       <p
-        class="mt-10 text-center text-xs leading-5 text-gray-500 dark:text-gray-300"
+        class="mt-10 text-center text-xs leading-5 text-secondary-500 dark:text-secondary-300"
       >
-        &copy; 2023 Elias Lorenz Schaut
+        &copy; 2023-2024 Elias Lorenz Schaut
       </p>
     </div>
   </footer>
