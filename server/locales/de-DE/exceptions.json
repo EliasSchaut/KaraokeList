@@ -1,0 +1,29 @@
+{
+  "not_found": {
+    "artist": "Künstler nicht gefunden",
+    "album": "Album nicht gefunden",
+    "track": "Track nicht gefunden",
+    "report": "Bericht nicht gefunden",
+    "request": "Anfrage nicht gefunden"
+  },
+  "already_exists": {
+    "request": "Anfrage existiert bereits",
+    "track": "Track existiert bereits"
+  },
+  "forbidden": {
+    "login": "Ungültige Anmeldung",
+    "no_token": "Kein Token angegeben",
+    "invalid_token": "Ungültiger Token"
+  },
+  "music_api": {
+    "timeout": "Zeitüberschreitung bei der Kommunikation mit der Musik-API",
+    "error": "Fehler bei der Kommunikation mit der Musik-API"
+  },
+  "db": {
+    "not_reached": "Datenbank nicht erreichbar! Versuche es später erneut",
+    "record_not_found": "Eintrag nicht gefunden",
+    "record_already_exists": "Eintrag existiert bereits",
+    "internal": "Ein Datenbankfehler ist aufgetreten! Versuche es später erneut"
+  },
+  "internal": "Ein Fehler ist aufgetreten! Versuche es später erneut"
+}

@@ -1,0 +1,112 @@
+{
+  "common": {
+    "and": "and",
+    "err": {
+      "404": {
+        "desc": "Sorry, we couldn’t find the page you’re looking for.",
+        "title": "Page not found"
+      },
+      "501": {
+        "desc": "Sorry, this feature is currently not implemented.",
+        "title": "Not Implemented"
+      }
+    },
+    "lang": {
+      "de": "German",
+      "en": "English"
+    },
+    "modal": {
+      "close": "Close",
+      "go_back": "Go back"
+    },
+    "search": "Search...",
+    "sr": {
+      "dismiss": "Dismiss",
+      "open_main_menu": "Open main menu",
+      "open_user_menu": "Open user menu"
+    },
+    "theme": {
+      "dark": "Dark",
+      "light": "Light",
+      "system": "System"
+    }
+  },
+  "footer": {
+    "home": "Home",
+    "imprint": "Imprint",
+    "privacy": "Privacy",
+    "source": "Source Code",
+    "title": "Footer"
+  },
+  "imprint": {
+    "contact": "Contact",
+    "declaration": "Information according to § 5 TMG",
+    "email": "E-Mail",
+    "phone": "Phone",
+    "title": "Imprint"
+  },
+  "nav": {
+    "go_home": "Go back home",
+    "login": "Log in",
+    "pages": {
+      "reports": "Reports",
+      "requests": "Requests",
+      "tracks": "Tracks"
+    },
+    "settings": "Settings",
+    "sign_out": "Sign out"
+  },
+  "privacy": {
+    "cookies": {
+      "body": "This website does not use analytical tracking of any kind. This website uses cookies. These are small text files that the web browser stores on the end device. Cookies help to make the website more user-friendly, effective and secure. Some cookies are \"session cookies.\" Such cookies are deleted by themselves at the end of the browser session. In contrast, other cookies remain on your terminal device until they are manually deleted by yourself. Such cookies help to reuse settings made when returning to the website. With a modern web browser, the setting of cookies can be monitored, restricted or prevented. Many web browsers can be configured to automatically delete cookies when the program is closed. Disabling cookies may result in limited functionality of the website.",
+      "title": "Analytics/Cookies/External Resources etc.?"
+    },
+    "data": {
+      "body": "This website does not collect any data from you. The operator specified in the imprint only learns about you if you write him an e-mail. Thereby the operator learns your e-mail address and your name. This data will only be used to answer your request and will not be passed on to third parties.",
+      "title": "What data is collected by this website?"
+    },
+    "rights": {
+      "body": "According to DSGVO and BDSG, you can request information, updating, blocking or deletion of all your data at any time. Your contact person for this is the above-mentioned operator of this website. In addition, I am obliged to remind you of your right to object to this consent at any time and, if necessary, to complain to a supervisory authority about me.",
+      "title": "What are my rights?"
+    },
+    "title": "Privacy"
+  },
+  "report": {
+    "modal": {
+      "placeholder": "This track has issues because...",
+      "reason": "Reason of report",
+      "submit": "Report",
+      "title": "Report"
+    },
+    "reason": "Reason",
+    "table": {
+      "empty": "No reports submitted! Submit reports via the tracks page!"
+    }
+  },
+  "request": {
+    "add_button": "Request new track",
+    "modal": {
+      "artist": "Artist Name",
+      "submit": "Request",
+      "title": "Request a new Track",
+      "track": "Track Title"
+    },
+    "table": {
+      "empty": "No requests submitted!"
+    }
+  },
+  "tracks": {
+    "metadata": {
+      "listen_on": "Listen on:"
+    },
+    "table": {
+      "head": {
+        "artist": "Artist",
+        "info": "Info",
+        "report": "Report",
+        "title": "Title"
+      },
+      "reported": "Reported"
+    }
+  }
+}

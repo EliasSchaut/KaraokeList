@@ -1,0 +1,112 @@
+{
+  "common": {
+    "and": "und",
+    "err": {
+      "404": {
+        "desc": "Die von Ihnen gesuchte Seite ist nicht vorhanden.",
+        "title": "Seite nicht gefunden"
+      },
+      "501": {
+        "desc": "Entschuldigung, diese Funktion ist noch nicht implementiert.",
+        "title": "Nicht implementiert"
+      }
+    },
+    "lang": {
+      "de": "Deutsch",
+      "en": "Englisch"
+    },
+    "modal": {
+      "close": "Schließen",
+      "go_back": "Gehe zurück"
+    },
+    "search": "Suchen...",
+    "sr": {
+      "dismiss": "Schließen",
+      "open_main_menu": "Hauptmenü öffnen",
+      "open_user_menu": "Benutzermenü öffnen"
+    },
+    "theme": {
+      "dark": "Dunkel",
+      "light": "Hell",
+      "system": "System"
+    }
+  },
+  "footer": {
+    "home": "Startseite",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "source": "Quellcode",
+    "title": "Footer"
+  },
+  "imprint": {
+    "contact": "Kontakt",
+    "declaration": "Angaben gemäß § 5 TMG",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "title": "Impressum"
+  },
+  "nav": {
+    "go_home": "Zurück zur Startseite",
+    "login": "Anmelden",
+    "pages": {
+      "reports": "Meldungen",
+      "requests": "Anfragen",
+      "tracks": "Tracks"
+    },
+    "settings": "Einstellungen",
+    "sign_out": "Abmelden"
+  },
+  "privacy": {
+    "cookies": {
+      "body": "Diese Website verwendet kein analytisches Tracking jeglicher Art. Diese Website verwendet Cookies. Das sind kleine Textdateien, die der Webbrowser auf dem Endgerät speichert. Cookies helfen dabei, das Angebot nutzerfreundlicher, effektiver und sicherer zu machen. Einige Cookies sind “Session-Cookies.” Solche Cookies werden nach Ende der Browser-Sitzung von selbst gelöscht. Hingegen bleiben andere Cookies auf Ihrem Endgerät bestehen, bis diese händisch selbst gelöscht werden. Solche Cookies helfen bei Rückkehr auf die Website gemachte Einstellungen wiederzuverwenden. Mit einem modernen Webbrowser kann das Setzen von Cookies überwacht, einschränkt oder unterbunden werden. Viele Webbrowser lassen sich so konfigurieren, dass Cookies mit dem Schließen des Programms von selbst gelöscht werden. Die Deaktivierung von Cookies kann eine eingeschränkte Funktionalität der Website zur Folge haben.",
+      "title": "Analytics/Cookies/Externe-Ressourcen u.ä.?"
+    },
+    "data": {
+      "body": "Diese Website erfasst keine Daten von dir. Der im Impressum angegebene Betreiber erfährt nur von dir, wenn du ihm eine E-Mail schreibst. Dadurch erfährt der Betreiber deine E-Mail-Adresse und deinen Namen. Diese Daten werden nur für die Beantwortung deiner Anfrage verwendet und nicht an Dritte weitergegeben.",
+      "title": "Welche Daten werden von dieser Website erfasst?"
+    },
+    "rights": {
+      "body": "Nach DSGVO und BDSG kannst du jederzeit Auskunft, Aktualisierung, Sperrung oder Löschung aller deiner Daten verlangen. Dein Ansprechpartner hierfür ist der oben genannte Betreiber dieser Webseite. Außerdem bin ich verpflichtet, dich an dein Recht zu erinnern, dieser Zustimmung jederzeit zu widersprechen und dich ggf. bei einer Aufsichtsbehörde über mich zu beschweren.",
+      "title": "Was sind meine Rechte?"
+    },
+    "title": "Datenschutzerklärung"
+  },
+  "report": {
+    "modal": {
+      "placeholder": "Dieser Titel hat Probleme, weil...",
+      "reason": "Grund für die Meldung",
+      "submit": "Melden",
+      "title": "Melde"
+    },
+    "reason": "Grund",
+    "table": {
+      "empty": "Keine Meldungen eingereicht! Meldungen können über die Tracks-Seite eingereicht werden!"
+    }
+  },
+  "request": {
+    "add_button": "Neuen Track anfordern",
+    "modal": {
+      "artist": "Künstlername",
+      "submit": "Anfragen",
+      "title": "Einen neuen Track anfordern",
+      "track": "Liedtitel"
+    },
+    "table": {
+      "empty": "Keine Anfragen eingereicht!"
+    }
+  },
+  "tracks": {
+    "metadata": {
+      "listen_on": "Anhören:"
+    },
+    "table": {
+      "head": {
+        "artist": "Künstler",
+        "info": "Info",
+        "report": "Melden",
+        "title": "Titel"
+      },
+      "reported": "Gemeldet"
+    }
+  }
+}
