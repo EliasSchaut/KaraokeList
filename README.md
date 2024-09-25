@@ -6,7 +6,7 @@ A list of available songs with the possibility to report issues
 The configuration is done via a `.env` file.
 Please copy the file `.env.example` and rename it to `.env`.
 More information about the individual confirmation values can be found in [
-`env.validation.ts`](/server/common/env.validation.ts) file.
+`env.validation.ts`](/server/common/validation/env.validation.ts) file.
 
 Note that values marked with `(client dev only)` are only read in development mode. In production mode, the values must
 be given as node environment variables via the command line (e.g. `PORT=3001 npm run start:client`).
