@@ -9,20 +9,22 @@ import { I18nContext } from 'nestjs-i18n';
 @Injectable()
 export abstract class MusicApiService implements MusicApi {
   private readonly TIMEOUT_IN_MS: number = Number(
-    process.env.MUSIC_TIMEOUT_IN_MS,
+    process.env.MUSIC_API_TIMEOUT_IN_MS,
   );
 
   public async find_track(
     track_title: string,
     track_artist: string,
   ): Promise<MusicApiType | null> {
+    let abort_timeout = false;
     const external_music = await Promise.race([
-      await this.fetch_track(track_title, track_artist),
-      await this.create_fetch_timeout().catch((e) => {
-        throw e;
+      this.fetch_track(track_title, track_artist),
+      this.create_fetch_timeout().catch((e) => {
+        if (!abort_timeout) throw e;
       }),
     ]);
-    if (external_music === null) return null;
+    abort_timeout = true;
+    if (!(external_music instanceof ExternalMusicType)) return null;
     try {
       return external_music.to_music_type();
     } catch (e) {
@@ -40,7 +42,8 @@ export abstract class MusicApiService implements MusicApi {
       setTimeout(() => {
         reject(
           new DangerException(
-            I18nContext.current()!.t('exceptions.music_api.timeout'),
+            I18nContext.current()?.t('exceptions.music_api.timeout') ??
+              'API Timeout',
           ),
         );
       }, this.TIMEOUT_IN_MS);

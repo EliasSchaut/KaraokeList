@@ -20,6 +20,16 @@ export class TrackService {
     search_query: SearchInputModel,
     ctx: CtxType,
   ): Promise<TrackModel[]> {
+    const queries = [];
+    if (search_query.track_title.length > 0) {
+      queries.push({ title: { contains: search_query.track_title } });
+    }
+    if (search_query.artist_name.length > 0) {
+      queries.push({
+        artist: { name: { contains: search_query.artist_name } },
+      });
+    }
+
     return this.prisma.track.findMany({
       select: {
         id: true,
@@ -32,10 +42,7 @@ export class TrackService {
         },
       },
       where: {
-        OR: [
-          { title: { contains: search_query.track_title } },
-          { artist: { name: { contains: search_query.artist_name } } },
-        ],
+        AND: queries,
       },
       orderBy: { title: 'asc' },
     });
@@ -100,8 +107,8 @@ export class TrackService {
     artist_name: string,
   ): Promise<TrackMetadataModel> {
     const metadata = await this.music_api.find_track(track_title, artist_name);
-    if (!metadata) return {};
-    else return new TrackMetadataModel(metadata);
+    if (metadata === null) return {};
+    return metadata;
   }
 
   async delete(track_id: number, ctx: CtxType): Promise<TrackModel> {

@@ -48,7 +48,6 @@ export class SpotifyApiService extends MusicApiService implements MusicApi {
     if (tracks === undefined || tracks.length === 0) {
       return null;
     }
-
     return new SpotifyApiType(tracks[0]);
   }
 }
