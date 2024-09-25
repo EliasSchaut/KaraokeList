@@ -81,7 +81,7 @@ describe('ArtistService', () => {
     ];
     jest.spyOn(prismaService.track, 'findMany').mockResolvedValue(tracks);
 
-    const result = await artistService.resolve_tracks(1, ctx);
+    const result = await artistService.resolve_tracks(1);
 
     expect(result).toEqual(tracks as TrackModel[]);
   });

@@ -34,12 +34,13 @@ export class TrackResolver {
 
   @Query(() => TrackModel, {
     name: 'track',
+    nullable: true,
   })
   async find_by_id(
     @Args('track_id', { type: () => Int }) id: number,
     @I18n() i18n: I18nContext<I18nTranslations>,
-  ): Promise<TrackModel> {
-    return await this.trackService.find_by_id(id, { i18n });
+  ): Promise<TrackModel | null> {
+    return this.trackService.find_by_id(id, { i18n });
   }
 
   @Query(() => [TrackModel], { name: 'tracks_search' })
@@ -90,13 +91,8 @@ export class TrackResolver {
   @ResolveField(() => Boolean, {
     name: 'reported',
   })
-  async resolve_is_reported(
-    @Parent() track: TrackModel,
-    @I18n() i18n: I18nContext<I18nTranslations>,
-  ): Promise<Boolean> {
-    return await this.trackService.is_reported(track.id, {
-      i18n,
-    });
+  async resolve_is_reported(@Parent() track: TrackModel): Promise<Boolean> {
+    return await this.trackService.resolve_is_reported(track.id);
   }
 
   @ResolveField(() => TrackMetadataModel, {
@@ -104,10 +100,10 @@ export class TrackResolver {
   })
   async resolve_metadata(
     @Parent() track: TrackModel,
-    @I18n() i18n: I18nContext<I18nTranslations>,
   ): Promise<TrackMetadataModel> {
-    return await this.trackService.resolve_metadata(track.id, {
-      i18n,
-    });
+    return await this.trackService.resolve_metadata(
+      track.title,
+      track.artist.name,
+    );
   }
 }

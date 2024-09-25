@@ -130,7 +130,7 @@ describe('TrackService', () => {
       .spyOn(prismaService.report, 'findFirst')
       .mockResolvedValue({ id: 1, track_id: 1, desc: 'Test Report' });
 
-    const result = await trackService.is_reported(1, ctx);
+    const result = await trackService.resolve_is_reported(1);
 
     expect(result).toBe(true);
   });
@@ -138,7 +138,7 @@ describe('TrackService', () => {
   it('returns false if track is not reported', async () => {
     jest.spyOn(prismaService.report, 'findFirst').mockResolvedValue(null);
 
-    const result = await trackService.is_reported(1, ctx);
+    const result = await trackService.resolve_is_reported(1);
 
     expect(result).toBe(false);
   });
@@ -150,7 +150,10 @@ describe('TrackService', () => {
     jest.spyOn(trackService, 'find_by_id').mockResolvedValue(track);
     jest.spyOn(musicApiService, 'find_track').mockResolvedValue(metadata);
 
-    const result = await trackService.resolve_metadata(1, ctx);
+    const result = await trackService.resolve_metadata(
+      track.title,
+      artist.name,
+    );
 
     expect(result).toEqual(new TrackMetadataModel(metadata));
   });
@@ -161,7 +164,10 @@ describe('TrackService', () => {
     jest.spyOn(trackService, 'find_by_id').mockResolvedValue(track);
     jest.spyOn(musicApiService, 'find_track').mockResolvedValue(null);
 
-    const result = await trackService.resolve_metadata(1, ctx);
+    const result = await trackService.resolve_metadata(
+      track.title,
+      artist.name,
+    );
 
     expect(result).toEqual({});
   });

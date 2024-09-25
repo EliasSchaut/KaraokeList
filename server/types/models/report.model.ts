@@ -6,9 +6,10 @@ import { Report } from '@prisma/client';
   description: 'Report Model',
 })
 export class ReportModel {
-  constructor(report: Report) {
+  constructor(report: Report & { track: TrackModel }) {
     this.id = report.id;
     this.desc = report.desc;
+    this.track = report.track;
   }
 
   @Field(() => Number, {
@@ -23,7 +24,6 @@ export class ReportModel {
 
   @Field(() => TrackModel, {
     description: 'Track to report',
-    nullable: true,
   })
-  track?: TrackModel;
+  track!: TrackModel;
 }

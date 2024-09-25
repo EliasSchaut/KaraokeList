@@ -1,4 +1,4 @@
-import { Query, Resolver, ResolveField, Parent } from '@nestjs/graphql';
+import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { ArtistService } from '@/graphql/artist/artist.service';
 import { ArtistModel } from '@/types/models/artist.model';
 import { TrackModel } from '@/types/models/track.model';
@@ -19,14 +19,9 @@ export class ArtistResolver {
   }
 
   @ResolveField(() => [TrackModel], {
-    name: 'artist_tracks',
+    name: 'tracks',
   })
-  async resolve_tracks(
-    @Parent() artist: ArtistModel,
-    @I18n() i18n: I18nContext<I18nTranslations>,
-  ): Promise<TrackModel[]> {
-    return await this.mediaService.resolve_tracks(artist.id, {
-      i18n,
-    });
+  async resolve_tracks(@Parent() artist: ArtistModel): Promise<TrackModel[]> {
+    return await this.mediaService.resolve_tracks(artist.id);
   }
 }

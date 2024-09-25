@@ -1,10 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ReportService } from './report.service';
 import { PrismaService } from 'nestjs-prisma';
-import { WarningException } from '@/common/exceptions/warning.exception';
 import { ReportModel } from '@/types/models/report.model';
 import { ReportInputModel } from '@/types/models/inputs/report.input';
-import { TrackModel } from '@/types/models/track.model';
 import { CtxType } from '@/types/common/ctx.type';
 import { I18nContext } from 'nestjs-i18n';
 import { PrismaException } from '@/common/exceptions/prisma.exception';
@@ -53,12 +51,21 @@ describe('ReportService', () => {
 
     const result = await reportService.find_many(ctx);
 
-    expect(result).toEqual(reports as ReportModel[]);
+    expect(result).toEqual(reports);
   });
 
   it('creates a report successfully', async () => {
     const reportInput: ReportInputModel = { track_id: 1, desc: 'Test Report' };
-    const createdReport = { id: 1, track_id: 1, desc: 'Test Report' };
+    const createdReport = {
+      id: 1,
+      desc: 'Test Report',
+      track_id: 1,
+      track: {
+        id: 1,
+        title: 'Test Track',
+        artist: { id: 1, name: 'Test Artist' },
+      },
+    };
     jest.spyOn(prismaService.report, 'create').mockResolvedValue(createdReport);
 
     const result = await reportService.create(reportInput, ctx);
@@ -66,35 +73,17 @@ describe('ReportService', () => {
     expect(result).toEqual(new ReportModel(createdReport));
   });
 
-  it('resolves track successfully', async () => {
+  it('deletes a report successfully', async () => {
     const report = {
+      id: 1,
+      track_id: 1,
+      desc: 'Test Report',
       track: {
         id: 1,
         title: 'Test Track',
-        artist_id: 1,
-        artist: { name: 'Test Artist', id: 1 },
+        artist: { id: 1, name: 'Test Artist' },
       },
-      id: 1,
-      track_id: 1,
-      desc: '',
     };
-    jest.spyOn(prismaService.report, 'findUnique').mockResolvedValue(report);
-
-    const result = await reportService.resolve_track(1, ctx);
-
-    expect(result).toEqual(new TrackModel(report.track));
-  });
-
-  it('throws WarningException if report not found when resolving track', async () => {
-    jest.spyOn(prismaService.report, 'findUnique').mockResolvedValue(null);
-
-    await expect(reportService.resolve_track(1, ctx)).rejects.toThrow(
-      WarningException,
-    );
-  });
-
-  it('deletes a report successfully', async () => {
-    const report = { id: 1, track_id: 1, desc: 'Test Report' };
     jest.spyOn(prismaService.report, 'delete').mockResolvedValue(report);
 
     const result = await reportService.delete(1, ctx);

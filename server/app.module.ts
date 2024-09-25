@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { ExecutionContext, Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { I18nJsonLoader, I18nModule } from 'nestjs-i18n';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -54,6 +54,7 @@ import process from 'node:process';
       subscriptions: {
         'graphql-ws': true,
       },
+      context: (ctx: ExecutionContext) => ctx,
       autoSchemaFile: join(__dirname, 'types', 'generated', 'schema.gql'),
     }),
     JwtModule.register({

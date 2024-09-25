@@ -6,7 +6,6 @@ import { TrackInputModel } from '@/types/models/inputs/track.input';
 import { PrismaService } from 'nestjs-prisma';
 import { PrismaException } from '@/common/exceptions/prisma.exception';
 import { MusicApiService } from '@/common/services/music_api/music_api.service';
-import { WarningException } from '@/common/exceptions/warning.exception';
 import { SearchInputModel } from '@/types/models/inputs/search.input';
 import { CursorInputModel } from '@/types/models/inputs/cursor.input';
 
@@ -52,15 +51,11 @@ export class TrackService {
     });
   }
 
-  async find_by_id(track_id: number, ctx: CtxType): Promise<TrackModel> {
-    const track = await this.prisma.track.findUnique({
+  async find_by_id(track_id: number, ctx: CtxType): Promise<TrackModel | null> {
+    return this.prisma.track.findUnique({
       where: { id: track_id },
       include: { artist: true },
     });
-    if (!track) {
-      throw new WarningException(ctx.i18n.t('exceptions.not_found.track'));
-    }
-    return new TrackModel(track);
   }
 
   async create(
@@ -93,7 +88,7 @@ export class TrackService {
     return track_output;
   }
 
-  async is_reported(track_id: number, ctx: CtxType): Promise<Boolean> {
+  async resolve_is_reported(track_id: number): Promise<Boolean> {
     const first_report = await this.prisma.report.findFirst({
       where: { track_id: track_id },
     });
@@ -101,14 +96,10 @@ export class TrackService {
   }
 
   async resolve_metadata(
-    track_id: number,
-    ctx: CtxType,
+    track_title: string,
+    artist_name: string,
   ): Promise<TrackMetadataModel> {
-    const track = await this.find_by_id(track_id, ctx);
-    const metadata = await this.music_api.find_track(
-      track!.title,
-      track.artist.name,
-    );
+    const metadata = await this.music_api.find_track(track_title, artist_name);
     if (!metadata) return {};
     else return new TrackMetadataModel(metadata);
   }
