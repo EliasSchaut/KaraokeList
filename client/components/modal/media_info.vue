@@ -13,7 +13,7 @@
             width="200"
             alt="cover img"
           />
-          <img v-else src="/no_cover.svg" alt="no cover" />
+          <img v-else src="/img/no_cover.svg" alt="no cover" />
         </div>
         <div>
           <h1 class="inline-flex text-lg font-bold">
