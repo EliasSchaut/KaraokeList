@@ -43,19 +43,24 @@
                 </span>
                 <dl class="font-normal sm:hidden">
                   <dt class="sr-only">Artist</dt>
-                  <dd class="mt-1 text-secondary-700">
+                  <dd class="mt-1 text-secondary-700 dark:text-secondary-400">
                     {{ track.artist.name }}
                   </dd>
                 </dl>
               </TableCell>
-              <TableCell small class="w-8">
+              <TableCell small class="hidden w-8 sm:table-cell">
                 <NuxtLink :to="`/reports/${track.title}`" v-if="track.reported">
                   <BadgeYellow>{{ $t('tracks.table.reported') }}</BadgeYellow>
                 </NuxtLink>
               </TableCell>
               <TableCell last right bold small class="w-8">
                 <button
-                  class="text-primary-600 hover:text-primary-900 dark:text-primary-500 dark:hover:text-primary-400"
+                  class="text-primary-600 hover:text-primary-900 dark:hover:text-primary-400"
+                  :class="{
+                    'text-yellow-600 dark:text-yellow-500 sm:text-primary-600 sm:dark:text-primary-500':
+                      track.reported,
+                    'text-primary-600 dark:text-primary-500': !track.reported,
+                  }"
                   @click="show_report_modal(track.id, track.title)"
                 >
                   {{ $t('tracks.table.head.report') }}

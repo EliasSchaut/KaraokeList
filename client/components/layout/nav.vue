@@ -74,10 +74,10 @@
         </template>
       </div>
       <div
-        class="flex gap-x-4 border-t border-secondary-200 pb-3 pt-4 dark:border-secondary-700"
+        class="flex justify-between gap-x-4 border-t border-secondary-200 px-4 pb-3 pt-4 dark:border-secondary-700"
       >
-        <SettingLang class="pl-4" />
-        <SettingTheme />
+        <SettingLang class="w-full" />
+        <SettingTheme class="w-full" />
       </div>
     </DisclosurePanel>
   </Disclosure>
