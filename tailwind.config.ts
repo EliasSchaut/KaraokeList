@@ -17,6 +17,9 @@ export default <Partial<Config>>{
         primary: colors.indigo,
         secondary: colors.gray,
       },
+      fontFamily: {
+        nunito: 'Nunito, sans-serif',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],
