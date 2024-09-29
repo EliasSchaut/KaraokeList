@@ -28,6 +28,9 @@ export const EnvValidationSchema = Joi.object({
     .valid('en-US', 'de-DE')
     .default('en-US')
     .description('The default language of the application'),
+  TABLE_PAGE_SIZE: Joi.number()
+    .default(100)
+    .description('The default page size for tables'),
 
   DATABASE_URL: Joi.string()
     .default('file:./dev.db')

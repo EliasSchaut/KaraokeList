@@ -8,9 +8,12 @@ import { PrismaException } from '@/common/exceptions/prisma.exception';
 import { MusicApiService } from '@/common/services/music_api/music_api.service';
 import { SearchInputModel } from '@/types/models/inputs/search.input';
 import { CursorInputModel } from '@/types/models/inputs/cursor.input';
+import { CountModel } from '@/types/models/count.model';
 
 @Injectable()
 export class TrackService {
+  private readonly DEFAULT_PAGE_SIZE = Number(process.env.TABLE_PAGE_SIZE);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly music_api: MusicApiService,
@@ -63,6 +66,14 @@ export class TrackService {
       where: { id: track_id },
       include: { artist: true },
     });
+  }
+
+  async count(page_size?: number): Promise<CountModel> {
+    const count = await this.prisma.track.count();
+    return {
+      count: count,
+      total_pages: Math.ceil(count / (page_size ?? this.DEFAULT_PAGE_SIZE)),
+    };
   }
 
   async create(

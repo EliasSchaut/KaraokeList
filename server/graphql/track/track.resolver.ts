@@ -17,6 +17,7 @@ import { TrackInputModel } from '@/types/models/inputs/track.input';
 import { AuthGuard } from '@/graphql/auth/auth.admin.guard';
 import { SearchInputModel } from '@/types/models/inputs/search.input';
 import { CursorInputModel } from '@/types/models/inputs/cursor.input';
+import { CountModel } from '@/types/models/count.model';
 
 @Resolver(() => TrackModel)
 export class TrackResolver {
@@ -30,6 +31,16 @@ export class TrackResolver {
     cursor?: CursorInputModel,
   ): Promise<TrackModel[]> {
     return await this.trackService.find_many(cursor);
+  }
+
+  @Query(() => CountModel, {
+    name: 'tracks_count',
+  })
+  async count(
+    @Args('page_size', { type: () => Int, nullable: true })
+    page_size?: number,
+  ): Promise<CountModel> {
+    return await this.trackService.count(page_size);
   }
 
   @Query(() => TrackModel, {

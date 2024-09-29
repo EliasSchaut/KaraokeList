@@ -66,6 +66,12 @@
           </template>
         </tbody>
       </TableStriped>
+      <Pagination
+        v-if="tracks.length"
+        @update:current_page="change_page"
+        :total_pages="total_pages"
+        :current_page="current_page"
+      />
     </div>
   </div>
 
@@ -84,8 +90,8 @@ type TrackType = [
 ];
 
 const track_query = gql`
-  query get_tracks {
-    tracks {
+  query get_tracks($cursor: CursorInputModel!) {
+    tracks(cursor: $cursor) {
       id
       title
       artist {
@@ -96,23 +102,70 @@ const track_query = gql`
   }
 `;
 
+const count_query = gql`
+  query get_tracks_count($page_size: Int!) {
+    tracks_count(page_size: $page_size) {
+      count
+      total_pages
+    }
+  }
+`;
+
 export default defineComponent({
   setup() {
     const route = useRoute();
+    const page_size = useRuntimeConfig().public.page_size;
     const search = ref<string>(route.params.query ?? '');
-    const tracks = ref<TrackType>([]);
+    const tracks_total = ref<TrackType>([]);
+    let tracks = ref<TrackType>([]);
+    const total_pages = ref<number>(1);
+    const fetched_pages = ref<number>(1);
+    const current_page = ref<number>(1);
 
-    useAsyncQuery<[TrackType]>(track_query).then(({ data }) => {
-      tracks.value = data?.value?.tracks ?? [];
+    Promise.all([
+      useAsyncQuery<[TrackType]>(track_query, {
+        cursor: { first: page_size },
+      }),
+      useAsyncQuery(count_query, { page_size }),
+    ]).then(([{ data }, { data: count_data }]) => {
+      tracks_total.value = data?.value?.tracks ?? [];
+      tracks.value = tracks_total.value.slice(0, page_size);
+      total_pages.value = count_data?.value?.tracks_count?.total_pages ?? 1;
     });
 
     return {
       route,
       search,
       tracks,
+      tracks_total,
+      total_pages,
+      current_page,
+      fetched_pages,
+      page_size,
     };
   },
   methods: {
+    async get_new_tracks() {
+      const { data } = await useAsyncQuery<[TrackType]>(track_query, {
+        cursor: {
+          first: this.page_size,
+          after: this.tracks_total.slice(-1)[0].id,
+        },
+      });
+      this.tracks_total.push(...(data?.value?.tracks ?? []));
+      this.fetched_pages++;
+    },
+    async change_page(page: number) {
+      if (page > this.total_pages || page < 1) return;
+      while (this.fetched_pages < page) {
+        await this.get_new_tracks();
+      }
+      this.tracks = this.tracks_total.slice(
+        (page - 1) * this.page_size,
+        page * this.page_size,
+      );
+      this.current_page = page;
+    },
     report_track(track_id: number) {
       this.tracks[this.tracks.findIndex((t) => t.id === track_id)].reported =
         true;
