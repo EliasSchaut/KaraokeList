@@ -9,3 +9,9 @@
     <LayoutFooter />
   </div>
 </template>
+
+<style scoped>
+* {
+  font-family: Nunito, 'sans-serif';
+}
+</style>

@@ -9,7 +9,7 @@
         <div class="flex">
           <!-- NavBar left side -->
           <nuxt-link
-            class="flex flex-shrink-0 items-center text-xl font-semibold leading-6 text-secondary-900 hover:underline dark:text-white"
+            class="flex flex-shrink-0 items-center text-xl font-bold leading-6 text-secondary-900 hover:underline dark:text-white"
             href="/"
           >
             {{ proj_name }}
@@ -25,7 +25,7 @@
                   $route.path.split('/')[1] === link.href.split('/')[1]
                     ? 'border-primary-500 text-secondary-900 dark:text-white'
                     : 'border-transparent text-secondary-500 hover:border-secondary-300 hover:text-secondary-700 dark:hover:text-white',
-                  'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium',
+                  'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-semibold',
                 ]"
                 >{{ link.name }}
               </NuxtLink>
@@ -74,10 +74,10 @@
         </template>
       </div>
       <div
-        class="flex gap-x-4 border-t border-secondary-200 pb-3 pt-4 dark:border-secondary-700"
+        class="flex justify-between gap-x-4 border-t border-secondary-200 px-4 pb-3 pt-4 dark:border-secondary-700"
       >
-        <SettingLang class="pl-4" />
-        <SettingTheme />
+        <SettingLang class="w-full" />
+        <SettingTheme class="w-full" />
       </div>
     </DisclosurePanel>
   </Disclosure>
@@ -121,7 +121,7 @@ export default defineComponent({
           href: '/reports',
         },
         {
-          name: t('nav.pages.reports'),
+          name: t('nav.pages.requests'),
           href: '/requests',
         },
         {

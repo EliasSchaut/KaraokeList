@@ -3,7 +3,7 @@
     <Spinner v-if="loading" class="m-auto" />
     <div class="flex-col space-y-5 break-keep" v-else>
       <div
-        class="row flex w-full flex-col items-center space-x-1 space-y-2 sm:flex-row sm:space-x-5"
+        class="row flex w-full flex-col items-center space-x-1 space-y-2 text-center sm:flex-row sm:space-x-5 sm:text-left"
       >
         <div>
           <img

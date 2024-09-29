@@ -26,15 +26,14 @@
       </FormBlock>
       <FormBlock
         title="Add multiple tracks"
-        desc="Add multiple tracks at once by entering the following text in the
-            textarea: [Artist] - [Title];[Artist] - [Title];..."
+        desc="Add multiple tracks at once by entering the following format: [Artist] - [Title]. Divide the tracks with a newline."
         submit_label="Add multiple tracks"
         :submit="submit_track_multiple"
       >
         <FormInputArea
           class="col-span-full"
           id="tracks"
-          placeholder="Artist1 - Title1;Artist2 - Title2;..."
+          :placeholder="`Artist1 - Title1\nArtist2 - Title2\n...`"
           label="Tracks"
           type="text"
           :maxlength="1000000"
@@ -82,9 +81,7 @@ const query_single_track = gql`
 
 const query_multiple_tracks = gql`
   mutation ($tracks_input_data: [TrackInputModel!]!) {
-    track_create_multiple(tracks_input_data: $tracks_input_data) {
-      id
-    }
+    track_create_multiple(tracks_input_data: $tracks_input_data)
   }
 `;
 
@@ -133,12 +130,13 @@ export default defineComponent({
     },
     submit_track_multiple(e: Event, form_data: FormData) {
       const tracks = form_data.get('tracks') as string;
-      const tracks_input_data = tracks.split(';').map((track) => {
+      const tracks_input_data = tracks.split('\n').map((track) => {
         const [artist_name, track_title] = track.split(' - ', 2);
         return { artist_name, track_title };
       });
       this.mutate_multiple_tracks({ tracks_input_data }).then(({ data }) => {
-        if (data.tracks_create && data.tracks_create.length) {
+        console.log(data);
+        if (data) {
           this.alert.show(`Tracks added successfully!`, 'success');
         }
       });

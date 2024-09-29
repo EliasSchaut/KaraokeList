@@ -1,11 +1,8 @@
 <template>
   <div class="px-8">
     <div class="-mx-4 pt-8 sm:px-6 lg:px-8">
-      <Search
-        @input="search = $event.target.value"
-        :value="route.params.query ?? ''"
-      />
-      <TableStriped v-if="tracks.length">
+      <SearchArtistTitle @search_query="search_query" class="mb-4 w-full" />
+      <TableStriped v-if="!table_empty">
         <thead>
           <tr>
             <TableHead first>{{ $t('tracks.table.head.info') }}</TableHead>
@@ -21,7 +18,10 @@
           </tr>
         </thead>
         <tbody class="bg-white">
-          <template v-for="track in tracks" :key="track.title">
+          <template
+            v-for="track in is_searching ? tracks_searched : tracks"
+            :key="track.title"
+          >
             <TableRow
               v-if="
                 search === '' ||
@@ -29,11 +29,13 @@
                 track.artist.name.toLowerCase().includes(search.toLowerCase())
               "
             >
-              <TableCell first>
-                <ButtonInfo @click="show_media_info_modal(track.id)" />
+              <TableCell @click="show_media_info_modal(track.id)" first>
+                <ButtonInfo />
               </TableCell>
-              <TableCell hidden_on_sm>{{ track.artist.name }}</TableCell>
-              <TableCell main bold>
+              <TableCell @click="show_media_info_modal(track.id)" hidden_on_sm
+                >{{ track.artist.name }}
+              </TableCell>
+              <TableCell @click="show_media_info_modal(track.id)" main bold>
                 <span
                   class="space-y-1 sm:flex sm:flex-row sm:items-center sm:justify-between"
                 >
@@ -41,19 +43,24 @@
                 </span>
                 <dl class="font-normal sm:hidden">
                   <dt class="sr-only">Artist</dt>
-                  <dd class="mt-1 text-secondary-700">
+                  <dd class="mt-1 text-secondary-700 dark:text-secondary-400">
                     {{ track.artist.name }}
                   </dd>
                 </dl>
               </TableCell>
-              <TableCell small class="w-8">
+              <TableCell small class="hidden w-8 sm:table-cell">
                 <NuxtLink :to="`/reports/${track.title}`" v-if="track.reported">
                   <BadgeYellow>{{ $t('tracks.table.reported') }}</BadgeYellow>
                 </NuxtLink>
               </TableCell>
               <TableCell last right bold small class="w-8">
                 <button
-                  class="text-primary-600 hover:text-primary-900 dark:text-primary-500 dark:hover:text-primary-400"
+                  class="text-primary-600 hover:text-primary-900 dark:hover:text-primary-400"
+                  :class="{
+                    'text-yellow-600 dark:text-yellow-500 sm:text-primary-600 sm:dark:text-primary-500':
+                      track.reported,
+                    'text-primary-600 dark:text-primary-500': !track.reported,
+                  }"
                   @click="show_report_modal(track.id, track.title)"
                 >
                   {{ $t('tracks.table.head.report') }}
@@ -67,11 +74,14 @@
         </tbody>
       </TableStriped>
       <Pagination
-        v-if="tracks.length"
+        v-if="tracks.length && !is_searching"
         @update:current_page="change_page"
         :total_pages="total_pages"
         :current_page="current_page"
       />
+      <TableEmpty v-if="table_empty">
+        {{ $t('tracks.table.empty') }}
+      </TableEmpty>
     </div>
   </div>
 
@@ -111,13 +121,29 @@ const count_query = gql`
   }
 `;
 
+const search_query = gql`
+  query search_tracks($search_query: SearchInputModel!) {
+    tracks_search(search_query: $search_query) {
+      id
+      title
+      artist {
+        name
+      }
+      reported
+    }
+  }
+`;
+
 export default defineComponent({
   setup() {
     const route = useRoute();
     const page_size = useRuntimeConfig().public.page_size;
     const search = ref<string>(route.params.query ?? '');
-    const tracks_total = ref<TrackType>([]);
     let tracks = ref<TrackType>([]);
+    let tracks_searched = ref<TrackType>([]);
+    const tracks_total = ref<TrackType>([]);
+    const is_searching = ref<boolean>(false);
+    let search_input_timeout: number | null = null;
     const total_pages = ref<number>(1);
     const fetched_pages = ref<number>(1);
     const current_page = ref<number>(1);
@@ -138,11 +164,19 @@ export default defineComponent({
       search,
       tracks,
       tracks_total,
+      tracks_searched,
       total_pages,
       current_page,
       fetched_pages,
       page_size,
+      is_searching,
+      search_input_timeout,
     };
+  },
+  computed: {
+    table_empty() {
+      return this.is_searching && this.tracks_searched.length === 0;
+    },
   },
   methods: {
     async get_new_tracks() {
@@ -165,6 +199,24 @@ export default defineComponent({
         page * this.page_size,
       );
       this.current_page = page;
+    },
+    async search_query(query: { artist_name?: string; track_title?: string }) {
+      clearTimeout(this.search_input_timeout);
+      if (query.artist_name || query.track_title) {
+        this.search_input_timeout = setTimeout(async () => {
+          const { data } = await useAsyncQuery<[TrackType]>(search_query, {
+            search_query: {
+              artist_name: query.artist_name,
+              track_title: query.track_title,
+            },
+          });
+          this.tracks_searched = data?.value?.tracks_search ?? [];
+          this.is_searching = true;
+        }, 500);
+      } else {
+        this.is_searching = false;
+        this.tracks_searched = [];
+      }
     },
     report_track(track_id: number) {
       this.tracks[this.tracks.findIndex((t) => t.id === track_id)].reported =

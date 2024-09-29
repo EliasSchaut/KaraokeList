@@ -100,11 +100,12 @@
       "listen_on": "Listen on:"
     },
     "table": {
+      "empty": "No tracks found!",
       "head": {
         "artist": "Artist",
         "info": "Info",
         "report": "Report",
-        "title": "Title"
+        "title": "Track"
       },
       "reported": "Reported"
     }
