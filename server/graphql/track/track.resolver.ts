@@ -75,14 +75,14 @@ export class TrackResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Mutation(() => [TrackModel], {
+  @Mutation(() => Boolean, {
     name: 'track_create_multiple',
   })
   async create_many(
     @Args('tracks_input_data', { type: () => [TrackInputModel] })
     tracks: TrackInputModel[],
     @I18n() i18n: I18nContext<I18nTranslations>,
-  ): Promise<TrackModel[]> {
+  ): Promise<boolean> {
     return await this.trackService.create_many(tracks, {
       i18n,
     });

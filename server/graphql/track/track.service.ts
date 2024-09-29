@@ -9,6 +9,7 @@ import { MusicApiService } from '@/common/services/music_api/music_api.service';
 import { SearchInputModel } from '@/types/models/inputs/search.input';
 import { CursorInputModel } from '@/types/models/inputs/cursor.input';
 import { CountModel } from '@/types/models/count.model';
+import { Artist } from '@prisma/client';
 
 @Injectable()
 export class TrackService {
@@ -95,15 +96,44 @@ export class TrackService {
     return new TrackModel(track);
   }
 
-  async create_many(
-    tracks: TrackInputModel[],
-    ctx: CtxType,
-  ): Promise<TrackModel[]> {
-    const track_output: TrackModel[] = [];
-    for (const track of tracks) {
-      track_output.push(await this.create(track, ctx));
+  async create_many(tracks: TrackInputModel[], ctx: CtxType): Promise<boolean> {
+    const artists = this.reduce_tracks_to_artists(tracks);
+
+    const create_track_promises = [];
+    for (const artist_name of Object.keys(artists)) {
+      create_track_promises.push(async () => {
+        const artist: Artist = await this.prisma.artist.upsert({
+          where: { name: artist_name },
+          create: { name: artist_name },
+          update: {},
+        });
+
+        const track_data = artists[artist_name].map((track_title) => {
+          return {
+            title: track_title,
+            artist_id: artist.id,
+          };
+        });
+
+        return this.prisma.track.createMany({
+          data: track_data,
+          skipDuplicates: true,
+        });
+      });
     }
-    return track_output;
+
+    // Execute the promises in chunks to avoid overwhelming the connection pool
+    const chunk_size = 100;
+    for (let i = 0; i < create_track_promises.length; i += chunk_size) {
+      const chunk = create_track_promises
+        .slice(i, i + chunk_size)
+        .map((fn) => fn());
+      await Promise.all(chunk).catch((e) => {
+        throw new PrismaException(e);
+      });
+    }
+
+    return true;
   }
 
   async resolve_is_reported(track_id: number): Promise<Boolean> {
@@ -134,6 +164,18 @@ export class TrackService {
         });
       });
     return new TrackModel(track);
+  }
+
+  private reduce_tracks_to_artists(tracks: TrackInputModel[]): {
+    [key: string]: string[];
+  } {
+    return tracks.reduce((acc: { [key: string]: string[] }, track) => {
+      if (!acc[track.artist_name]) {
+        acc[track.artist_name] = [];
+      }
+      acc[track.artist_name].push(track.track_title);
+      return acc;
+    }, {});
   }
 
   private generate_track_create_data(track: TrackInputModel, ctx: CtxType) {
