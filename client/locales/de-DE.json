@@ -100,11 +100,12 @@
       "listen_on": "Anhören:"
     },
     "table": {
+      "empty": "Keine Tracks gefunden!",
       "head": {
         "artist": "Künstler",
         "info": "Info",
         "report": "Melden",
-        "title": "Titel"
+        "title": "Track"
       },
       "reported": "Gemeldet"
     }

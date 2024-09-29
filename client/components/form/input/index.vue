@@ -102,7 +102,7 @@ export default defineComponent({
     },
     label: {
       type: String,
-      required: true,
+      default: null,
     },
     placeholder: {
       type: String,

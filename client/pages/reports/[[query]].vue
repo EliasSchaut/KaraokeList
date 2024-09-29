@@ -40,12 +40,9 @@
           </template>
         </tbody>
       </TableStriped>
-      <p
-        v-else
-        class="w-full rounded-md bg-secondary-100 p-10 text-center text-xl italic"
-      >
+      <TableEmpty v-else>
         {{ $t('report.table.empty') }}
-      </p>
+      </TableEmpty>
     </div>
   </div>
 </template>

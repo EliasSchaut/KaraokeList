@@ -43,12 +43,7 @@
           </template>
         </tbody>
       </TableStriped>
-      <p
-        v-else
-        class="mt-4 w-full rounded-md bg-secondary-100 p-10 text-center text-xl italic"
-      >
-        ${{ $t('request.table.empty') }}
-      </p>
+      <TableEmpty v-else> ${{ $t('request.table.empty') }} </TableEmpty>
     </div>
   </div>
 

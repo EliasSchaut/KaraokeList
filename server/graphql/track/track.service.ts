@@ -9,7 +9,7 @@ import { MusicApiService } from '@/common/services/music_api/music_api.service';
 import { SearchInputModel } from '@/types/models/inputs/search.input';
 import { CursorInputModel } from '@/types/models/inputs/cursor.input';
 import { CountModel } from '@/types/models/count.model';
-import { Artist } from '@prisma/client';
+import { Artist, Prisma } from '@prisma/client';
 
 @Injectable()
 export class TrackService {
@@ -24,15 +24,20 @@ export class TrackService {
     search_query: SearchInputModel,
     ctx: CtxType,
   ): Promise<TrackModel[]> {
-    const queries = [];
+    const queries: Prisma.TrackWhereInput[] = [];
     if (search_query.track_title.length > 0) {
-      queries.push({ title: { contains: search_query.track_title } });
+      queries.push({
+        title: { contains: search_query.track_title, mode: 'insensitive' },
+      });
     }
     if (search_query.artist_name.length > 0) {
       queries.push({
-        artist: { name: { contains: search_query.artist_name } },
+        artist: {
+          name: { contains: search_query.artist_name, mode: 'insensitive' },
+        },
       });
     }
+    if (queries.length === 0) return [];
 
     return this.prisma.track.findMany({
       select: {
@@ -49,6 +54,7 @@ export class TrackService {
         AND: queries,
       },
       orderBy: { title: 'asc' },
+      take: Number(process.env.TABLE_PAGE_SIZE),
     });
   }
 
