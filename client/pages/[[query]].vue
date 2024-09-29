@@ -29,11 +29,13 @@
                 track.artist.name.toLowerCase().includes(search.toLowerCase())
               "
             >
-              <TableCell first>
-                <ButtonInfo @click="show_media_info_modal(track.id)" />
+              <TableCell @click="show_media_info_modal(track.id)" first>
+                <ButtonInfo />
               </TableCell>
-              <TableCell hidden_on_sm>{{ track.artist.name }}</TableCell>
-              <TableCell main bold>
+              <TableCell @click="show_media_info_modal(track.id)" hidden_on_sm
+                >{{ track.artist.name }}
+              </TableCell>
+              <TableCell @click="show_media_info_modal(track.id)" main bold>
                 <span
                   class="space-y-1 sm:flex sm:flex-row sm:items-center sm:justify-between"
                 >

@@ -5,7 +5,7 @@
     content="A web app to view/report/request karaoke songs"
   />
   <Meta name="keywords" content="karaoke, singing, songs, tracks, artists" />
-  <Meta name="theme-color" content="#555" />
+  <Meta name="theme-color" content="#6366f1" />
   <Link
     rel="apple-touch-icon"
     sizes="180x180"
