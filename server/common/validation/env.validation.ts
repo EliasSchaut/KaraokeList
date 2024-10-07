@@ -46,13 +46,26 @@ export const EnvValidationSchema = Joi.object({
     .valid('SPOTIFY')
     .default('SPOTIFY')
     .description('The API to use for music data. (SPOTIFY = Spotify API)'),
-  MUSIC_API_TIMEOUT_IN_MS: Joi.number()
+  QUEUE_API_TYPE: Joi.string()
+    .valid('MELODY_MANIA')
+    .default('MELODY_MANIA')
+    .description(
+      'The API to use to automatically queue songs. (MELODY_MANIA = Game Melody Mania)',
+    ),
+  API_TIMEOUT_IN_MS: Joi.number()
     .default('10000')
-    .description('The timeout for music api requests in milliseconds'),
+    .description(
+      'The timeout for external api requests (e.g. music, queue) in milliseconds',
+    ),
   SPOTIFY_CLIENT_ID: Joi.string()
     .required()
     .description('The client ID of the Spotify app'),
   SPOTIFY_CLIENT_SECRET: Joi.string()
     .required()
     .description('The client secret of the Spotify app'),
+  MELODY_MANIA_CLIENT_ID: Joi.string()
+    .default('KaraokeList')
+    .description(
+      'The client ID to communicate with the Melodie Mania rest api. Please enter the following in Settings.json of Melodie Mania: "HttpApiPermissions":{ "CLIENT_ID": [ "WriteSongQueue", "WriteConfig", "WriteInputSimulation" ] }',
+    ),
 });

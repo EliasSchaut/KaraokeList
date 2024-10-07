@@ -2,16 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { MusicApi } from '@/common/services/music_api/music_api.interface';
 import { MusicApiType } from '@/types/music/music.type';
 import { ExternalMusicType } from '@/types/music/external_music.type';
-import { DangerException } from '@/common/exceptions/danger.exception';
-import process from 'node:process';
-import { I18nContext } from 'nestjs-i18n';
+import { ApiService } from '@/common/services/api.service';
 
 @Injectable()
 export abstract class MusicApiService implements MusicApi {
-  private readonly TIMEOUT_IN_MS: number = Number(
-    process.env.MUSIC_API_TIMEOUT_IN_MS,
-  );
-
   public async find_track(
     track_title: string,
     track_artist: string,
@@ -19,7 +13,9 @@ export abstract class MusicApiService implements MusicApi {
     let abort_timeout = false;
     const external_music = await Promise.race([
       this.fetch_track(track_title, track_artist),
-      this.create_fetch_timeout().catch((e) => {
+      ApiService.create_fetch_timeout({
+        custom_timeout_error: 'exceptions.music_api.timeout',
+      }).catch((e) => {
         if (!abort_timeout) throw e;
       }),
     ]);
@@ -36,17 +32,4 @@ export abstract class MusicApiService implements MusicApi {
     track_title: string,
     track_artist: string,
   ): Promise<ExternalMusicType | null>;
-
-  private async create_fetch_timeout(): Promise<never> {
-    return new Promise((_, reject) => {
-      setTimeout(() => {
-        reject(
-          new DangerException(
-            I18nContext.current()?.t('exceptions.music_api.timeout') ??
-              'API Timeout',
-          ),
-        );
-      }, this.TIMEOUT_IN_MS);
-    });
-  }
 }
