@@ -30,7 +30,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     'dayjs-nuxt',
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
   ],
 
@@ -106,7 +106,8 @@ export default defineNuxtConfig({
     autoImports: ['defineStore'],
   },
 
-  piniaPersistedstate: {
+  piniaPluginPersistedstate: {
+    storage: 'cookies',
     cookieOptions: {
       maxAge: 60 * 60 * 24 * 30,
     },
