@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+@plugin "@tailwindcss/forms";
+
+@layer theme, base, components, utilities;
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-nunito: 'Nunito', 'sans-serif';
+    --breakpoint-xs: 475px;
+
+    --color-prime-50: var(--color-indigo-50);
+    --color-prime-100: var(--color-indigo-100);
+    --color-prime-200: var(--color-indigo-200);
+    --color-prime-300: var(--color-indigo-300);
+    --color-prime-400: var(--color-indigo-400);
+    --color-prime-500: var(--color-indigo-500);
+    --color-prime-600: var(--color-indigo-600);
+    --color-prime-700: var(--color-indigo-700);
+    --color-prime-800: var(--color-indigo-800);
+    --color-prime-900: var(--color-indigo-900);
+    --color-prime-950: var(--color-indigo-950);
+
+    --color-second-50: var(--color-gray-50);
+    --color-second-100: var(--color-gray-100);
+    --color-second-200: var(--color-gray-200);
+    --color-second-300: var(--color-gray-300);
+    --color-second-400: var(--color-gray-400);
+    --color-second-500: var(--color-gray-500);
+    --color-second-600: var(--color-gray-600);
+    --color-second-700: var(--color-gray-700);
+    --color-second-800: var(--color-gray-800);
+    --color-second-900: var(--color-gray-900);
+    --color-second-950: var(--color-gray-950);
+}
+
+button {
+    @apply hover:cursor-pointer;
+}
