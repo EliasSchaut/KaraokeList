@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-import colors = require('tailwindcss/colors');
+import colors from 'tailwindcss/colors';
 
 export default <Partial<Config>>{
   darkMode: 'class',

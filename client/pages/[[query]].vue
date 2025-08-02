@@ -43,7 +43,7 @@
                 </span>
                 <dl class="font-normal sm:hidden">
                   <dt class="sr-only">Artist</dt>
-                  <dd class="mt-1 text-secondary-700 dark:text-secondary-400">
+                  <dd class="text-secondary-700 dark:text-secondary-400 mt-1">
                     {{ track.artist.name }}
                   </dd>
                 </dl>
@@ -57,7 +57,7 @@
                 <button
                   class="text-primary-600 hover:text-primary-900 dark:hover:text-primary-400"
                   :class="{
-                    'text-yellow-600 dark:text-yellow-500 sm:text-primary-600 sm:dark:text-primary-500':
+                    'sm:text-primary-600 sm:dark:text-primary-500 text-yellow-600 dark:text-yellow-500':
                       track.reported,
                     'text-primary-600 dark:text-primary-500': !track.reported,
                   }"
@@ -113,7 +113,7 @@ const track_query = gql`
 `;
 
 const count_query = gql`
-  query get_tracks_count($page_size: Int!) {
+  query doget_tracks_count($page_size: Int!) {
     tracks_count(page_size: $page_size) {
       count
       total_pages

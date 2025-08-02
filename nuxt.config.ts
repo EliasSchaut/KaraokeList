@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineNuxtConfig({
   alias: {
@@ -15,17 +16,17 @@ export default defineNuxtConfig({
       page_size: Number(process.env.TABLE_PAGE_SIZE),
     },
   },
-  devServer: {
-    port: process.env.PORT_FRONTEND,
-  },
   devtools: { enabled: true },
-  compatibilityDate: '2024-09-25',
+  compatibilityDate: '2025-03-15',
   workspaceDir: '.',
-  srcDir: 'client/',
+  srcDir: './client/',
+  css: ['~/assets/css/main.css'],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   modules: [
     '@nuxtjs/i18n',
     '@nuxtjs/apollo',
-    '@nuxtjs/tailwindcss',
     '@nuxtjs/color-mode',
     '@nuxt/image',
     'dayjs-nuxt',
@@ -50,6 +51,7 @@ export default defineNuxtConfig({
 
   i18n: {
     langDir: 'locales',
+    restructureDir: false,
     locales: [
       {
         code: 'en',
@@ -73,7 +75,6 @@ export default defineNuxtConfig({
       redirectOn: 'root',
       fallbackLocale: 'en',
     },
-    baseUrl: process.env.URL_FRONTEND,
     lazy: true,
   },
 
@@ -84,26 +85,11 @@ export default defineNuxtConfig({
     storageKey: 'nuxt-color-mode',
   },
 
-  tailwindcss: {
-    configPath: 'tailwind.config.ts',
-  },
-
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
-
   dayjs: {
     locales: ['en', 'de'],
-    plugins: ['duration'],
+    plugins: ['duration', 'timezone'],
     defaultLocale: 'de',
-    defaultTimeZone: 'Europe/Berlin',
-  },
-
-  pinia: {
-    autoImports: ['defineStore'],
+    defaultTimezone: 'Europe/Berlin',
   },
 
   piniaPluginPersistedstate: {

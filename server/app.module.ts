@@ -15,6 +15,7 @@ import { RequestModule } from '@/graphql/request/request.module';
 import { loggingMiddleware, PrismaModule } from 'nestjs-prisma';
 import { JwtModule } from '@nestjs/jwt';
 import process from 'node:process';
+import { QueueModule } from '@/graphql/queue/queue.module';
 
 @Module({
   imports: [
@@ -67,6 +68,7 @@ import process from 'node:process';
     TrackModule,
     ReportModule,
     RequestModule,
+    QueueModule,
   ],
 })
 export class AppModule {}

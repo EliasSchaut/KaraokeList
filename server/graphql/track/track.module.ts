@@ -11,5 +11,6 @@ import { I18nLangResolver } from '@/common/middleware/i18n.resolver';
     MusicApiServiceProvider,
     I18nLangResolver,
   ],
+  exports: [TrackService],
 })
 export class TrackModule {}

@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // other supported databases are "mysql" and "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "sqlite" // other supported databases are "mysql" and "sqlite"
+  url      = "file:./dev.db"  // env("DATABASE_URL")
 }
 
 model Admin {
@@ -45,4 +45,10 @@ model Request {
   artist_name String
 
   @@unique([track_title, artist_name])
+}
+
+model Queue {
+  id     Int     @id @default(autoincrement())
+  active Boolean @default(false)
+  host   String?
 }
