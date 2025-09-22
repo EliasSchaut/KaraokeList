@@ -16,6 +16,7 @@ import { loggingMiddleware, PrismaModule } from 'nestjs-prisma';
 import { JwtModule } from '@nestjs/jwt';
 import process from 'node:process';
 import { QueueModule } from '@/graphql/queue/queue.module';
+import { MeiliSearchModule } from 'nestjs-meilisearch';
 
 @Module({
   imports: [
@@ -51,7 +52,7 @@ import { QueueModule } from '@/graphql/queue/queue.module';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      playground: true,
+      playground: false,
       graphiql: true,
       context: (ctx: ExecutionContext) => ctx,
       autoSchemaFile: join(__dirname, 'types', 'generated', 'schema.gql'),
@@ -60,6 +61,10 @@ import { QueueModule } from '@/graphql/queue/queue.module';
       global: true,
       secret: process.env.JWT_SECRET as string,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION as string },
+    }),
+    MeiliSearchModule.forRoot({
+      host: process.env.MEILI_HOST as string,
+      apiKey: process.env.MEILI_API_KEY as string,
     }),
     AuthModule,
     ArtistModule,

@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ArtistService } from './artist.service';
 import { PrismaService } from 'nestjs-prisma';
 import { WarningException } from '@/common/exceptions/warning.exception';
-import { ArtistModel } from '@/types/models/artist.model';
+import { PropertyModel } from '@/types/models/property.model';
 import { TrackModel } from '@/types/models/track.model';
 import { CtxType } from '@/types/common/ctx.type';
 import { I18nContext } from 'nestjs-i18n';
@@ -50,7 +50,7 @@ describe('ArtistService', () => {
 
     const result = await artistService.find_by_id(1, ctx);
 
-    expect(result).toEqual(new ArtistModel(artist));
+    expect(result).toEqual(new PropertyModel(artist));
   });
 
   it('throws WarningException if artist not found', async () => {
@@ -67,7 +67,7 @@ describe('ArtistService', () => {
 
     const result = await artistService.find_many(ctx);
 
-    expect(result).toEqual(artists as ArtistModel[]);
+    expect(result).toEqual(artists as PropertyModel[]);
   });
 
   it('resolve tracks by artist id successfully', async () => {

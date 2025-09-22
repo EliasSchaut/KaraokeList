@@ -8,6 +8,7 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@apollo/server": "^4.12.2",
     "typescript": "^5.9.2"
   },
   "devDependencies": {

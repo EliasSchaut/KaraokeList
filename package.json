@@ -3,7 +3,7 @@
   "author": "EliasSchaut",
   "private": true,
   "license": "MIT",
-  "homepage": "https://karaoke.schaut.dev",
+  "homepage": "https://github.com/EliasSchaut/KaraokeList#README.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/EliasSchaut/KaraokeList"
@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "concurrently": "^9.2.0",
-    "nuxt": "^4.0.2",
     "prisma": "^6.13.0",
     "tsup": "^8.5.0"
   }

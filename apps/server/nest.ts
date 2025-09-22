@@ -14,8 +14,8 @@ export async function createApp(): Promise<INestApplication> {
     helmet({
       contentSecurityPolicy: {
         directives: {
-          imgSrc: ["'self'", 'data:', 'https://cdn.jsdelivr.net'],
-          styleSrc: [`'self'`, `'unsafe-inline'`, 'https://cdn.jsdelivr.net'],
+          imgSrc: ["'self'"],
+          styleSrc: [`'self'`],
           scriptSrc: ["'self'", "https: 'unsafe-inline'", "'unsafe-eval'"],
           objectSrc: ["'self'"],
           defaultSrc: [`'self'`],

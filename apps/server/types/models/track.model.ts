@@ -1,16 +1,18 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { ArtistModel } from '@/types/models/artist.model';
+import { PropertyModel } from '@/types/models/property.model';
 import { TrackMetadataModel } from '@/types/models/track_metadata.model';
-import { Artist, Track } from '@prisma/client';
+import { Artist, Genre, Language, Track } from '@prisma/client';
 
 @ObjectType({
   description: 'Artist Information',
 })
 export class TrackModel {
-  constructor(track: Track & { artist: Artist }) {
+  constructor(
+    track: Track & { artist: Artist; genre: Genre; language: Language },
+  ) {
     this.id = track.id;
     this.title = track.title;
-    this.artist = new ArtistModel(track.artist);
+    this.artist = new PropertyModel(track.artist);
   }
 
   @Field(() => Int, {
@@ -23,10 +25,10 @@ export class TrackModel {
   })
   title!: string;
 
-  @Field(() => ArtistModel, {
+  @Field(() => PropertyModel, {
     description: 'Artist of the track',
   })
-  artist!: ArtistModel;
+  artists!: string[];
 
   @Field(() => Boolean, {
     description: 'Track was reported by someone',

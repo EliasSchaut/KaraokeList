@@ -15,9 +15,10 @@ import { TrackService } from '@/graphql/track/track.service';
 import { TrackMetadataModel } from '@/types/models/track_metadata.model';
 import { TrackInputModel } from '@/types/models/inputs/track.input';
 import { AuthGuard } from '@/graphql/auth/auth.admin.guard';
-import { SearchInputModel } from '@/types/models/inputs/search.input';
+import { SearchInputModel } from '@/types/models/inputs/query.input';
 import { CursorInputModel } from '@/types/models/inputs/cursor.input';
 import { CountModel } from '@/types/models/count.model';
+import { SonglistInputModel } from '@/types/models/inputs/songlist.input';
 
 @Resolver(() => TrackModel)
 export class TrackResolver {
@@ -86,6 +87,18 @@ export class TrackResolver {
     return await this.trackService.create_many(tracks, {
       i18n,
     });
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation(() => Boolean, {
+    name: 'track_create_from_songlist',
+  })
+  async create_from_songlist(
+    @Args('songlist_input_data', { type: () => [SonglistInputModel] })
+    songlist: SonglistInputModel,
+    @I18n() i18n: I18nContext<I18nTranslations>,
+  ): Promise<boolean> {
+    return await this.trackService.create_from_songlist(songlist, { i18n });
   }
 
   @UseGuards(AuthGuard)
