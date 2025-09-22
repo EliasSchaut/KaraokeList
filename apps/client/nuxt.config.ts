@@ -30,6 +30,13 @@ export default defineNuxtConfig({
     '@/prisma/*': './prisma/*',
   },
 
+  tailwindcss: {
+    cssPath: '~/assets/css/tailwind.css',
+    config: {},
+    viewer: true,
+    exposeConfig: false,
+  },
+
   apollo: {
     autoImports: true,
     proxyCookies: true,

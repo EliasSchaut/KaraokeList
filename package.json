@@ -27,8 +27,8 @@
     "build:db": "npx prisma migrate dev --schema=./schema.prisma --name dev"
   },
   "dependencies": {
-    "concurrently": "^9.2.0",
-    "prisma": "^6.13.0",
+    "concurrently": "^9.2.1",
+    "prisma": "^6.16.2",
     "tsup": "^8.5.0"
   }
 }
