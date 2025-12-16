@@ -1,43 +1,33 @@
 <template>
-  <Dropdown
-    :items="[
-      {
-        label: $t('common.theme.light'),
-        callback: () => settings.setTheme('light'),
-        icon: SunIcon,
-      },
-      {
-        label: $t('common.theme.dark'),
-        callback: () => settings.setTheme('dark'),
-        icon: MoonIcon,
-      },
-      {
-        label: $t('common.theme.system'),
-        callback: () => settings.setTheme('system'),
-        icon: ComputerDesktopIcon,
-      },
-    ]"
-  >
-    <SunIcon
+  <div class="flex items-center justify-center">
+    <button
       v-if="settings.theme === 'light'"
-      class="h-5 w-5 text-gray-400 group-hover:text-gray-500"
-      aria-hidden="true"
-    />
-    <MoonIcon
+      @click="settings.setTheme('dark')"
+    >
+      <SunIcon
+        class="text-second-600 group-hover:text-second-500 dark:text-second-400 h-6 w-6"
+        aria-hidden="true"
+      />
+    </button>
+    <button
       v-else-if="settings.theme === 'dark'"
-      class="h-5 w-5 text-gray-400 group-hover:text-gray-500"
-      aria-hidden="true"
-    />
-    <ComputerDesktopIcon
-      v-else
-      class="h-5 w-5 text-gray-400 group-hover:text-gray-500"
-      aria-hidden="true"
-    />
-  </Dropdown>
+      @click="settings.setTheme('system')"
+    >
+      <MoonIcon
+        class="text-second-600 group-hover:text-second-500 dark:text-second-400 h-6 w-6"
+        aria-hidden="true"
+      />
+    </button>
+    <button v-else @click="settings.setTheme('light')">
+      <ComputerDesktopIcon
+        class="text-second-600 group-hover:text-second-500 dark:text-second-400 h-6 w-6"
+        aria-hidden="true"
+      />
+    </button>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
 import {
   ComputerDesktopIcon,
   MoonIcon,

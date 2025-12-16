@@ -1,17 +1,11 @@
 <template>
-  <Body class="bg-white dark:bg-secondary-800" />
+  <Body class="dark:bg-secondary-800 font-nunito bg-white" />
   <div class="flex h-screen flex-col justify-between">
     <LayoutNav />
-    <main class="mb-auto dark:bg-secondary-900 dark:text-white">
+    <main class="dark:bg-secondary-900 mb-auto dark:text-white">
       <Alert />
       <slot />
     </main>
     <LayoutFooter />
   </div>
 </template>
-
-<style scoped>
-* {
-  font-family: Nunito, 'sans-serif';
-}
-</style>

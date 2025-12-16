@@ -1,18 +1,23 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../.env' });
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  compatibilityDate: '2025-08-02',
+  compatibilityDate: '2025-12-16',
   workspaceDir: '.',
   modules: [
-    '@nuxtjs/i18n',
     '@nuxtjs/apollo',
+    '@nuxt/fonts',
     '@nuxtjs/color-mode',
+    '@nuxtjs/i18n',
     '@nuxt/image',
-    'dayjs-nuxt',
     '@pinia/nuxt',
-    'pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/tailwindcss',
+    'dayjs-nuxt',
+    'pinia-plugin-persistedstate/nuxt',
+    'nuxt-meilisearch',
   ],
 
   typescript: {
@@ -24,10 +29,6 @@ export default defineNuxtConfig({
       proj_name: process.env.PROJECT_NAME,
       page_size: Number(process.env.TABLE_PAGE_SIZE),
     },
-  },
-
-  alias: {
-    '@/prisma/*': './prisma/*',
   },
 
   apollo: {
@@ -45,8 +46,8 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    langDir: './app/locales',
-    restructureDir: false,
+    langDir: 'locales',
+    restructureDir: 'app',
     locales: [
       {
         code: 'en',
@@ -70,7 +71,6 @@ export default defineNuxtConfig({
       redirectOn: 'root',
       fallbackLocale: 'en',
     },
-    lazy: true,
   },
 
   colorMode: {
@@ -83,8 +83,42 @@ export default defineNuxtConfig({
   dayjs: {
     locales: ['en', 'de'],
     plugins: ['duration', 'timezone'],
-    defaultLocale: 'de',
-    defaultTimezone: 'Europe/Berlin',
+    defaultLocale: 'en',
+    defaultTimezone: process.env.TZ,
+  },
+
+  tailwindcss: {
+    cssPath: '~/assets/css/tailwind.css',
+    config: {},
+    viewer: true,
+    exposeConfig: false,
+  },
+
+  meilisearch: {
+    hostUrl: process.env.MEILI_HOST,
+    searchApiKey: process.env.MEILI_API_KEY,
+    serverSideUsage: true,
+  },
+
+  fonts: {
+    defaults: {
+      weights: [400, 500, 600, 700],
+      styles: ['normal', 'italic'],
+    },
+    families: [
+      {
+        name: 'Nunito',
+        provider: 'local',
+      },
+      {
+        name: 'Geist',
+        provider: 'local',
+      },
+      {
+        name: 'Fredoka',
+        provider: 'local',
+      },
+    ],
   },
 
   piniaPluginPersistedstate: {

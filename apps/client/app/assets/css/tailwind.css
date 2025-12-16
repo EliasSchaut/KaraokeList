@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "./fonts.css";
 
 @plugin "@tailwindcss/forms";
 
@@ -9,6 +8,8 @@
 
 @theme {
     --font-nunito: 'Nunito', 'sans-serif';
+    --font-fredoka: 'Fredoka', 'sans-serif';
+    --font-geist: 'Geist', 'sans-serif';
     --breakpoint-xs: 475px;
 
     --color-prime-50: var(--color-indigo-50);
